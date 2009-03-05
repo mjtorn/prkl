@@ -30,9 +30,13 @@
 		</span>
 		<br />
 		<span class="prkl_score">
-		<a id="{{ prkl.id }}_plus" name="{{ prkl.id }}_anchor" href="">Awww</a>
-		{{ prkl.score }}
-		<a id="{{ prkl.id }}_minus" name="{{ prkl.id }}_anchor" href="">Hajoo siihen</a>
+		{% if prkl.can_vote %}
+			<a id="{{ prkl.id }}_plus" name="{{ prkl.id }}_anchor" href="">Awww</a>
+			{{ prkl.score }}
+			<a id="{{ prkl.id }}_minus" name="{{ prkl.id }}_anchor" href="">Hajoo siihen</a>
+		{% else %}
+			{{ prkl.score }}
+		{% endif %}
 		</span>
 	</div>
 {% endfor %}

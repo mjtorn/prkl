@@ -42,7 +42,12 @@ def top(request):
     """The best
     """
 
-    prkls = models.Prkl.objects.all().order_by('-score', 'created_at')
+    prkls = models.Prkl.objects.all()
+    if request.user.id:
+        prkls = prkls.extra({'can_vote': 'SELECT true'})
+    else:
+        prkls = prkls.extra({'can_vote': 'SELECT false'})
+    prkls = prkls.order_by('-score', 'created_at')
 
     context = {
         'title': 'Parhaat',
@@ -56,7 +61,12 @@ def bottom(request):
     """The worst
     """
 
-    prkls = models.Prkl.objects.all().order_by('score', '-created_at')
+    prkls = models.Prkl.objects.all()
+    if request.user.id:
+        prkls = prkls.extra({'can_vote': 'SELECT false'})
+    else:
+        prkls = prkls.extra({'can_vote': 'SELECT true'})
+    prkls = prkls.order_by('score', '-created_at')
 
     context = {
         'title': 'Huonoimmat',
