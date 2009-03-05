@@ -15,7 +15,11 @@
 		</span>
 		<br />
 		<span class="prkl_user">
+		{% if prkl.user.id %}
 		{{ prkl.user }}
+		{% else %}
+		Anonyymi
+		{% endif %}
 		</span>
 	</div>
 {% endfor %}
