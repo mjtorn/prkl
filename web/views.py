@@ -4,14 +4,25 @@ from django.shortcuts import render_to_response
 
 from django.template import RequestContext
 
+from web import forms
+
 # Create your views here.
 
 def index(request):
     """Our index page
     """
 
+    data = request.POST.copy() or None
+
+    submit_prkl_form = forms.SubmitPrklForm(data)
+
+    if submit_prkl_form.is_bound:
+        if submit_prkl_form.is_valid():
+            submit_prkl_form.save()
+
     context = {
-        'title': 'Etusivu'
+        'title': 'Etusivu',
+        'form': submit_prkl_form
     }
     req_ctx = RequestContext(request, context)
 
