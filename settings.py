@@ -4,6 +4,8 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+KLUDGE_STATIC = True
+
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
@@ -36,7 +38,10 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
+if KLUDGE_STATIC:
+    MEDIA_ROOT = '/home/mjt/src/git_checkouts/prkl/media/'
+else:
+    MEDIA_ROOT = ''
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -46,7 +51,7 @@ MEDIA_URL = ''
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '@s8x5)1r$2f^qd82ke=5&n2yk#vaq%!&mo2m(4t0)so5oui29('
