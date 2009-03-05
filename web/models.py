@@ -57,8 +57,12 @@ class Category(models.Model):
 
 
 class Prkl(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
     content = models.CharField(max_length=1024)
     user = models.ForeignKey(User, null=True)
+
+    def __unicode__(self):
+        return u'%s' % self.content
 
 
 class VipExpiry(models.Model):
