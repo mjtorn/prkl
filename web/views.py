@@ -1,5 +1,7 @@
 # vim: tabstop=4 expandtab autoindent shiftwidth=4 fileencoding=utf-8
 
+from django.http import HttpResponseRedirect
+
 from django.shortcuts import render_to_response
 
 from django.template import RequestContext
@@ -21,6 +23,8 @@ def index(request):
     if submit_prkl_form.is_bound:
         if submit_prkl_form.is_valid():
             submit_prkl_form.save()
+            
+            return HttpResponseRedirect(request.META['PATH_INFO'])
 
     context = {
         'title': 'Etusivu',
