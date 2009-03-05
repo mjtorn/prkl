@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-SAIRASTULOA!
+<form method="POST" action="/api/post_prkl">
+{{ form.as_p }}
+
+<input type="submit" name="submit" value="Lisää" />
+</form>
 {% endblock %}
 
