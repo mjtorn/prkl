@@ -9,9 +9,15 @@
 
 <div class="prkls">
 {% for prkl in prkls %}
-	<div class="prkl">
-	{{ prkl }}
-	<div>
+	<div class="prkl" style="border:solid 1px black; margin-bottom: 0.5em;">
+		<span class="prkl_content">
+		{{ prkl }}
+		</span>
+		<br />
+		<span class="prkl_user">
+		{{ prkl.user }}
+		</span>
+	</div>
 {% endfor %}
 </div>
 
