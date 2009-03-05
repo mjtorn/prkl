@@ -60,9 +60,30 @@ class Prkl(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     content = models.CharField(max_length=1024)
     user = models.ForeignKey(User, null=True)
+    score = models.IntegerField(default=0)
 
     def __unicode__(self):
         return u'%s' % self.content
+
+    def incr(self):
+        assert self.id, 'Can not increment unsaved prkl'
+        QRY_INCR = 'UPDATE %s SET score = score + 1 WHERE id=%d RETURNING score' % (self._meta.db_table, self.id)
+ 
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute(QRY_INCR)
+        self.score = cursor.fetchone()[0]
+        cursor.connection.commit()
+
+    def decr(self):
+        assert self.id, 'Can not decrement unsaved prkl'
+        QRY_DECR = 'UPDATE %s SET score = score - 1 WHERE id=%d RETURNING score' % (self._meta.db_table, self.id)
+ 
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute(QRY_DECR)
+        self.score = cursor.fetchone()[0]
+        cursor.connection.commit()
 
 
 class VipExpiry(models.Model):
