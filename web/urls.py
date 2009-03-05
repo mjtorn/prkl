@@ -5,7 +5,9 @@ from django.conf.urls.defaults import *
 import views
 
 urlpatterns = patterns('',
-    (r'^', views.index)
+    (r'^top', views.top),
+    (r'^bottom', views.bottom),
+    (r'^', views.index),
 )
 
 # EOF

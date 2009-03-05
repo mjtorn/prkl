@@ -37,5 +37,34 @@ def index(request):
 
     return render_to_response('index.html', req_ctx)
 
+
+def top(request):
+    """The best
+    """
+
+    prkls = models.Prkl.objects.all().order_by('-score', 'created_at')
+
+    context = {
+        'title': 'Parhaat',
+        'prkls': prkls,
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('index.html', req_ctx)
+
+def bottom(request):
+    """The worst
+    """
+
+    prkls = models.Prkl.objects.all().order_by('score', '-created_at')
+
+    context = {
+        'title': 'Huonoimmat',
+        'prkls': prkls,
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('index.html', req_ctx)
+
 # EOF
 
