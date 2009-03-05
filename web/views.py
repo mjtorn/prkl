@@ -6,7 +6,7 @@ from django.shortcuts import render_to_response
 
 from django.template import RequestContext
 
-from web import forms
+from web import forms, models
 
 # Create your views here.
 
@@ -26,9 +26,12 @@ def index(request):
             
             return HttpResponseRedirect(request.META['PATH_INFO'])
 
+    prkls = models.Prkl.objects.all().order_by('-created_at')
+
     context = {
         'title': 'Etusivu',
-        'form': submit_prkl_form
+        'form': submit_prkl_form,
+        'prkls': prkls,
     }
     req_ctx = RequestContext(request, context)
 
