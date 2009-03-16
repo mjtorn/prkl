@@ -83,11 +83,14 @@ class RegisterForm(forms.Form):
 
 
 class SubmitPrklForm(forms.Form):
+    error_messages = {
+        'required': 'Taisi jäädä prkl kirjoittamatta!',
+    }
     attrs = {
         'cols': 80,
         'rows': 3,
     }
-    content = forms.CharField(label='Sinun prkleesi', widget=forms.widgets.Textarea(attrs=attrs))
+    content = forms.CharField(label='Sinun prkleesi', error_messages=error_messages, widget=forms.widgets.Textarea(attrs=attrs))
 
     def clean_content(self):
         content = self.data['content'].strip()
