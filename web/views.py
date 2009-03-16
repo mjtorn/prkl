@@ -1,6 +1,7 @@
 # vim: tabstop=4 expandtab autoindent shiftwidth=4 fileencoding=utf-8
 
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import models as auth_models
 
 from django.http import HttpResponseRedirect
 
@@ -17,20 +18,43 @@ def dec_login(func):
 
         data = request.POST.copy() or None
 
-        login_form = forms.LoginForm(data)
+        if not request.user.id and data:
+            if request.POST.get('submit', '') == 'Kirjaudu':
+                login_form = forms.LoginForm(data)
+                if login_form.is_valid():
+                    username = request.POST.get('username', None)
+                    password = request.POST.get('password', None)
+                    if username and password:
+                        user = authenticate(username=username, password=password)
+                        login(request, user)
 
-        if not request.user.id:
-            if request.POST.get('submit', '') == 'Kirjaudu' and login_form.is_valid():
-                username = request.POST.get('username', None)
-                password = request.POST.get('password', None)
-                if username and password:
-                    user = authenticate(username=username, password=password)
-                    login(request, user)
+                        return HttpResponseRedirect(request.META['PATH_INFO'])
+                register_form = forms.RegisterForm()
+            elif request.POST.get('submit', '') == 'Rekisteröidy':
+                register_form = forms.RegisterForm(data)
+                if register_form.is_valid():
+                    username = request.POST.get('reg_username', None)
+                    password = request.POST.get('reg_password', None)
+                    if username and password:
+                        user = register_form.save()
 
-                    return HttpResponseRedirect(request.META['PATH_INFO'])
+                        user = authenticate(username=username, password=password)
+                        login(request, user)
+
+                        return HttpResponseRedirect(request.META['PATH_INFO'])
+                login_form = forms.LoginForm()
+            else:
+                register_form = forms.RegisterForm()
+                login_form = forms.LoginForm()
+
             req_ctx['login_form'] = login_form
+            req_ctx['register_form'] = register_form
+        elif not request.user.id:
+            req_ctx['login_form'] = forms.LoginForm()
+            req_ctx['register_form'] = forms.RegisterForm()
         else:
             req_ctx['login_form'] = None
+            req_ctx['register_form'] = None
 
         return func(*args, **kwargs)
     return wrap
