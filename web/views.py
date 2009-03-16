@@ -1,5 +1,7 @@
 # vim: tabstop=4 expandtab autoindent shiftwidth=4 fileencoding=utf-8
 
+from django.contrib.auth import authenticate, login
+
 from django.http import HttpResponseRedirect
 
 from django.shortcuts import render_to_response
@@ -8,8 +10,25 @@ from django.template import RequestContext
 
 from web import forms, models
 
+def dec_login(func):
+    def wrap(*args, **kwargs):
+        request = args[0]
+
+        if request.POST and not request.user.id:
+            username = request.POST.get('username', None)
+            password = request.POST.get('password', None)
+            if username and password:
+                user = authenticate(username=username, password=password)
+                if user:
+                    login(request, user)
+
+                return HttpResponseRedirect(request.META['PATH_INFO'])
+        return func(*args, **kwargs)
+    return wrap
+
 # Create your views here.
 
+@dec_login
 def index(request):
     """Our index page
     """
@@ -38,6 +57,7 @@ def index(request):
     return render_to_response('index.html', req_ctx)
 
 
+@dec_login
 def top(request):
     """The best
     """
@@ -57,6 +77,7 @@ def top(request):
 
     return render_to_response('index.html', req_ctx)
 
+@dec_login
 def bottom(request):
     """The worst
     """
