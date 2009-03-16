@@ -33,15 +33,14 @@ def dec_login(func):
             elif request.POST.get('submit', '') == 'Rekisteröidy':
                 register_form = forms.RegisterForm(data)
                 if register_form.is_valid():
-                    username = request.POST.get('reg_username', None)
-                    password = request.POST.get('reg_password', None)
-                    if username and password:
-                        user = register_form.save()
+                    user = register_form.save()
 
-                        user = authenticate(username=username, password=password)
-                        login(request, user)
+                    username = register_form.cleaned_data['reg_username']
+                    password = register_form.cleaned_data['reg_password']
+                    user = authenticate(username=username, password=password)
+                    login(request, user)
 
-                        return HttpResponseRedirect(request.META['PATH_INFO'])
+                    return HttpResponseRedirect(request.META['PATH_INFO'])
                 login_form = forms.LoginForm()
             else:
                 register_form = forms.RegisterForm()
