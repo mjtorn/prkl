@@ -12,23 +12,33 @@ from web import forms, models
 
 def dec_login(func):
     def wrap(*args, **kwargs):
-        request = args[0]
+        req_ctx = args[1]
+        request = req_ctx['request']
 
-        if request.POST and not request.user.id:
-            username = request.POST.get('username', None)
-            password = request.POST.get('password', None)
-            if username and password:
-                user = authenticate(username=username, password=password)
-                if user:
+        data = request.POST.copy() or None
+
+        login_form = forms.LoginForm(data)
+
+        if not request.user.id:
+            if request.POST.get('submit', '') == 'Kirjaudu' and login_form.is_valid():
+                username = request.POST.get('username', None)
+                password = request.POST.get('password', None)
+                if username and password:
+                    user = authenticate(username=username, password=password)
                     login(request, user)
 
-                return HttpResponseRedirect(request.META['PATH_INFO'])
+                    return HttpResponseRedirect(request.META['PATH_INFO'])
+            req_ctx['login_form'] = login_form
+        else:
+            req_ctx['login_form'] = None
+
         return func(*args, **kwargs)
     return wrap
 
+render_to_response = dec_login(render_to_response)
+
 # Create your views here.
 
-@dec_login
 def index(request):
     """Our index page
     """
@@ -57,7 +67,6 @@ def index(request):
     return render_to_response('index.html', req_ctx)
 
 
-@dec_login
 def top(request):
     """The best
     """
@@ -77,7 +86,6 @@ def top(request):
 
     return render_to_response('index.html', req_ctx)
 
-@dec_login
 def bottom(request):
     """The worst
     """

@@ -1,5 +1,7 @@
 # vim: tabstop=4 expandtab autoindent shiftwidth=4 fileencoding=utf-8
 
+from django.contrib.auth import authenticate
+
 from django.db.transaction import commit_on_success
 
 from django import forms
@@ -10,6 +12,15 @@ class LoginForm(forms.Form):
     username = forms.CharField(label='Tunnus')
     password = forms.CharField(label='Salasana', widget=forms.widgets.PasswordInput())
 
+    def clean_username(self):
+        username = self.data.get('username', '')
+        password = self.data.get('password', '')
+
+        user = authenticate(username=username, password=password)
+        if not user:
+            raise forms.ValidationError('Paska nimi tai salasana, hv')
+
+        return self.data['username']
 
 class SubmitPrklForm(forms.Form):
     content = forms.CharField(label='Sinun prkleesi', widget=forms.widgets.TextInput())
