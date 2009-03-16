@@ -1,6 +1,6 @@
 # vim: tabstop=4 expandtab autoindent shiftwidth=4 fileencoding=utf-8
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from django.http import HttpResponseRedirect
 
@@ -38,6 +38,15 @@ def dec_login(func):
 render_to_response = dec_login(render_to_response)
 
 # Create your views here.
+
+def logout_view(request):
+    """Logout
+    """
+
+    prev_path = request.GET.get('prev_path', '/')
+    logout(request)
+
+    return HttpResponseRedirect(prev_path)
 
 def index(request):
     """Our index page

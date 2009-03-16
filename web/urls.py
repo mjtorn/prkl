@@ -7,6 +7,7 @@ from django.conf import settings
 import views
 
 urlpatterns = patterns('',
+    (r'^logout', views.logout_view),
     (r'^top', views.top),
     (r'^bottom', views.bottom),
 )

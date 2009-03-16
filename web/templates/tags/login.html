@@ -1,8 +1,10 @@
 <form action="{{ request.META.PATH_INFO }}" method="POST">
-	{% if login_form %}
+	{% if not request.user.id %}
 		{{ login_form.as_p }}
 		<br />
 		<input type="submit" name="submit" value="Kirjaudu" />
+	{% else %}
+		<a href="/logout?prev_path={{ request.META.PATH_INFO}}">Ulos</a>
 	{% endif %}
 
 </form>
