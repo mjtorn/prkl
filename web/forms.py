@@ -18,7 +18,7 @@ class LoginForm(forms.Form):
 
         user = authenticate(username=username, password=password)
         if not user:
-            raise forms.ValidationError('Paska nimi tai salasana, hv')
+            raise forms.ValidationError('Nimi tai salasana väärä')
 
         return self.data['username']
 
