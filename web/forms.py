@@ -35,8 +35,8 @@ class RegisterForm(forms.Form):
     reg_email = forms.EmailField(label='Sähköposti', error_messages=error_messages)
 
     def clean_reg_username(self):
-        username = self.data.get('reg_username', None)
-        print 'username', username
+        username = self.data.get('reg_username', '').strip()
+
         if not username:
             raise forms.ValidationError('Tunnus tarvitaan')
 
@@ -47,7 +47,7 @@ class RegisterForm(forms.Form):
         return username
 
     def clean_reg_email(self):
-        email = self.data.get('reg_email', None)
+        email = self.data.get('reg_email', '').strip()
         if not email:
             raise forms.ValidationError('Sähköposti tarvitaan')
 
