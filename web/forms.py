@@ -10,11 +10,18 @@ from django import forms
 from web import models
 
 class LoginForm(forms.Form):
+    # Localizbation
     error_messages = {
         'required': 'Tämä kenttä tarvitaan',
     }
-    username = forms.CharField(label='Tunnus', error_messages=error_messages)
-    password = forms.CharField(label='Salasana', error_messages=error_messages, widget=forms.widgets.PasswordInput())
+
+    # Widget attributes
+    attrs = {
+        'size': 12,
+    }
+
+    username = forms.CharField(label='Tunnus', error_messages=error_messages, widget=forms.widgets.TextInput(attrs=attrs))
+    password = forms.CharField(label='Salasana', error_messages=error_messages, widget=forms.widgets.PasswordInput(attrs=attrs))
 
     def clean_username(self):
         username = self.data.get('username', '').strip()
@@ -33,9 +40,15 @@ class RegisterForm(forms.Form):
         'required': 'Tämä kenttä tarvitaan',
         'invalid': 'Epävalidi sähköpostiosoite',
     }
-    reg_username = forms.CharField(label='Tunnus', error_messages=error_messages)
-    reg_password = forms.CharField(label='Salasana', error_messages=error_messages, widget=forms.widgets.PasswordInput())
-    reg_email = forms.EmailField(label='Sähköposti', error_messages=error_messages)
+
+    # Widget attributes
+    attrs = {
+        'size': 12,
+    }
+
+    reg_username = forms.CharField(label='Tunnus', error_messages=error_messages, widget=forms.widgets.TextInput(attrs=attrs))
+    reg_password = forms.CharField(label='Salasana', error_messages=error_messages, widget=forms.widgets.PasswordInput(attrs=attrs))
+    reg_email = forms.EmailField(label='Sähköposti', error_messages=error_messages, widget=forms.widgets.TextInput(attrs=attrs))
 
     def clean_reg_username(self):
         username = self.data.get('reg_username', '').strip()
