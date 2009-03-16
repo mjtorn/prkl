@@ -10,8 +10,11 @@ from django import forms
 from web import models
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label='Tunnus')
-    password = forms.CharField(label='Salasana', widget=forms.widgets.PasswordInput())
+    error_messages = {
+        'required': 'Tämä kenttä tarvitaan',
+    }
+    username = forms.CharField(label='Tunnus', error_messages=error_messages)
+    password = forms.CharField(label='Salasana', error_messages=error_messages, widget=forms.widgets.PasswordInput())
 
     def clean_username(self):
         username = self.data.get('username', '')
