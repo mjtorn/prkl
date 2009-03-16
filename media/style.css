@@ -1,0 +1,13 @@
+div.left {
+	font-size: 8pt;
+	width: 15%;
+}
+
+div.login {
+	background-color: lightblue;
+}
+
+div.register {
+	background-color: lightgreen;
+}
+
