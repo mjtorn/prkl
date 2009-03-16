@@ -34,7 +34,7 @@ class RegisterForm(forms.Form):
         'invalid': 'Epävalidi sähköpostiosoite',
     }
     reg_username = forms.CharField(label='Tunnus', error_messages=error_messages)
-    reg_password = forms.CharField(label='Salasana', widget=forms.widgets.PasswordInput(), error_messages=error_messages)
+    reg_password = forms.CharField(label='Salasana', error_messages=error_messages, widget=forms.widgets.PasswordInput())
     reg_email = forms.EmailField(label='Sähköposti', error_messages=error_messages)
 
     def clean_reg_username(self):
@@ -77,8 +77,7 @@ class SubmitPrklForm(forms.Form):
     content = forms.CharField(label='Sinun prkleesi', widget=forms.widgets.Textarea(attrs=attrs))
 
     def clean_content(self):
-        content = self.data['content']
-        print content
+        content = self.data['content'].strip()
 
         if not content.lower().startswith('tänään'):
             raise forms.ValidationError('Aloitathan Prkleesi sanalla tänään')
