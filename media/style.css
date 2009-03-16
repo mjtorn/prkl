@@ -26,3 +26,8 @@ div.register {
 	background-color: lightgreen;
 }
 
+div.prkl {
+	border: solid 1px black;
+	margin-bottom: 0.5em;
+}
+
