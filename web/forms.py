@@ -6,6 +6,11 @@ from django import forms
 
 from web import models
 
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Tunnus')
+    password = forms.CharField(label='Salasana', widget=forms.widgets.PasswordInput())
+
+
 class SubmitPrklForm(forms.Form):
     content = forms.CharField(label='Sinun prkleesi', widget=forms.widgets.TextInput())
 

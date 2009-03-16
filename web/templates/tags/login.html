@@ -1,0 +1,9 @@
+<form action="{{ request.META.PATH_INFO }}" method="POST">
+	{% if login_form %}
+		{{ login_form.as_p }}
+		<br />
+		<input type="submit" name="submit" value="Kirjaudu" />
+	{% endif %}
+
+</form>
+
