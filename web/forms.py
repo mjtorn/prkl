@@ -17,7 +17,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(label='Salasana', error_messages=error_messages, widget=forms.widgets.PasswordInput())
 
     def clean_username(self):
-        username = self.data.get('username', '')
+        username = self.data.get('username', '').strip()
         password = self.data.get('password', '')
 
         user = authenticate(username=username, password=password)
