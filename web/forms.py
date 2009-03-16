@@ -70,7 +70,11 @@ class RegisterForm(forms.Form):
 
 
 class SubmitPrklForm(forms.Form):
-    content = forms.CharField(label='Sinun prkleesi', widget=forms.widgets.TextInput())
+    attrs = {
+        'cols': 80,
+        'rows': 3,
+    }
+    content = forms.CharField(label='Sinun prkleesi', widget=forms.widgets.Textarea(attrs=attrs))
 
     def clean_content(self):
         content = self.data['content']
