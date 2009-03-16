@@ -78,7 +78,10 @@ def index(request):
 
     data = request.POST.copy() or None
     if data:
-        data['user'] = request.user
+        if data['submit'] != 'Lisää':
+            data = None
+        else:
+            data['user'] = request.user
 
     submit_prkl_form = forms.SubmitPrklForm(data)
 
