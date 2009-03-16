@@ -1,6 +1,21 @@
+div.top {
+	background-color: pink;
+	margin-left: 15%;
+}
+
 div.left {
 	font-size: 8pt;
 	width: 15%;
+}
+
+div.content {
+	margin-top: 1em;
+	margin-left: 16%;
+}
+
+div.prklform {
+	margin-top: 25px;
+	margin-left: 16%;
 }
 
 div.login {
