@@ -91,8 +91,11 @@ def reset_password(request, token):
     """
 
     try:
-        token_ob = models.ResetRequest.objects.filter(token=token).select_related(depth=1)[0]
+        token_ob = models.ResetRequest.objects.filter(token=token, reset_at__isnull=True).select_related(depth=1)[0]
     except IndexError:
+        return HttpResponseRedirect('/')
+
+    if request.user.id:
         return HttpResponseRedirect('/')
 
     user = token_ob.user
