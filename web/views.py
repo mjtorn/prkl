@@ -13,6 +13,8 @@ from django.template import RequestContext
 
 from web import forms, models
 
+import datetime
+
 def dec_login(func):
     def wrap(*args, **kwargs):
         req_ctx = args[1]
@@ -102,6 +104,10 @@ def reset_password(request, token):
             new_pass = password_reset_form.cleaned_data['new_password']
             user.set_password(new_pass)
             user.save()
+
+            token_ob.reset_from_ip = request.META['REMOTE_ADDR']
+            token_ob.reset_at = datetime.datetime.now()
+            token_ob.save()
 
             # To set backend attribute
             user = authenticate(username=user.username, password=new_pass)
