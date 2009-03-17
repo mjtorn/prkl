@@ -31,3 +31,7 @@ div.prkl {
 	margin-bottom: 0.5em;
 }
 
+a.active {
+	font-weight: bold;
+}
+
