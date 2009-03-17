@@ -108,8 +108,9 @@ class SubmitPrklForm(forms.Form):
     def save(self):
         new_prkl = models.Prkl()
         new_prkl.content = self.cleaned_data['content']
-        if self.data['user'].id:
-            new_prkl.user = self.data['user']
+        user = self.data['user']
+        if user.id:
+            new_prkl.user = user
         new_prkl.save()
 
 # EOF
