@@ -4,6 +4,8 @@
 		{{ login_form.as_p }}
 		<br />
 		<input type="submit" name="submit" value="Kirjaudu" />
+		<br />
+		<small><a href="{% url forgot_password %}">Unohdin salasanani</a></small>
 	{% else %}
 		<a href="{% url logout %}?prev_path={{ request.META.PATH_INFO}}">Ulos</a>
 	{% endif %}
