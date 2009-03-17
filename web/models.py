@@ -99,7 +99,7 @@ class ResetRequest(models.Model):
     user = models.ForeignKey(User)
     token = models.CharField(max_length=255)
     reset_from_ip = models.IPAddressField(null=True, blank=True)
-    reset_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    reset_at = models.DateTimeField(null=True, blank=True)
 
 # EOF
 
