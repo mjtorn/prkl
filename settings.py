@@ -91,5 +91,10 @@ INSTALLED_APPS = (
     'prkl.web',
 )
 
+AUTHENTICATION_BACKENDS = (
+    'prkl.web.auth.PrklModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 # EOF
 
