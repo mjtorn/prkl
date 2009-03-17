@@ -3,6 +3,8 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import models as auth_models
 
+from django.core.urlresolvers import reverse
+
 from django.http import HttpResponseRedirect
 
 from django.shortcuts import render_to_response
@@ -61,6 +63,45 @@ def dec_login(func):
 render_to_response = dec_login(render_to_response)
 
 # Create your views here.
+
+def forgot_password(request):
+    """I forgot my password
+    """
+
+    data = request.POST.copy() or None
+    request_reset_form = forms.RequestResetForm(data)
+
+    if request_reset_form.is_bound:
+        if request_reset_form.is_valid():
+            token = request_reset_form.save()
+
+            print reverse('reset_password', args=(token,))
+
+    context = {
+        'request_reset_form': request_reset_form,
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('forgot_password.html', req_ctx)
+
+def reset_password(request, token):
+    """I want to reset my password
+    """
+
+    data = request.POST.copy() or None
+#    password_reset_form = forms.PasswordResetForm(data)
+    print token
+
+    """
+    context = {
+        'password_reset_form': password_reset_form,
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('reset_password.html', req_ctx)
+    """
+    from django.http import HttpResponse
+    return HttpResponse(token, content_type='text/plain')
 
 def logout_view(request):
     """Logout
