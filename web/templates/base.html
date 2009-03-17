@@ -18,16 +18,18 @@
 <body>
 <div class="top">
 {% block menu %}
+{% with request.META.PATH_INFO as req_path %}
 {% url index as index_url %}
-<a href="{{ index_url }}" class="{% check_active request.META.PATH_INFO index_url %}">Pääsivu</a>
+<a href="{{ index_url }}" class="{% check_active req_path index_url %}">Pääsivu</a>
 {% url top as top_url %}
-<a href="{{ top_url }}" class="{% check_active request.META.PATH_INFO top_url %}">Parhaat</a>
+<a href="{{ top_url }}" class="{% check_active req_path top_url %}">Parhaat</a>
 {% url bottom as bottom_url %}
-<a href="{% url bottom %}" class="{% check_active request.META.PATH_INFO bottom_url %}">Huonoimmat</a>
+<a href="{% url bottom %}" class="{% check_active req_path bottom_url %}">Huonoimmat</a>
 {% url faq as faq_url %}
-<a href="{% url faq %}" class="{% check_active request.META.PATH_INFO faq_url %}">Usein Kysytyt Kysymykset</a>
+<a href="{% url faq %}" class="{% check_active req_path faq_url %}">Usein Kysytyt Kysymykset</a>
 {% url members as members_url %}
-<a href="{% url members %}" class="{% check_active request.META.PATH_INFO members_url %}">Jäsenet</a>
+<a href="{% url members %}" class="{% check_active req_path members_url %}">Jäsenet</a>
+{% endwith %}
 {% endblock %}
 </div>
 
