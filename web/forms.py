@@ -2,12 +2,46 @@
 
 from django.contrib.auth import authenticate
 from django.contrib.auth import models as auth_models
+from django.contrib.auth import tokens
 
 from django.db.transaction import commit_on_success
 
 from django import forms
 
 from web import models
+
+class RequestResetForm(forms.Form):
+    error_messages = {
+        'required': 'Tämä kenttä tarvitaan',
+        'invalid': 'Epävalidi sähköpostiosoite',
+    }
+
+    email = forms.EmailField(label='Sähköpostisi', error_messages=error_messages)
+
+    def clean_email(self):
+        try:
+            user = models.User.objects.get(email=self.data['email'])
+            self.data['user'] = user
+        except models.User.DoesNotExist:
+            raise forms.ValidationError('Sähköpostiosoitetta ei löytynyt')
+
+        return self.data['email']
+
+    @commit_on_success
+    def save(self):
+        # Generate token
+        token_generator = tokens.PasswordResetTokenGenerator()
+
+        # Smuggle user again
+        user = self.data['user']
+
+        token = token_generator.make_token(user)
+        reset_request, created = models.ResetRequest.objects.get_or_create(
+            user = user,
+            token = token
+        )
+
+        return token
 
 class LoginForm(forms.Form):
     # Localizbation
