@@ -10,10 +10,10 @@ handler404 = 'prkl.web.views.notfound'
 
 urlpatterns = patterns('',
     url(r'^logout', views.logout_view, name='logout'),
-    url(r'^top', views.top, name='top'),
-    url(r'^bottom', views.bottom, name='bottom'),
-    url(r'^faq', views.notfound, name='faq'),
-    url(r'^members', views.notfound, name='members'),
+    url(r'^top/$', views.top, name='top'),
+    url(r'^bottom/$', views.bottom, name='bottom'),
+    url(r'^faq/$', views.notfound, name='faq'),
+    url(r'^members/$', views.notfound, name='members'),
 )
 
 if settings.KLUDGE_STATIC:
