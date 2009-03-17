@@ -2,7 +2,7 @@
 
 {% block prklform %}
 {% if form %}
-<form method="POST" action="/">
+<form method="POST" action="{% url index %}">
 {{ form.as_p }}
 
 <input type="submit" name="submit" value="Lisää" />

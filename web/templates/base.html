@@ -17,11 +17,11 @@
 <body>
 <div class="top">
 {% block menu %}
-<a href="/">Pääsivu</a>
-<a href="/top">Parhaat</a>
-<a href="/bottom">Huonoimmat</a>
-<a href="/faq">Usein Kysytyt Kysymykset</a>
-<a href="/members">Jäsenet</a>
+<a href="{% url index %}">Pääsivu</a>
+<a href="{% url top %}">Parhaat</a>
+<a href="{% url bottom %}">Huonoimmat</a>
+<a href="{% url faq %}">Usein Kysytyt Kysymykset</a>
+<a href="{% url members %}">Jäsenet</a>
 {% endblock %}
 </div>
 

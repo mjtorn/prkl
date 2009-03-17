@@ -7,9 +7,11 @@ from django.conf import settings
 import views
 
 urlpatterns = patterns('',
-    (r'^logout', views.logout_view),
-    (r'^top', views.top),
-    (r'^bottom', views.bottom),
+    url(r'^logout', views.logout_view, name='logout'),
+    url(r'^top', views.top, name='top'),
+    url(r'^bottom', views.bottom, name='bottom'),
+    url(r'^faq', views.index, name='faq'),
+    url(r'^members', views.index, name='members'),
 )
 
 if settings.KLUDGE_STATIC:
@@ -19,7 +21,7 @@ if settings.KLUDGE_STATIC:
 )
 
 urlpatterns += patterns('',
-    (r'^', views.index),
+    url(r'^', views.index, name='index'),
 )
 
 # EOF
