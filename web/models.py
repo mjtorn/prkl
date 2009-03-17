@@ -90,5 +90,16 @@ class VipExpiry(models.Model):
     user = models.ForeignKey(User)
     expire_at = models.DateTimeField()
 
+
+class ResetRequest(models.Model):
+    """Log password reset requests
+    """
+
+    tstamp = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User)
+    token = models.CharField(max_length=255)
+    reset_from_ip = models.IPAddressField(null=True, blank=True)
+    reset_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+
 # EOF
 
