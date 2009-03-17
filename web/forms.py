@@ -43,6 +43,14 @@ class RequestResetForm(forms.Form):
 
         return token
 
+
+class PasswordResetForm(forms.Form):
+    error_messages = {
+        'required': 'Annathan uuden salasanasi :)'
+    }
+    new_password = forms.CharField(label='Uusi salasana', error_messages=error_messages, widget=forms.widgets.PasswordInput())
+
+
 class LoginForm(forms.Form):
     # Localizbation
     error_messages = {
