@@ -6,12 +6,14 @@ from django.conf import settings
 
 import views
 
+handler404 = 'prkl.web.views.notfound'
+
 urlpatterns = patterns('',
     url(r'^logout', views.logout_view, name='logout'),
     url(r'^top', views.top, name='top'),
     url(r'^bottom', views.bottom, name='bottom'),
-    url(r'^faq', views.index, name='faq'),
-    url(r'^members', views.index, name='members'),
+    url(r'^faq', views.notfound, name='faq'),
+    url(r'^members', views.notfound, name='members'),
 )
 
 if settings.KLUDGE_STATIC:
@@ -21,7 +23,7 @@ if settings.KLUDGE_STATIC:
 )
 
 urlpatterns += patterns('',
-    url(r'^', views.index, name='index'),
+    url(r'^$', views.index, name='index'),
 )
 
 # EOF

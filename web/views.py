@@ -71,6 +71,16 @@ def logout_view(request):
 
     return HttpResponseRedirect(prev_path)
 
+def notfound(request):
+    """Not found view
+    """
+
+    context = {
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('404.html', req_ctx)
+
 def index(request):
     """Our index page
     """
