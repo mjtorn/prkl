@@ -120,7 +120,7 @@ class RegisterForm(forms.Form):
         username = self.cleaned_data['reg_username']
         password = self.cleaned_data['reg_password']
         email = self.cleaned_data['reg_email']
-        user = auth_models.User.objects.create_user(username, email, password)
+        user = models.User.objects.create_user(username, email, password)
         return user
 
 
