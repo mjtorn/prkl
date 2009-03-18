@@ -101,5 +101,14 @@ class ResetRequest(models.Model):
     reset_from_ip = models.IPAddressField(null=True, blank=True)
     reset_at = models.DateTimeField(null=True, blank=True)
 
+
+class TrueId(models.Model):
+    """Better-than-session cookie data
+    """
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    hash = models.CharField(max_length=40, db_index=True, unique=True)
+    user = models.ForeignKey(User, null=True)
+
 # EOF
 
