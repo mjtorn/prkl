@@ -98,5 +98,7 @@ AUTHENTICATION_BACKENDS = (
 
 DEFAULT_FROM_EMAIL = 'yllapito@prkl.es'
 
+COOKIE_DOMAIN = 'fadconsulting.com'
+
 # EOF
 
