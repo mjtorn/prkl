@@ -21,6 +21,8 @@ from web import forms, models
 
 import datetime
 
+import sha
+
 FORGOT_PASSWORD_SUBJECT = 'prkl.es: salasanan vaihto'
 
 def dec_login(func):
@@ -70,7 +72,24 @@ def dec_login(func):
         return func(*args, **kwargs)
     return wrap
 
+def dec_true_id(func):
+    """true_id is our better-than-session cookie
+    """
+
+    def wrap(*args, **kwargs):
+        req_ctx = args[1]
+        request = req_ctx['request']
+        response = func(*args, **kwargs)
+        if not request.COOKIES.has_key('true_id'):
+            true_id = sha.sha('%s|%s|%s' % (datetime.datetime.now().isoformat(), datetime.datetime.now().microsecond, datetime.datetime.now().microsecond)).hexdigest()
+            response.set_cookie('true_id', true_id, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
+
+        return response
+
+    return wrap
+
 render_to_response = dec_login(render_to_response)
+render_to_response = dec_true_id(render_to_response)
 
 # Create your views here.
 
