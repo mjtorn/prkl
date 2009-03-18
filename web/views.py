@@ -42,6 +42,9 @@ def dec_login(func):
                         user = authenticate(username=username, password=password)
                         login(request, user)
 
+                        request.true_id.user = user
+                        request.true_id.save()
+
                         return HttpResponseRedirect(request.META['PATH_INFO'])
                 register_form = forms.RegisterForm()
             elif request.POST.get('submit', '') == 'Rekisteröidy':
@@ -53,6 +56,9 @@ def dec_login(func):
                     password = register_form.cleaned_data['reg_password']
                     user = authenticate(username=username, password=password)
                     login(request, user)
+
+                    request.true_id.user = user
+                    request.true_id.save()
 
                     return HttpResponseRedirect(request.META['PATH_INFO'])
                 login_form = forms.LoginForm()
@@ -72,7 +78,27 @@ def dec_login(func):
         return func(*args, **kwargs)
     return wrap
 
-def dec_true_id(func):
+def dec_true_id_in(func):
+    """Check before calling view function if we have a true id
+    """
+
+    def wrap(*args, **kwargs):
+        request = args[0]
+
+        if not request.COOKIES.has_key('true_id'):
+            true_id = sha.sha('%s|%s|%s' % (datetime.datetime.now().isoformat(), datetime.datetime.now().microsecond, datetime.datetime.now().microsecond)).hexdigest()
+        else:
+            true_id = request.COOKIES['true_id']
+
+        true_id_ob, created = models.TrueId.objects.get_or_create(hash=true_id)
+
+        request.true_id = true_id_ob
+
+        return func(*args, **kwargs)
+
+    return wrap
+
+def dec_true_id_out(func):
     """true_id is our better-than-session cookie
     """
 
@@ -81,16 +107,15 @@ def dec_true_id(func):
         request = req_ctx['request']
         response = func(*args, **kwargs)
         if not request.COOKIES.has_key('true_id'):
-            true_id = sha.sha('%s|%s|%s' % (datetime.datetime.now().isoformat(), datetime.datetime.now().microsecond, datetime.datetime.now().microsecond)).hexdigest()
-            true_id_ob, created = models.TrueId.objects.get_or_create(hash=true_id)
-            response.set_cookie('true_id', true_id, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
+            true_id_ob = request.true_id
+            response.set_cookie('true_id', true_id_ob.hash, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
 
         return response
 
     return wrap
 
 render_to_response = dec_login(render_to_response)
-render_to_response = dec_true_id(render_to_response)
+render_to_response = dec_true_id_out(render_to_response)
 
 # Create your views here.
 
@@ -176,6 +201,9 @@ def logout_view(request):
     prev_path = request.GET.get('prev_path', '/')
     logout(request)
 
+    request.true_id.user = None
+    request.true_id.save()
+
     return HttpResponseRedirect(prev_path)
 
 def notfound(request):
@@ -188,6 +216,7 @@ def notfound(request):
 
     return render_to_response('404.html', req_ctx)
 
+@dec_true_id_in
 def index(request):
     """Our index page
     """
@@ -219,6 +248,7 @@ def index(request):
     return render_to_response('index.html', req_ctx)
 
 
+@dec_true_id_in
 def top(request):
     """The best
     """
@@ -238,6 +268,7 @@ def top(request):
 
     return render_to_response('index.html', req_ctx)
 
+@dec_true_id_in
 def bottom(request):
     """The worst
     """
