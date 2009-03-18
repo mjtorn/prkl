@@ -11,6 +11,8 @@ from django.shortcuts import render_to_response
 
 from django.template import RequestContext
 
+from django import template
+
 from web import forms, models
 
 import datetime
@@ -77,7 +79,15 @@ def forgot_password(request):
         if request_reset_form.is_valid():
             token = request_reset_form.save()
 
-            print reverse('reset_password', args=(token,))
+            mail_context = {
+                'token': token,
+                'path': reverse('reset_password', args=(token,)),
+            }
+            mail_req_context = RequestContext(request, mail_context)
+
+            s = template.loader.get_template('mail/reset_password_url.txt')
+            mail = s.render(mail_req_context)
+            print mail
 
     context = {
         'request_reset_form': request_reset_form,
