@@ -5,6 +5,10 @@ from django.contrib.auth import models as auth_models
 
 from django.core.urlresolvers import reverse
 
+from django.conf import settings
+
+from django.core import mail
+
 from django.http import HttpResponseRedirect
 
 from django.shortcuts import render_to_response
@@ -16,6 +20,8 @@ from django import template
 from web import forms, models
 
 import datetime
+
+FORGOT_PASSWORD_SUBJECT = 'prkl.es: salasanan vaihto'
 
 def dec_login(func):
     def wrap(*args, **kwargs):
@@ -86,8 +92,12 @@ def forgot_password(request):
             mail_req_context = RequestContext(request, mail_context)
 
             s = template.loader.get_template('mail/reset_password_url.txt')
-            mail = s.render(mail_req_context)
-            print mail
+            content = s.render(mail_req_context)
+
+            subj = FORGOT_PASSWORD_SUBJECT
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_list = (request_reset_form.data['user'].email,)
+            mail.send_mail(subj, content, from_email, to_list)
 
     context = {
         'request_reset_form': request_reset_form,

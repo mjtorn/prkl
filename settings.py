@@ -96,5 +96,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+DEFAULT_FROM_EMAIL = 'yllapito@prkl.es'
+
 # EOF
 
