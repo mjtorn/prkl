@@ -7,6 +7,8 @@
 		<br />
 		<small><a href="{% url forgot_password %}">Unohdin salasanani</a></small>
 	{% else %}
+		Kirjautunut: {{ user }}
+		<br />
 		<a href="{% url logout %}?prev_path={{ request.META.PATH_INFO}}">Ulos</a>
 	{% endif %}
 
