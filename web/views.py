@@ -236,6 +236,8 @@ def index(request):
             
             return HttpResponseRedirect(request.META['PATH_INFO'])
 
+    # FIXME: Django and OUTER JOINs :(
+    # There is no way to emulate an OUTER JOIN in a subquery or anything
     prkls = models.Prkl.objects.all().order_by('-created_at')
 
     context = {
@@ -253,6 +255,8 @@ def top(request):
     """The best
     """
 
+    # FIXME: Django and OUTER JOINs :(
+    # There is no way to emulate an OUTER JOIN in a subquery or anything
     prkls = models.Prkl.objects.all()
     if request.user.id:
         prkls = prkls.extra({'can_vote': 'SELECT true'})
@@ -273,6 +277,8 @@ def bottom(request):
     """The worst
     """
 
+    # FIXME: Django and OUTER JOINs :(
+    # There is no way to emulate an OUTER JOIN in a subquery or anything
     prkls = models.Prkl.objects.all()
     if request.user.id:
         prkls = prkls.extra({'can_vote': 'SELECT false'})
