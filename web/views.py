@@ -78,6 +78,9 @@ def forgot_password(request):
     """I forgot my password
     """
 
+    if request.user.id:
+        return HttpResponseRedirect('/')
+
     data = request.POST.copy() or None
     request_reset_form = forms.RequestResetForm(data)
 
