@@ -158,6 +158,7 @@ def forgot_password(request):
             mail.send_mail(subj, content, from_email, to_list)
 
     context = {
+        'title': 'Salasanan unohdus',
         'request_reset_form': request_reset_form,
     }
     req_ctx = RequestContext(request, context)
@@ -197,6 +198,7 @@ def reset_password(request, token):
             return HttpResponseRedirect('/')
 
     context = {
+        'title': 'Salasanan vaihto',
         'password_reset_form': password_reset_form,
         'token': token,
     }
@@ -222,6 +224,7 @@ def notfound(request):
     """
 
     context = {
+        'title': 'Tänään ei löytyny, prkl',
     }
     req_ctx = RequestContext(request, context)
 
