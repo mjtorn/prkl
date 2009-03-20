@@ -110,5 +110,22 @@ class TrueId(models.Model):
     hash = models.CharField(max_length=40, db_index=True, unique=True)
     user = models.ForeignKey(User, null=True)
 
+
+class PrklVote(models.Model):
+    """Vote counts here
+    Denormalize user and hash from TrueId, because TrueId can have
+    an anonymous user or n+1 different users logging in one after the other.
+    So we need to see who has voted already based on this data
+    """
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    prkl = models.ForeignKey(Prkl)
+    trueid = models.ForeignKey(TrueId)
+    user = models.ForeignKey(User, null=True)
+    vote = models.IntegerField()
+
+    class Meta:
+        unique_together = (('prkl', 'trueid'), ('prkl', 'user'))
+
 # EOF
 
