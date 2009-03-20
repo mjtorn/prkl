@@ -199,6 +199,7 @@ def reset_password(request, token):
 
     return render_to_response('reset_password.html', req_ctx)
 
+@dec_true_id_in
 def logout_view(request):
     """Logout
     """
