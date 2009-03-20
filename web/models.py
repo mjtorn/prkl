@@ -4,6 +4,7 @@ from django.contrib.auth import  models as auth_models
 from django.contrib.auth.models import UserManager
 
 from django.db import models
+from django.db import transaction
 
 import datetime
 
@@ -127,7 +128,7 @@ class Prkl(models.Model):
         cursor = connection.cursor()
         cursor.execute(QRY_INCR)
         self.score = cursor.fetchone()[0]
-        cursor.connection.commit()
+        transaction.commit_unless_managed()
 
     def decr(self):
         assert self.id, 'Can not decrement unsaved prkl'
@@ -137,7 +138,7 @@ class Prkl(models.Model):
         cursor = connection.cursor()
         cursor.execute(QRY_DECR)
         self.score = cursor.fetchone()[0]
-        cursor.connection.commit()
+        transaction.commit_unless_managed()
 
 
 class VipExpiry(models.Model):
