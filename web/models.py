@@ -31,10 +31,33 @@ class PrklQuerySet(models.query.QuerySet):
 
         return self
 
+
+class PrklVoteQuerySet(models.query.QuerySet):
+    def your_votes(self, request):
+        """Check an http request to see your votes
+        """
+
+        # Anonymous or not decides
+        if request.user.id:
+            your_votes = self.filter(user=request.user)
+        else:
+            your_votes = self.filter(trueid=request.true_id)
+
+        # Then see which votes exactly were found
+        return your_votes
+
 # Create your managers here
 class PrklManager(models.Manager):
     def get_query_set(self):
         return PrklQuerySet(self.model)
+
+
+class PrklVoteManager(models.Manager):
+    def get_query_set(self):
+        return PrklVoteQuerySet(self.model)
+
+    def your_votes(self, request):
+        return self.get_query_set().your_votes(request)
 
 # Create your models here.
 
@@ -148,6 +171,8 @@ class PrklVote(models.Model):
     an anonymous user or n+1 different users logging in one after the other.
     So we need to see who has voted already based on this data
     """
+
+    objects = PrklVoteManager()
 
     created_at = models.DateTimeField(auto_now_add=True)
     prkl = models.ForeignKey(Prkl)
