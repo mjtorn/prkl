@@ -5,6 +5,8 @@ from django.contrib.auth import models as auth_models
 
 from django.core.urlresolvers import reverse
 
+from django.db.transaction import commit_on_success
+
 from django.conf import settings
 
 from django.core import mail
@@ -301,15 +303,48 @@ def bottom(request):
 
     return render_to_response('index.html', req_ctx)
 
+@commit_on_success
 @dec_true_id_in
 def vote(request, prkl_id, direction, back_to):
     """And I found direction...
     """
 
-    print prkl_id, direction, back_to
+    your_votes = models.PrklVote.objects.your_votes(request)
+    prkls = models.Prkl.objects.all()
+    prkls = prkls.can_vote(your_votes)
 
-    from django.http import HttpResponse
-    return HttpResponse(direction)
+    good = False
+    try:
+        prkl = prkls.get(id=prkl_id)
+        if prkl.can_vote:
+            good = True
+    except models.Prkl.DoesNotExist:
+        pass
+
+    if back_to is None:
+        back_to = '/'
+
+    if not good:
+        return HttpResponseRedirect(back_to)
+
+    vote = models.PrklVote()
+    if request.user.id:
+        vote.user = request.user
+    else:
+        vote.trueid = request.true_id
+
+    # Pre-validated in urls.py
+    if direction == 'up':
+        prkl.incr()
+        vote.vote = 1
+    else:
+        prkl.decr()
+        vote.vote = -1
+
+    vote.prkl = prkl
+    vote.save()
+
+    return HttpResponseRedirect(back_to)
 
 # EOF
 
