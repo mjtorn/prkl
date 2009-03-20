@@ -120,7 +120,7 @@ class PrklVote(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     prkl = models.ForeignKey(Prkl)
-    trueid = models.ForeignKey(TrueId)
+    trueid = models.ForeignKey(TrueId, null=True)
     user = models.ForeignKey(User, null=True)
     vote = models.IntegerField()
 
