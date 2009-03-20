@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     url(r'^logout', views.logout_view, name='logout'),
     url(r'^top/$', views.top, name='top'),
     url(r'^bottom/$', views.bottom, name='bottom'),
-    url(r'^vote/(\d+)/(up|down)/([a-z]+)?/?$', views.vote, name='vote'),
+    url(r'^vote/(\d+)/(up|down)/([a-z/]+)?/$', views.vote, name='vote'),
     url(r'^faq/$', views.notfound, name='faq'),
     url(r'^members/$', views.notfound, name='members'),
 )

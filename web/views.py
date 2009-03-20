@@ -306,5 +306,15 @@ def bottom(request):
 
     return render_to_response('index.html', req_ctx)
 
+@dec_true_id_in
+def vote(request, prkl_id, direction, back_to):
+    """And I found direction...
+    """
+
+    print prkl_id, direction, back_to
+
+    from django.http import HttpResponse
+    return HttpResponse(direction)
+
 # EOF
 
