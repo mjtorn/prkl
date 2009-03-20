@@ -250,37 +250,26 @@ def index(request):
     # Then decide if we look at anonymous or user
     if request.user.id:
         your_votes = your_votes.filter(user=request.user)
-        your_votes = your_votes.values()
-        voted_prkls = tuple([v['prkl_id'] for v in your_votes])
-        if not voted_prkls:
-            prkls = prkls.extra({
-                'can_vote': 'SELECT true',
-            })
-        elif len(voted_prkls) == 1:
-            prkls = prkls.extra({
-                'can_vote': 'SELECT web_prkl.id <> %d' % voted_prkls[0]
-            })
-        else:
-            prkls = prkls.extra({
-                'can_vote': 'SELECT web_prkl.id NOT IN %s' % str(voted_prkls)
-            })
     else:
         your_votes = your_votes.filter(trueid=request.true_id)
-        your_votes = your_votes.values()
-        voted_prkls = tuple([v['prkl_id'] for v in your_votes])
 
-        if not voted_prkls:
-            prkls = prkls.extra({
-                'can_vote': 'SELECT true',
-            })
-        elif len(voted_prkls) == 1:
-            prkls = prkls.extra({
-                'can_vote': 'SELECT web_prkl.id <> %d' % voted_prkls[0]
-            })
-        else:
-            prkls = prkls.extra({
-                'can_vote': 'SELECT web_prkl.id NOT IN %s' % str(voted_prkls)
-            })
+    # Then see which votes exactly were found
+    your_votes = your_votes.values()
+    voted_prkls = tuple([v['prkl_id'] for v in your_votes])
+
+    # And take care of those in prkls
+    if not voted_prkls:
+        prkls = prkls.extra({
+            'can_vote': 'SELECT true',
+        })
+    elif len(voted_prkls) == 1:
+        prkls = prkls.extra({
+            'can_vote': 'SELECT web_prkl.id <> %d' % voted_prkls[0]
+        })
+    else:
+        prkls = prkls.extra({
+            'can_vote': 'SELECT web_prkl.id NOT IN %s' % str(voted_prkls)
+        })
 
     prkls = prkls.order_by('-created_at')
 
