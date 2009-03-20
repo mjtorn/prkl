@@ -7,6 +7,35 @@ from django.db import models
 
 import datetime
 
+# Create your querysets here
+class PrklQuerySet(models.query.QuerySet):
+    def can_vote(self, votes):
+        """Set vote status
+        """
+
+        voted_prkls = tuple([v['prkl_id'] for v in votes])
+
+        # And take care of those in prkls
+        if not voted_prkls:
+            self = self.extra({
+                'can_vote': 'SELECT true',
+            })
+        elif len(voted_prkls) == 1:
+            self = self.extra({
+                'can_vote': 'SELECT web_prkl.id <> %d' % voted_prkls[0]
+            })
+        else:
+            self = self.extra({
+                'can_vote': 'SELECT web_prkl.id NOT IN %s' % str(voted_prkls)
+            })
+
+        return self
+
+# Create your managers here
+class PrklManager(models.Manager):
+    def get_query_set(self):
+        return PrklQuerySet(self.model)
+
 # Create your models here.
 
 class User(auth_models.User):
@@ -61,6 +90,8 @@ class Prkl(models.Model):
     content = models.CharField(max_length=1024)
     user = models.ForeignKey(User, null=True)
     score = models.IntegerField(default=0)
+
+    objects = PrklManager()
 
     def __unicode__(self):
         return u'%s' % self.content
