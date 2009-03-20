@@ -77,6 +77,9 @@ def dec_login(func):
             req_ctx['login_form'] = None
             req_ctx['register_form'] = None
 
+        if not req_ctx.has_key('title') or not req_ctx['title']:
+            raise ValueError('Title needed')
+
         return func(*args, **kwargs)
     return wrap
 
