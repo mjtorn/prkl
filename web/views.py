@@ -249,7 +249,6 @@ def index(request):
     # Include vote statuses
     prkls = models.Prkl.objects.all()
     prkls = prkls.can_vote(your_votes)
-
     prkls = prkls.order_by('-created_at')
 
     context = {
@@ -269,11 +268,9 @@ def top(request):
 
     # FIXME: Django and OUTER JOINs :(
     # There is no way to emulate an OUTER JOIN in a subquery or anything
+    your_votes = models.PrklVote.objects.your_votes(request)
     prkls = models.Prkl.objects.all()
-    if request.user.id:
-        prkls = prkls.extra({'can_vote': 'SELECT true'})
-    else:
-        prkls = prkls.extra({'can_vote': 'SELECT false'})
+    prkls = prkls.can_vote(your_votes)
     prkls = prkls.order_by('-score', 'created_at')
 
     context = {
@@ -291,11 +288,9 @@ def bottom(request):
 
     # FIXME: Django and OUTER JOINs :(
     # There is no way to emulate an OUTER JOIN in a subquery or anything
+    your_votes = models.PrklVote.objects.your_votes(request)
     prkls = models.Prkl.objects.all()
-    if request.user.id:
-        prkls = prkls.extra({'can_vote': 'SELECT false'})
-    else:
-        prkls = prkls.extra({'can_vote': 'SELECT true'})
+    prkls = prkls.can_vote(your_votes)
     prkls = prkls.order_by('score', '-created_at')
 
     context = {
