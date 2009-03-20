@@ -323,6 +323,8 @@ def vote(request, prkl_id, direction, back_to):
 
     if back_to is None:
         back_to = '/'
+    else:
+        back_to = '/%s' % back_to
 
     if not good:
         return HttpResponseRedirect(back_to)
