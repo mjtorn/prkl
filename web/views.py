@@ -107,7 +107,12 @@ def dec_true_id_out(func):
         request = req_ctx['request']
         response = func(*args, **kwargs)
         if not request.COOKIES.has_key('true_id'):
-            true_id_ob = request.true_id
+            if not hasattr(request, 'true_id'):
+                true_id = sha.sha('%s|%s|%s' % (datetime.datetime.now().isoformat(), datetime.datetime.now().microsecond, datetime.datetime.now().microsecond)).hexdigest()
+                true_id_ob, created = models.TrueId.objects.get_or_create(hash=true_id)
+            else:
+                true_id_ob = request.true_id
+
             response.set_cookie('true_id', true_id_ob.hash, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
 
         return response
