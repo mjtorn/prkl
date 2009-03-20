@@ -13,7 +13,7 @@ class PrklQuerySet(models.query.QuerySet):
         """Set vote status
         """
 
-        voted_prkls = tuple([v['prkl_id'] for v in votes])
+        voted_prkls = tuple([v.prkl_id for v in votes])
 
         # And take care of those in prkls
         if not voted_prkls:
