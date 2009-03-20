@@ -244,7 +244,33 @@ def index(request):
 
     # FIXME: Django and OUTER JOINs :(
     # There is no way to emulate an OUTER JOIN in a subquery or anything
-    prkls = models.Prkl.objects.all().order_by('-created_at')
+    prkls = models.Prkl.objects.all()
+    your_votes = models.PrklVote.objects.filter()
+
+    # Then decide if we look at anonymous or user
+    if request.user.id:
+        your_votes = your_votes.filter(user=request.user)
+        your_votes = your_votes.values()
+        voted_prkls = tuple([v['prkl_id'] for v in your_votes])
+        if not voted_prkls:
+            prkls = prkls.extra({
+                'can_vote': 'SELECT true',
+            })
+        elif len(voted_prkls) == 1:
+            prkls = prkls.extra({
+                'can_vote': 'SELECT web_prkl.id <> %d' % voted_prkls[0]
+            })
+        else:
+            prkls = prkls.extra({
+                'can_vote': 'SELECT web_prkl.id NOT IN %s' % str(voted_prkls)
+            })
+    else:
+        your_votes = your_votes.filter(trueid=request.true_id)
+        prkls = prkls.extra({
+            'can_vote': 'SELECT false',
+        })
+
+    prkls = prkls.order_by('-created_at')
 
     context = {
         'title': 'Etusivu',
