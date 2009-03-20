@@ -266,9 +266,21 @@ def index(request):
             })
     else:
         your_votes = your_votes.filter(trueid=request.true_id)
-        prkls = prkls.extra({
-            'can_vote': 'SELECT false',
-        })
+        your_votes = your_votes.values()
+        voted_prkls = tuple([v['prkl_id'] for v in your_votes])
+
+        if not voted_prkls:
+            prkls = prkls.extra({
+                'can_vote': 'SELECT true',
+            })
+        elif len(voted_prkls) == 1:
+            prkls = prkls.extra({
+                'can_vote': 'SELECT web_prkl.id <> %d' % voted_prkls[0]
+            })
+        else:
+            prkls = prkls.extra({
+                'can_vote': 'SELECT web_prkl.id NOT IN %s' % str(voted_prkls)
+            })
 
     prkls = prkls.order_by('-created_at')
 
