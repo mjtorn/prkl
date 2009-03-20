@@ -244,16 +244,7 @@ def index(request):
 
     # FIXME: Django and OUTER JOINs :(
     # There is no way to emulate an OUTER JOIN in a subquery or anything
-    your_votes = models.PrklVote.objects.filter()
-
-    # Then decide if we look at anonymous or user
-    if request.user.id:
-        your_votes = your_votes.filter(user=request.user)
-    else:
-        your_votes = your_votes.filter(trueid=request.true_id)
-
-    # Then see which votes exactly were found
-    your_votes = your_votes.values()
+    your_votes = models.PrklVote.objects.your_votes(request)
 
     # Include vote statuses
     prkls = models.Prkl.objects.all()
