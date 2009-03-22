@@ -98,7 +98,7 @@ class RegisterForm(forms.Form):
         if not username:
             raise forms.ValidationError('Tunnus tarvitaan')
 
-        exists = (auth_models.User.objects.filter(username=username).count() > 0)
+        exists = (auth_models.User.objects.filter(username__iexact=username).count() > 0)
         if exists:
             raise forms.ValidationError('Tunnus on jo otettu')
 
