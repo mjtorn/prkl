@@ -67,7 +67,10 @@ class User(auth_models.User):
 
     @property
     def vip_expiry(self):
-        return VipExpiry.objects.filter(user=self).latest('expire_at') or None
+        try:
+            return VipExpiry.objects.filter(user=self).latest('expire_at')
+        except VipExpiry.DoesNotExist:
+            return None
 
     def set_vip(self, expire_at):
         if not isinstance(expire_at, datetime.datetime):
