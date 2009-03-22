@@ -18,7 +18,8 @@ urlpatterns = patterns('',
     url(r'^vote/(\d+)/(up|down)/([a-z/]+)?/$', views.vote, name='vote'),
     url(r'^faq/$', views.notfound, name='faq'),
     url(r'^members/$', views.notfound, name='members'),
-    url(r'^api/extend_vip/(?P<username>[a-zA-Z0-9_]+)/(?P<period>30|180|360)/', api_views.extend_vip, name='api_extend_vip')
+    url(r'^api/extend_vip/(?P<username>[a-zA-Z0-9_]+)/(?P<period>30|180|360)/', api_views.extend_vip, name='api_extend_vip'),
+    url(r'^api/post_prkl/', api_views.post_prkl, name='api_post_prkl'),
 )
 
 if settings.KLUDGE_STATIC:
