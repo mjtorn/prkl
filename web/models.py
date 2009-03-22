@@ -63,6 +63,8 @@ class PrklVoteManager(models.Manager):
 # Create your models here.
 
 class User(auth_models.User):
+    phone = models.CharField(max_length=16, null=True, blank=True, unique=True)
+
     objects = UserManager()
 
     @property
