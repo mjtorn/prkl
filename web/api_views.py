@@ -8,8 +8,8 @@ from web import models
 
 import datetime
 
-def extend_vip(request, username):
-    """Extend username's vip by 30 days
+def extend_vip(request, username, period):
+    """Extend username's vip by period
     """
 
     context = {
@@ -28,7 +28,7 @@ def extend_vip(request, username):
 
         return HttpResponse(ctx, content_type='text/json', status=404)
 
-    period = datetime.timedelta(days=30)
+    period = datetime.timedelta(days=int(period))
 
     try:
         user.extend_vip(period)
