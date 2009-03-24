@@ -157,5 +157,43 @@ class SubmitPrklForm(forms.Form):
                 new_prkl.user = user
         new_prkl.save()
 
+
+class InviteFriendForm(forms.Form):
+    # Error
+    error_messages = {
+        'invalid': 'Tämä sähköposti ei toimi',
+        'required': 'Tämä sähköposti vaaditaan',
+    }
+
+    # Widget attributes
+    attrs = {
+        'size': 12,
+    }
+
+    invitee_email = forms.EmailField(label='Sähköposti', error_messages=error_messages, widget=forms.widgets.TextInput(attrs=attrs))
+
+    def clean_invitee_email(self):
+        email = self.data.get('invitee_email', '').strip()
+        if not email:
+            raise forms.ValidationError('Sähköposti tarvitaan')
+
+        exists = (auth_models.User.objects.filter(email=email).count() > 0)
+        if exists:
+            raise forms.ValidationError('Käyttäjä on jo liittynyt!')
+
+        exists = (models.FriendInvite.objects.filter(recipient=email).count() > 0)
+        if exists:
+            raise forms.ValidationError('Käyttäjä on jo kutsuttu!')
+
+        return email
+
+    def save(self):
+        friend_invite = models.FriendInvite()
+
+        friend_invite.sent_by = self.data['user']
+        friend_invite.recipient = self.cleaned_data['invitee_email']
+
+        friend_invite.save()
+
 # EOF
 
