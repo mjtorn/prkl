@@ -10,6 +10,8 @@ from django import forms
 
 from web import models
 
+import datetime
+
 class RequestResetForm(forms.Form):
     error_messages = {
         'required': 'Tämä kenttä tarvitaan',
@@ -117,10 +119,23 @@ class RegisterForm(forms.Form):
 
     @commit_on_success
     def save(self):
+        # Create new user
         username = self.cleaned_data['reg_username']
         password = self.cleaned_data['reg_password']
         email = self.cleaned_data['reg_email']
         user = models.User.objects.create_user(username, email, password)
+
+        # Also see if this was an invite
+        try:
+            invite = models.FriendInvite.objects.get(recipient=email)
+            invite.registered_at = datetime.datetime.now()
+            if invite.sent_by.is_vip:
+                invite.sent_by.extend_vip(datetime.timedelta(days=5))
+            else:
+                invite.sent_by.set_vip(datetime.datetime.now() + datetime.timedelta(days=5))
+            invite.save()
+        except models.FriendInvite:
+            pass
         return user
 
 
