@@ -129,10 +129,10 @@ class RegisterForm(forms.Form):
         try:
             invite = models.FriendInvite.objects.get(recipient=email)
             invite.registered_at = datetime.datetime.now()
-            if invite.sent_by.is_vip:
-                invite.sent_by.extend_vip(datetime.timedelta(days=5))
+            if invite.sent_by_user.is_vip:
+                invite.sent_by_user.extend_vip(datetime.timedelta(days=5))
             else:
-                invite.sent_by.set_vip(datetime.datetime.now() + datetime.timedelta(days=5))
+                invite.sent_by_user.set_vip(datetime.datetime.now() + datetime.timedelta(days=5))
             invite.save()
         except models.FriendInvite:
             pass
@@ -205,7 +205,7 @@ class InviteFriendForm(forms.Form):
     def save(self):
         friend_invite = models.FriendInvite()
 
-        friend_invite.sent_by = self.data['user']
+        friend_invite.sent_by_user = self.data['user']
         friend_invite.recipient = self.cleaned_data['invitee_email']
 
         friend_invite.save()

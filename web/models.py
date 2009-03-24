@@ -192,7 +192,7 @@ class PrklVote(models.Model):
 
 class FriendInvite(models.Model):
     invite_at = models.DateTimeField(auto_now_add=True)
-    sent_by = models.ForeignKey(User)
+    sent_by_user = models.ForeignKey(User)
     recipient = models.EmailField(unique=True)
     registered_at = models.DateTimeField(null=True, blank=True)
 
