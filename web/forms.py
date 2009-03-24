@@ -129,10 +129,12 @@ class RegisterForm(forms.Form):
         try:
             invite = models.FriendInvite.objects.get(recipient=email)
             invite.registered_at = datetime.datetime.now()
-            if invite.sent_by_user.is_vip:
-                invite.sent_by_user.extend_vip(datetime.timedelta(days=5))
-            else:
-                invite.sent_by_user.set_vip(datetime.datetime.now() + datetime.timedelta(days=5))
+            user_invite_count = models.FriendInvite.objects.filter(sent_by_user=invite.sent_by_user, registered_at__isnull=False).count()
+            if user_invite_count < 5:
+                if invite.sent_by_user.is_vip:
+                    invite.sent_by_user.extend_vip(datetime.timedelta(days=5))
+                else:
+                    invite.sent_by_user.set_vip(datetime.datetime.now() + datetime.timedelta(days=5))
             invite.save()
         except models.FriendInvite:
             pass
