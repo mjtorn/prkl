@@ -152,7 +152,9 @@ class SubmitPrklForm(forms.Form):
         new_prkl.content = self.cleaned_data['content']
         user = self.data['user']
         if user.id:
-            new_prkl.user = user
+            # See if someone set an anonymity here
+            if not self.data.has_key('anonymous'):
+                new_prkl.user = user
         new_prkl.save()
 
 # EOF

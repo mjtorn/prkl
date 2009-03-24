@@ -17,6 +17,8 @@ from django.shortcuts import render_to_response
 
 from django.template import RequestContext
 
+from django import forms as django_forms
+
 from django import template
 
 from web import forms, models
@@ -243,6 +245,10 @@ def index(request):
             data['user'] = request.user
 
     submit_prkl_form = forms.SubmitPrklForm(data)
+
+    if request.user.id:
+        checkbox = django_forms.BooleanField(label='Anonyymisti?', required=False)
+        submit_prkl_form.fields['anonymous'] = checkbox
 
     if submit_prkl_form.is_bound:
         if submit_prkl_form.is_valid():
