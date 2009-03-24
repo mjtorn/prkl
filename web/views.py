@@ -28,6 +28,7 @@ import datetime
 import sha
 
 FORGOT_PASSWORD_SUBJECT = 'prkl.es: salasanan vaihto'
+INVITE_FRIEND_SUBJECT = 'Kutsu prkl.es -sivustolle!'
 
 def dec_login(func):
     def wrap(*args, **kwargs):
@@ -87,6 +88,21 @@ def dec_login(func):
                     invite_friend_form.data['user'] = request.user
                     invite_friend_form.save()
 
+                    # Send email
+                    mail_context = {
+                        'user': request.user,
+                    }
+                    mail_req_context = RequestContext(request, mail_context)
+
+                    s = template.loader.get_template('mail/invite_friend.txt')
+                    content = s.render(mail_req_context)
+
+                    subj = INVITE_FRIEND_SUBJECT
+                    from_email = settings.DEFAULT_FROM_EMAIL
+                    to_list = (invite_friend_form.cleaned_data['invitee_email'],)
+                    mail.send_mail(subj, content, from_email, to_list)
+
+                    # Set web status
                     req_ctx['invite_result'] = 'Kutsuttu!'
 
         if not req_ctx.has_key('title') or not req_ctx['title']:

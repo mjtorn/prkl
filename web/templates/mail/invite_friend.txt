@@ -1,0 +1,15 @@
+Terve!
+
+Tänään käyttäjä {{ user.username }} kutsui sinut prkl.es -sivustolle.
+
+Tule katsomaan mikä sai ihmiset kiroilemaan ja avaudu itsekin!
+
+http://{{ request.META.HTTP_HOST }}/
+
+Tervetuloa!
+
+(prkl)
+
+-- 
+prkl-tiimi
+
