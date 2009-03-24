@@ -10,6 +10,15 @@
 		Kirjautunut: {{ user }}
 		<br />
 		<a href="{% url logout %}?prev_path={{ request.META.PATH_INFO}}">Ulos</a>
+		<br />
+		KUTSU KAVERI!
+		{{ invite_friend_form.as_p}}
+		<br />
+		<input type="submit" name="submit" value="Kutsu" />
+		{% if invite_result %}
+		<br />
+		{{ invite_result }}
+		{% endif %}
 	{% endif %}
 
 </form>
