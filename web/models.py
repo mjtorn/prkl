@@ -64,6 +64,9 @@ class PrklVoteManager(models.Manager):
 
 class User(auth_models.User):
     phone = models.CharField(max_length=16, null=True, blank=True, unique=True)
+    location = models.CharField(max_length=24, null=True, blank=True)
+    birthday = models.DateField(null=True)
+    is_male = models.BooleanField(null=True)
 
     objects = UserManager()
 
