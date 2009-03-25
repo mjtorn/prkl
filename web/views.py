@@ -81,9 +81,8 @@ def dec_login(func):
             req_ctx['register_form'] = None
 
             # But support inviting friends
-            invite_friend_form = forms.InviteFriendForm(data)
-            req_ctx['invite_friend_form'] = invite_friend_form
             if request.POST.get('submit', '') == 'Kutsu':
+                invite_friend_form = forms.InviteFriendForm(data)
                 if invite_friend_form.is_valid():
                     invite_friend_form.data['user'] = request.user
                     invite_friend_form.save()
@@ -104,6 +103,9 @@ def dec_login(func):
 
                     # Set web status
                     req_ctx['invite_result'] = 'Kutsuttu!'
+            else:
+                invite_friend_form = forms.InviteFriendForm()
+                req_ctx['invite_friend_form'] = invite_friend_form
 
         if not req_ctx.has_key('title') or not req_ctx['title']:
             raise ValueError('Title needed')
