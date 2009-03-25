@@ -388,6 +388,7 @@ def vote(request, prkl_id, direction, back_to):
 
     return HttpResponseRedirect(back_to)
 
+@dec_true_id_in
 def prkl(request, prkl_id):
     """Single-prkl view
     """
