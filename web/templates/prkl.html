@@ -42,7 +42,20 @@ $(document).ready(function() {
 <div class="prkls">
 	{% for comment in comments %}
 	<div class="prkl">
-		{{ comment }}
+		<span class="prkl_content">
+		{{ comment.content }}
+		</span>
+		<br />
+		<span class="prkl_user">
+		{% if comment.commenting_user_id %}
+		{{ comment.commenting_user }}
+		{% else %}
+		Anonyymi
+		{% endif %}
+		</span>
+		<span class="prkl_date">
+		{{ comment.tstamp|date:"Y-m-d H:i:s" }}
+		</span>
 	</div>
 	{% endfor %}
 	<div class="prkl">
