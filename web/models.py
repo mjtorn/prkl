@@ -190,6 +190,16 @@ class PrklVote(models.Model):
         unique_together = (('prkl', 'trueid'), ('prkl', 'user'))
 
 
+class PrklComment(models.Model):
+    tstamp = models.DateTimeField(auto_now_add=True)
+    prkl = models.ForeignKey(Prkl)
+    commenting_user = models.ForeignKey(User, null=True)
+    content = models.CharField(max_length=512)
+
+    def __unicode__(self):
+        '@%d: %s' % (self.prkl_id, self.content)
+
+
 class FriendInvite(models.Model):
     invite_at = models.DateTimeField(auto_now_add=True)
     sent_by_user = models.ForeignKey(User)
