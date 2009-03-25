@@ -459,8 +459,20 @@ def member(request, username):
     except models.User.DoesNotExist:
         return notfound(request)
 
+    data = request.POST.copy() or None
+
     if member.id == request.user.id:
-        change_pic_form = 'jöö'
+        if data:
+            change_pic_form = forms.ChangePicForm(data, files=request.FILES)
+        else:
+            change_pic_form = forms.ChangePicForm()
+
+        if change_pic_form.is_bound:
+            if change_pic_form.is_valid():
+                change_pic_form.data['user'] = request.user
+                change_pic_form.save()
+
+                return HttpResponseRedirect(request.META['PATH_INFO'])
     else:
         change_pic_form = None
 
