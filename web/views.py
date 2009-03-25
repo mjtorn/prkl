@@ -449,14 +449,9 @@ def prkl(request, prkl_id):
 
     return render_to_response('prkl.html', req_ctx)
 
+@dec_recommend_register
 @dec_true_id_in
 def member(request, username):
-    context = {
-        'title': 'Käyttäjäsivu',
-    }
-    if not request.user.id:
-        req_ctx = RequestContext(request, context)
-        return render_to_response('only_registered.html', req_ctx)
     from django.http import HttpResponse
 
     return HttpResponse(username)
