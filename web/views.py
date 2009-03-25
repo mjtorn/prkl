@@ -455,13 +455,17 @@ def prkl(request, prkl_id):
 @dec_true_id_in
 def member(request, username):
     try:
-        user = models.User.objects.get(username__iexact=username)
+        member = models.User.objects.get(username__iexact=username)
     except models.User.DoesNotExist:
         return notfound(request)
 
-    from django.http import HttpResponse
+    context = {
+        'title': '%s' % username,
+        'member': member,
+    }
+    req_ctx = RequestContext(request, context)
 
-    return HttpResponse(username)
+    return render_to_response('member.html', req_ctx)
 
 @dec_recommend_register
 @dec_true_id_in
