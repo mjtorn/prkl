@@ -6,6 +6,8 @@ from django.contrib.auth.models import UserManager
 from django.db import models
 from django.db import transaction
 
+from prkl import thumbs
+
 import datetime
 
 # Create your querysets here
@@ -67,6 +69,8 @@ class User(auth_models.User):
     location = models.CharField(max_length=24, null=True, blank=True)
     birthday = models.DateField(null=True)
     is_male = models.BooleanField(null=True)
+
+    pic = thumbs.ImageWithThumbsField(upload_to='user_pics', sizes=((250,250), (50, 50), (25, 25)))
 
     objects = UserManager()
 
