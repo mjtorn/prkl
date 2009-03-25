@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block scripture %}
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#id_content").focus();
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="prkls">
+	<div class="prkl">
+		<span class="prkl_content">
+		{{ prkl }}
+		</span>
+		<br />
+		<span class="prkl_user">
+		{% if prkl.user.id %}
+		{{ prkl.user }}
+		{% else %}
+		Anonyymi
+		{% endif %}
+		</span>
+		<span class="prkl_date">
+		{{ prkl.created_at|date:"Y-m-d H:i:s" }}
+		</span>
+		<br />
+		<span class="prkl_score">
+		{{ prkl.id }}<br />
+		{% if prkl.can_vote %}
+			<a id="{{ prkl.id }}_plus" name="{{ prkl.id }}_anchor" href="{% url vote prkl.id "up" strip_path %}">Awww</a>
+			{{ prkl.score }}
+			<a id="{{ prkl.id }}_minus" name="{{ prkl.id }}_anchor" href="{% url vote prkl.id "down" strip_path %}">Hajoo siihen</a>
+		{% else %}
+			{{ prkl.score }}
+		{% endif %}
+		</span>
+	</div>
+</div>
+
+<div class="prkls">
+	{% for comment in comments %}
+	<div class="prkl">
+		{{ comment }}
+	</div>
+	{% endfor %}
+	<div class="prkl">
+	<form method="POST" action="{{ strip_path }}">
+	{{ comment_prkl_form }}
+	<br />
+	<input type="submit" name="submit" value="Kommentoi" />
+	</form>
+	</div>
+</div>
+
+{% endblock %}
+
