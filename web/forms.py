@@ -239,5 +239,23 @@ class InviteFriendForm(forms.Form):
 
         friend_invite.save()
 
+class ChangePicForm(forms.Form):
+    error_messages = {
+        'required': 'Kuvaa tulee',
+        'invalid': 'Kuvassa on jotain vialla',
+    }
+    pic = forms.ImageField(label='Kuva', error_messages=error_messages)
+
+    @commit_on_success
+    def save(self):
+        user = self.data['user']
+        pic = self.cleaned_data['pic']
+
+        # Rewind
+        pic.open()
+
+        user.pic.save(pic.name, pic)
+        user.save()
+
 # EOF
 
