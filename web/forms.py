@@ -190,6 +190,16 @@ class CommentPrklForm(forms.Form):
     def clean_content(self):
         return self.data.get('content', '').strip()
 
+    @commit_on_success
+    def save(self):
+        prkl_comment = models.PrklComment()
+
+        prkl_comment.prkl = self.data['prkl']
+        prkl_comment.commenting_user = self.data['user']
+        prkl_comment.content = self.cleaned_data['content']
+
+        prkl_comment.save()
+
 
 class InviteFriendForm(forms.Form):
     # Error
