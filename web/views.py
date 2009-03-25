@@ -276,7 +276,9 @@ def notfound(request):
     }
     req_ctx = RequestContext(request, context)
 
-    return render_to_response('404.html', req_ctx)
+    res = render_to_response('404.html', req_ctx)
+    res.status_code = 404
+    return res
 
 @dec_true_id_in
 def index(request):
