@@ -46,7 +46,7 @@ $(document).ready(function() {
 	</div>
 	{% endfor %}
 	<div class="prkl">
-	<form method="POST" action="{{ strip_path }}">
+	<form method="POST" action="{{ request.META.PATH_INFO }}">
 	{{ comment_prkl_form }}
 	<br />
 	<input type="submit" name="submit" value="Kommentoi" />
