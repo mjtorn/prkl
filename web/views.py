@@ -404,12 +404,19 @@ def prkl(request, prkl_id):
 
     data = request.POST.copy() or None
 
-    button = data.get('submit', '')
-    if button == 'Kommentoi':
-        comment_prkl_form = forms.CommentPrklForm(data)
-        if comment_prkl_form.is_bound:
-            if comment_prkl_form.is_valid():
-                print 'joo'
+    if data:
+        button = data.get('submit', '')
+        if button == 'Kommentoi':
+            comment_prkl_form = forms.CommentPrklForm(data)
+            if comment_prkl_form.is_bound:
+                if comment_prkl_form.is_valid():
+                    comment_prkl_form.data['prkl'] = prkl
+                    comment_prkl_form.data['user'] = request.user
+                    comment_prkl_form.save()
+
+                    return HttpResponseRedirect(request.META['PATH_INFO'])
+        else:
+            comment_prkl_form = forms.CommentPrklForm()
     else:
         comment_prkl_form = forms.CommentPrklForm()
 
