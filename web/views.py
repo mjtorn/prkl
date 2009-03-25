@@ -403,7 +403,15 @@ def prkl(request, prkl_id):
     comments = prkl.prklcomment_set.all().order_by('tstamp')
 
     data = request.POST.copy() or None
-    comment_prkl_form = forms.CommentPrklForm(data)
+
+    button = data.get('submit', '')
+    if button == 'Kommentoi':
+        comment_prkl_form = forms.CommentPrklForm(data)
+        if comment_prkl_form.is_bound:
+            if comment_prkl_form.is_valid():
+                print 'joo'
+    else:
+        comment_prkl_form = forms.CommentPrklForm()
 
     context = {
         'title': 'Yksittäinen prkl',
