@@ -154,6 +154,24 @@ def dec_true_id_out(func):
 
     return wrap
 
+def dec_recommend_register(func):
+    """Decorate member-only pages
+    """
+
+    def wrap(*args, **kwargs):
+        request = args[0]
+
+        if not request.user.id:
+            context = {
+                'title': 'Vain rekisteröityneille :(',
+            }
+            req_ctx = RequestContext(request, context)
+
+            return render_to_response('only_registered.html', req_ctx)
+
+        return func(*args, **kwargs)
+    return wrap
+
 render_to_response = dec_login(render_to_response)
 render_to_response = dec_true_id_out(render_to_response)
 
