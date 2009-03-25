@@ -197,7 +197,7 @@ class PrklComment(models.Model):
     content = models.CharField(max_length=512)
 
     def __unicode__(self):
-        '@%d: %s' % (self.prkl_id, self.content)
+        return '@%d: %s' % (self.prkl_id, self.content)
 
 
 class FriendInvite(models.Model):
