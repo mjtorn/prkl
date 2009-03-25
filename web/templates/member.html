@@ -1,10 +1,32 @@
 {% extends "base.html" %}
 
+{% block scripture %}
+{% if change_pic_form %}
+<script type="text/javascript">
+var showChPic = function() {
+	if ($("#chpic").css("display") == "none") {
+		$("#chpic").show();
+	} else {
+		$("#chpic").hide();
+	}
+}
+</script>
+{% endif %}
+{% endblock %}
+
 {% block content %}
 <h1>{{ member }}</h1>
 <div class="member">
 	<div class="member_pic">
 	KUVA TÄHÄN
+	{% if change_pic_form %}
+	<a onClick="showChPic();">VAIHDA</a>
+	<div id="chpic" style="display: none;">
+	<form method="POST" action="{{ request.META.PATH_INFO }}" enctype="form/multipart">
+	{{ change_pic_form }}
+	</form>
+	</div>
+	{% endif %}
 	</div>
 
 	<div class="member_data">
