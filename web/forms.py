@@ -177,7 +177,7 @@ class SubmitPrklForm(forms.Form):
 
 class CommentPrklForm(forms.Form):
     error_messages = {
-        'requied': 'Kirjoitathan kommentin!',
+        'required': 'Kirjoitathan kommentin!',
     }
 
     attrs = {
