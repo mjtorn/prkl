@@ -105,7 +105,7 @@ def dec_login(func):
                     req_ctx['invite_result'] = 'Kutsuttu!'
             else:
                 invite_friend_form = forms.InviteFriendForm()
-                req_ctx['invite_friend_form'] = invite_friend_form
+            req_ctx['invite_friend_form'] = invite_friend_form
 
         if not req_ctx.has_key('title') or not req_ctx['title']:
             raise ValueError('Title needed')
