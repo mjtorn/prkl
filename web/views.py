@@ -386,5 +386,32 @@ def vote(request, prkl_id, direction, back_to):
 
     return HttpResponseRedirect(back_to)
 
+def prkl(request, prkl_id):
+    """Single-prkl view
+    """
+
+    your_votes = models.PrklVote.objects.your_votes(request)
+    try:
+        prkl = models.Prkl.objects.filter(id= prkl_id)
+        prkl = prkl.can_vote(your_votes)
+        prkl = prkl[0]
+    except IndexError:
+        return HttpResponseNotFound()
+
+    comments = prkl.prklcomment_set.all().order_by('tstamp')
+
+    data = request.POST.copy() or None
+    comment_prkl_form = forms.CommentPrklForm(data)
+
+    context = {
+        'title': 'Yksittäinen prkl',
+        'prkl': prkl,
+        'comments': comments,
+        'comment_prkl_form': comment_prkl_form,
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('prkl.html', req_ctx)
+
 # EOF
 
