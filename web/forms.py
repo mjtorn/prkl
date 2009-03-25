@@ -187,6 +187,9 @@ class CommentPrklForm(forms.Form):
 
     content = forms.CharField(label='Kommentti', error_messages=error_messages, widget=forms.widgets.Textarea(attrs=attrs))
 
+    def clean_content(self):
+        return self.data.get('content', '').strip()
+
 
 class InviteFriendForm(forms.Form):
     # Error
