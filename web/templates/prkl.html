@@ -17,7 +17,7 @@ $(document).ready(function() {
 		<br />
 		<span class="prkl_user">
 		{% if prkl.user.id %}
-		{{ prkl.user }}
+		<a href="{% url member prkl.user %}">{{ prkl.user }}</a>
 		{% else %}
 		Anonyymi
 		{% endif %}
@@ -48,7 +48,7 @@ $(document).ready(function() {
 		<br />
 		<span class="prkl_user">
 		{% if comment.commenting_user_id %}
-		{{ comment.commenting_user }}
+		<a href="{% url member comment.commenting_user %}">{{ comment.commenting_user }}</a>
 		{% else %}
 		Anonyymi
 		{% endif %}
