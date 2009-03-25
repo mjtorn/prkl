@@ -175,6 +175,19 @@ class SubmitPrklForm(forms.Form):
         new_prkl.save()
 
 
+class CommentPrklForm(forms.Form):
+    error_messages = {
+        'requied': 'Kirjoitathan kommentin!',
+    }
+
+    attrs = {
+        'rows': 5,
+        'cols': 80,
+    }
+
+    content = forms.CharField(label='Kommentti', error_messages=error_messages, widget=forms.widgets.Textarea(attrs=attrs))
+
+
 class InviteFriendForm(forms.Form):
     # Error
     error_messages = {
