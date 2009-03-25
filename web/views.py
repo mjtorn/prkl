@@ -459,9 +459,15 @@ def member(request, username):
     except models.User.DoesNotExist:
         return notfound(request)
 
+    if member.id == request.user.id:
+        change_pic_form = 'jöö'
+    else:
+        change_pic_form = None
+
     context = {
         'title': '%s' % username,
         'member': member,
+        'change_pic_form': change_pic_form,
     }
     req_ctx = RequestContext(request, context)
 
