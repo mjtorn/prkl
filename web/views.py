@@ -456,5 +456,14 @@ def member(request, username):
 
     return HttpResponse(username)
 
+@dec_recommend_register
+@dec_true_id_in
+def members(request):
+    from django.http import HttpResponse
+
+    return HttpResponse('tulossa pian')
+
+
+
 # EOF
 
