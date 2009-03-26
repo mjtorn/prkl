@@ -495,6 +495,36 @@ def members(request):
     return HttpResponse('tulossa pian')
 
 
+@dec_true_id_in
+@dec_recommend_register
+def edit_profile(request):
+    # ADAPT FROM MEMBER VIEW
+    data = request.POST.copy() or None
+
+    if request.GET.get('rm_pic', None) and member.pic:
+        member.pic.delete()
+    if data:
+        change_pic_form = forms.ChangePicForm(data, files=request.FILES)
+    else:
+        change_pic_form = forms.ChangePicForm()
+
+    if change_pic_form.is_bound:
+        if change_pic_form.is_valid():
+            change_pic_form.data['user'] = request.user
+            change_pic_form.save()
+
+            return HttpResponseRedirect(request.META['PATH_INFO'])
+
+    context = {
+        'title': 'Profiilin editointi',
+        'member': request.user,
+        'change_pic_form': change_pic_form,
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('edit_profile.html', req_ctx)
+
+    
 
 # EOF
 

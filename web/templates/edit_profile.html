@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block scripture %}
+{% if change_pic_form %}
+{% include "tags/pic_js.html" %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>{{ member }}</h1>
+<div class="member">
+	<div class="member_pic">
+	{% include "tags/member_pic.html" %}
+	</div>
+
+	<div class="member_data">
+	<ul>
+		<li class="member_data">
+			<span class="member_data_heading">
+				Sijainti:
+			</span>
+			{% if member.location %}
+			{{ member.location }}
+			{% else %}
+			Ei kerro
+			{% endif %}
+		</li>
+		<li class="member_data">
+			<span class="member_data_heading">
+				Sukupuoli:
+			</span>
+			{% ifequal member.is_male None %}
+			Ei kerro
+			{% else %}
+			{% if member.is_male %}
+			Mies
+			{% else %}
+			Nainen
+			{% endif %}
+			{% endifequal %}
+		</li>
+		<li class="member_data">
+			<span class="member_data_heading">
+				Syntymäpäivä:
+			</span>
+			{% if member.birthday %}
+			{{ member.birthday|date:"d. m. Y" }}
+			{% else %}
+			Ei kerro
+			{% endif %}
+		</li>
+	</ul>
+	</div>
+</div>
+{% endblock %}
+
