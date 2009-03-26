@@ -14,6 +14,9 @@
 	</div>
 
 	<div class="member_data">
+	{% ifequal user.id member.user.id %}
+	<a href="{% url edit_profile %}">MUOKKAA TIETOJA</a>
+	{% endifequal %}
 	<ul>
 		<li class="member_data">
 			<span class="member_data_heading">
