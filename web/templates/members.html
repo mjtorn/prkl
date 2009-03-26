@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ member }}</h1>
+<div class="members">
+	{% for member in members %}
+	<div class="member">
+		<div class="member_pic">
+			{% if member.is_vip %}
+			<img src="/media/{{ member.pic.url_50x50 }}" />
+			{% else %}
+			--
+			{% endif %}
+		</div>
+
+		<div class="member_data">
+			{% ifequal member.is_male None %}
+			<span style="color: black";>
+			{% else %}
+				{% if not member.is_male %}
+					<span style="color: pink";>
+				{% else %}
+					<span style="color: lightblue";>
+				{% endif %}
+			{% endifequal %}
+			{{ member.username }}
+			</span>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}
+
