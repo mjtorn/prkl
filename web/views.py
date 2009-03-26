@@ -462,6 +462,8 @@ def member(request, username):
     data = request.POST.copy() or None
 
     if member.id == request.user.id:
+        if request.GET.get('rm_pic', None):
+            member.pic.delete()
         if data:
             change_pic_form = forms.ChangePicForm(data, files=request.FILES)
         else:

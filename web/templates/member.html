@@ -10,6 +10,14 @@ var showChPic = function() {
 		$("#chpic").hide();
 	}
 }
+
+var showDelPic = function() {
+	if ($("#delpic").css("display") == "none") {
+		$("#delpic").show();
+	} else {
+		$("#delpic").hide();
+	}
+}
 </script>
 {% endif %}
 {% endblock %}
@@ -34,6 +42,14 @@ var showChPic = function() {
 	{{ change_pic_form }}
 	<input type="submit" name="submit" value="Päivitä" />
 	</form>
+	</div>
+	{% endif %}
+	{% if member.is_vip and member.pic %}
+	<a onClick="showDelPic();">POISTA</a>
+	<div id="delpic" style="display: none;">
+	<a href="{{ request.META.PATH_INFO }}?rm_pic=yes">Kyllä</a>
+	||
+	<a onClick="showDelPic();">Ei</a>
 	</div>
 	{% endif %}
 	</div>
