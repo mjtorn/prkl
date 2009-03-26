@@ -501,12 +501,30 @@ def edit_profile(request):
     # ADAPT FROM MEMBER VIEW
     data = request.POST.copy() or None
 
-    if request.GET.get('rm_pic', None) and member.pic:
-        member.pic.delete()
-    if data:
+    # But also user info edit
+    initial = {
+        'location': request.user.location,
+        'birthday': request.user.birthday,
+    }
+    if request.user.is_male is None:
+        initial['sex'] = 1
+    elif request.user.is_male:
+        initial['sex'] = 2
+    else:
+        initial['sex'] = 3
+
+    if request.GET.get('rm_pic', None) and request.user.pic:
+        request.user.pic.delete()
+
+    if data and data['submit'] == 'Päivitä':
         change_pic_form = forms.ChangePicForm(data, files=request.FILES)
+        edit_profile_form = forms.EditProfileForm(initial=initial)
+    elif data and data['submit'] == 'Muokkaa':
+        change_pic_form = forms.ChangePicForm()
+        edit_profile_form = forms.EditProfileForm(data, initial=initial)
     else:
         change_pic_form = forms.ChangePicForm()
+        edit_profile_form = forms.EditProfileForm(initial=initial)
 
     if change_pic_form.is_bound:
         if change_pic_form.is_valid():
@@ -515,10 +533,17 @@ def edit_profile(request):
 
             return HttpResponseRedirect(request.META['PATH_INFO'])
 
+    if edit_profile_form.is_bound:
+        if edit_profile_form.is_valid():
+            edit_profile_form.data['user'] = request.user
+            edit_profile_form.save()
+            return HttpResponseRedirect(reverse('member', args=(request.user.username,)))
+
     context = {
         'title': 'Profiilin editointi',
         'member': request.user,
         'change_pic_form': change_pic_form,
+        'edit_profile_form': edit_profile_form,
     }
     req_ctx = RequestContext(request, context)
 
