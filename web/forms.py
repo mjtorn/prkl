@@ -254,6 +254,9 @@ class ChangePicForm(forms.Form):
         # Rewind
         pic.open()
 
+        if user.pic:
+            user.pic.delete()
+
         user.pic.save(pic.name, pic)
         user.save()
 
