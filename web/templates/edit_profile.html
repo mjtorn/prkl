@@ -15,42 +15,12 @@
 
 	<div class="member_data">
 	<a href="{% url member member.username %}">PROFIILIIN</a>
-	<ul>
-		<li class="member_data">
-			<span class="member_data_heading">
-				Sijainti:
-			</span>
-			{% if member.location %}
-			{{ member.location }}
-			{% else %}
-			Ei kerro
-			{% endif %}
-		</li>
-		<li class="member_data">
-			<span class="member_data_heading">
-				Sukupuoli:
-			</span>
-			{% ifequal member.is_male None %}
-			Ei kerro
-			{% else %}
-			{% if member.is_male %}
-			Mies
-			{% else %}
-			Nainen
-			{% endif %}
-			{% endifequal %}
-		</li>
-		<li class="member_data">
-			<span class="member_data_heading">
-				Syntymäpäivä:
-			</span>
-			{% if member.birthday %}
-			{{ member.birthday|date:"d. m. Y" }}
-			{% else %}
-			Ei kerro
-			{% endif %}
-		</li>
-	</ul>
+		<form method="POST" action="{{ request.META.PATH_INFO }}">
+		<ul>
+		{{ edit_profile_form.as_ul }}
+		</ul>
+		<input type="submit" name="submit" value="Muokkaa" />
+		</form>
 	</div>
 </div>
 {% endblock %}
