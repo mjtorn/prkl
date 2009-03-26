@@ -451,8 +451,8 @@ def prkl(request, prkl_id):
 
     return render_to_response('prkl.html', req_ctx)
 
-@dec_recommend_register
 @dec_true_id_in
+@dec_recommend_register
 def member(request, username):
     try:
         member = models.User.objects.get(username__iexact=username)
@@ -485,8 +485,8 @@ def member(request, username):
 
     return render_to_response('member.html', req_ctx)
 
-@dec_recommend_register
 @dec_true_id_in
+@dec_recommend_register
 def members(request):
     from django.http import HttpResponse
 
