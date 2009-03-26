@@ -10,32 +10,7 @@
 <h1>{{ member }}</h1>
 <div class="member">
 	<div class="member_pic">
-	{% if member.is_vip %}
-		{% if member.pic %}
-		<img src="/media/{{ member.pic.url_250x250 }}" alt="kuva" />
-		{% else %}
-		Sinulla ei ole kuvaa, mutta VIPinä voisi olla!
-		{% endif %}
-	{% else %}
-	Liity VIPiksi, saat laittaa profiilikuvan!
-	{% endif %}
-	{% if change_pic_form %}
-	<a onClick="showChPic();">VAIHDA</a>
-	<div id="chpic" style="display: none;">
-	<form method="POST" action="{{ request.META.PATH_INFO }}" enctype="multipart/form-data">
-	{{ change_pic_form }}
-	<input type="submit" name="submit" value="Päivitä" />
-	</form>
-	</div>
-	{% endif %}
-	{% if member.is_vip and member.pic %}
-	<a onClick="showDelPic();">POISTA</a>
-	<div id="delpic" style="display: none;">
-	<a href="{{ request.META.PATH_INFO }}?rm_pic=yes">Kyllä</a>
-	||
-	<a onClick="showDelPic();">Ei</a>
-	</div>
-	{% endif %}
+	{% include "tags/member_pic.html" %}
 	</div>
 
 	<div class="member_data">
