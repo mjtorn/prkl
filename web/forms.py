@@ -260,5 +260,42 @@ class ChangePicForm(forms.Form):
         user.pic.save(pic.name, pic)
         user.save()
 
+class EditProfileForm(forms.Form):
+    loc_errors = {
+        'max_length': 'Kerrothan ylläpidolle jos paikkakuntasi ei mahdu 24 merkkiin'
+    }
+
+    sex_choices = ((1, 'Ei kerro'), (2, 'Mies'), (3, 'Nainen'))
+    sex_errors = {
+        'required': 'Valitse edes "Ei kerro"',
+        'invalid_choice': 'Tuo ei ole sukupuoli',
+    }
+
+    bday_errors = {
+        'invalid': 'Tuo ei näytä oikealta päivämäräältä',
+    }
+
+    location = forms.CharField(label='Sijainti', max_length=24, required=False, error_messages=loc_errors)
+    sex = forms.ChoiceField(label='Sukupuoli', error_messages=sex_errors, choices=sex_choices)
+    birthday = forms.DateField(label='Syntymäpäivä', required=False, error_messages=bday_errors)
+
+    def clean_location(self):
+        return self.data.get('location', '').strip()
+
+    @commit_on_success
+    def save(self):
+        user = self.data['user']
+
+        user.location = self.cleaned_data['location'] or None
+        user.birthday = self.cleaned_data['birthday'] or None
+        if self.cleaned_data['sex'] == '1':
+            user.is_male = None
+        elif self.cleaned_data['sex'] == '2':
+            user.is_male = True
+        else:
+            user.is_male = False
+
+        user.save()
+
 # EOF
 
