@@ -136,7 +136,7 @@ class RegisterForm(forms.Form):
                 else:
                     invite.sent_by_user.set_vip(datetime.datetime.now() + datetime.timedelta(days=5))
             invite.save()
-        except models.FriendInvite:
+        except models.FriendInvite.DoesNotExist:
             pass
         return user
 
