@@ -275,9 +275,17 @@ class EditProfileForm(forms.Form):
         'invalid': 'Tuo ei näytä oikealta päivämäräältä',
     }
 
+    bday_formats = (
+        '%Y-%m-%d',
+        '%d. %m. %Y',
+        '%d.%m. %Y',
+        '%d.%m.%Y',
+        '%d %m %Y',
+    )
+
     location = forms.CharField(label='Sijainti', max_length=24, required=False, error_messages=loc_errors)
     sex = forms.ChoiceField(label='Sukupuoli', error_messages=sex_errors, choices=sex_choices)
-    birthday = forms.DateField(label='Syntymäpäivä', required=False, error_messages=bday_errors)
+    birthday = forms.DateField(label='Syntymäpäivä', required=False, input_formats=bday_formats, error_messages=bday_errors, widget=forms.widgets.DateTimeInput(format='%d. %m. %Y'))
 
     def clean_location(self):
         return self.data.get('location', '').strip()
