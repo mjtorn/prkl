@@ -209,8 +209,16 @@ class TrueId(models.Model):
     """
 
     created_at = models.DateTimeField(auto_now_add=True)
+    seen_intro = models.BooleanField(default=False)
     hash = models.CharField(max_length=40, db_index=True, unique=True)
     user = models.ForeignKey(User, null=True)
+
+    def mark_seen_intro(self):
+        self.seen_intro = True
+        self.save()
+
+    def __unicode__(self):
+        return u'%s' % self.hash
 
 
 class PrklVote(models.Model):
