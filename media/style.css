@@ -10,6 +10,7 @@ div.top {
 div.left {
 	font-size: 8pt;
 	width: 15%;
+	color: black;
 }
 
 div.content {
@@ -28,6 +29,10 @@ div.login {
 
 div.register {
 	background-color: lightgreen;
+}
+
+div.member_search {
+	background-color: lightskyblue;
 }
 
 div.prkl {
