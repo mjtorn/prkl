@@ -35,6 +35,10 @@ div.member_search {
 	background-color: lightskyblue;
 }
 
+div.recommend_vip {
+	background-color: lightseagreen;
+}
+
 div.prkl {
 	border: solid 1px black;
 	margin-bottom: 0.5em;

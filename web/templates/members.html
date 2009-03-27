@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 
 {% block scripture %}
+{% if user.id and user.is_vip %}
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#id_find_friend").focus();
 });
 </script>
+{% endif %}
 {% endblock %}
 
 {% block content %}
