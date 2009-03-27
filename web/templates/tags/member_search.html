@@ -1,0 +1,15 @@
+{% ifequal strip_path "members" %}
+<div class="member_search">
+<form action="{{ request.META.PATH_INFO }}" method="GET">
+	ETSI KAVERI!
+	{{ find_friend_form.as_p}}
+	<br />
+	{% if user.is_vip %}
+	<input type="submit" name="submit" value="Etsi" />
+	{% else %}
+	VIP-ominaisuus, liitypä!
+	{% endif %}
+</form>
+</div>
+{% endifequal %}
+
