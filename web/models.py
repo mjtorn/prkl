@@ -104,16 +104,6 @@ class User(auth_models.User):
 
         return False
 
-        """
-        # NB latest() raises exception, it uses .get() in the background?
-        try:
-            x = VipExpiry.objects.filter(user=self).latest('expire_at')
-        except VipExpiry.DoesNotExist:
-            return False
-
-        return x.expire_at > datetime.datetime.now()
-        """
-
     @transaction.commit_on_success
     def extend_vip(self, time):
         if not isinstance(time, datetime.timedelta):
