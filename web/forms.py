@@ -305,5 +305,13 @@ class EditProfileForm(forms.Form):
 
         user.save()
 
+
+class FindFriendForm(forms.Form):
+    attrs = {
+        'size': 10,
+    }
+
+    find_friend = forms.CharField(label='Etsi', required=False, widget=forms.widgets.TextInput(attrs=attrs))
+
 # EOF
 
