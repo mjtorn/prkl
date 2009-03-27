@@ -7,7 +7,7 @@
 	{% else %}
 	Liity VIPiksi, saat laittaa profiilikuvan!
 	{% endif %}
-	{% if change_pic_form %}
+	{% if member.is_vip and change_pic_form %}
 	<a onClick="showChPic();">VAIHDA</a>
 	<div id="chpic" style="display: none;">
 	<form method="POST" action="{{ request.META.PATH_INFO }}" enctype="multipart/form-data">
