@@ -69,6 +69,8 @@ class User(auth_models.User):
     location = models.CharField(max_length=24, null=True, blank=True)
     birthday = models.DateField(null=True)
     is_male = models.BooleanField(null=True)
+    # Denormalize here, partially because django and outer joins suck shit
+    vip_expire_at = models.DateTimeField(null=True)
 
     pic = thumbs.ImageWithThumbsField(upload_to='user_pics', sizes=((250,250), (50, 50), (25, 25)))
 
@@ -76,11 +78,13 @@ class User(auth_models.User):
 
     @property
     def vip_expiry(self):
+        raise DeprecationWarning('Use vip_expire_at instead')
         try:
             return VipExpiry.objects.filter(user=self).latest('expire_at')
         except VipExpiry.DoesNotExist:
             return None
 
+    @transaction.commit_on_success
     def set_vip(self, expire_at):
         if not isinstance(expire_at, datetime.datetime):
             raise TypeError('Need datetime')
@@ -89,9 +93,18 @@ class User(auth_models.User):
             user = self,
             expire_at = expire_at
         )
+        self.vip_expire_at = expire_at
+
+        self.save()
 
     @property
     def is_vip(self):
+        if self.vip_expire_at:
+            return self.vip_expire_at > datetime.datetime.now()
+
+        return False
+
+        """
         # NB latest() raises exception, it uses .get() in the background?
         try:
             x = VipExpiry.objects.filter(user=self).latest('expire_at')
@@ -99,12 +112,14 @@ class User(auth_models.User):
             return False
 
         return x.expire_at > datetime.datetime.now()
+        """
 
+    @transaction.commit_on_success
     def extend_vip(self, time):
         if not isinstance(time, datetime.timedelta):
             raise TypeError('Need timedelta')
 
-        expiry = self.vip_expiry
+        expiry = self.vip_expire_at
         if not expiry:
             raise AttributeError('Can not has vip fuck you')
 
@@ -112,6 +127,9 @@ class User(auth_models.User):
             user = self,
             expire_at = expiry.expire_at + time
         )
+        self.vip_expire_at = expiry.expire_at + time
+
+        self.save()
 
 
 class Category(models.Model):
