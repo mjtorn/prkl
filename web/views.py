@@ -285,6 +285,11 @@ def index(request):
     """Our index page
     """
 
+    mark_intro = request.GET.get('mark_intro', None)
+    if mark_intro:
+        request.true_id.mark_seen_intro()
+        return HttpResponseRedirect(request.META['PATH_INFO'])
+
     data = request.POST.copy() or None
     if data:
         if data['submit'] != 'Lisää':
