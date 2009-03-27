@@ -490,9 +490,16 @@ def member(request, username):
 @dec_true_id_in
 @dec_recommend_register
 def members(request):
-    from django.http import HttpResponse
+    members = models.User.objects.all().order_by('-date_joined')
 
-    return HttpResponse('tulossa pian')
+    context = {
+        'title': 'Jäsenlista',
+        'members': members,
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('members.html', req_ctx)
+
 
 
 @dec_true_id_in
