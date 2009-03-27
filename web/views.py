@@ -490,11 +490,23 @@ def member(request, username):
 @dec_true_id_in
 @dec_recommend_register
 def members(request):
-    members = models.User.objects.all().order_by('-date_joined')
+    data = request.GET.copy() or None
+
+    find_friend_form = forms.FindFriendForm(data)
+    if find_friend_form.is_bound and find_friend_form.is_valid():
+        find_friend = find_friend_form.cleaned_data['find_friend']
+        if find_friend:
+            members = models.User.objects.search(find_friend)
+        else:
+            members = models.User.objects.all().order_by('-date_joined')
+    else:
+        members = models.User.objects.all().order_by('-date_joined')
+        
 
     context = {
         'title': 'Jäsenlista',
         'members': members,
+        'find_friend_form': find_friend_form,
     }
     req_ctx = RequestContext(request, context)
 
