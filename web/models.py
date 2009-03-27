@@ -1,7 +1,8 @@
 # vim: tabstop=4 expandtab autoindent shiftwidth=4 fileencoding=utf-8
 
 from django.contrib.auth import  models as auth_models
-from django.contrib.auth.models import UserManager
+
+from django.utils.datastructures import SortedDict
 
 from django.db import models
 from django.db import transaction
@@ -49,6 +50,24 @@ class PrklVoteQuerySet(models.query.QuerySet):
         # Then see which votes exactly were found
         return your_votes
 
+QRY_LEVENSHTEIN = 'levenshtein(%s, %s)'
+
+class LevenshteinQuerySet(models.query.QuerySet):
+    """Queryset that allows us passing in a query for Levenshtein distances
+    """
+
+    def levenshtein(self, col, val):
+        """Levenshtein attribute for objects, using extra, a subquery,
+        so it's marginally slower than an extra column
+        """
+
+        select_dict = SortedDict()
+
+        # Don't escape col or it goes bad
+        select_dict['levenshtein'] = QRY_LEVENSHTEIN % (col, '%s')
+
+        return self.extra(select=select_dict, select_params=(val,))
+
 # Create your managers here
 class PrklManager(models.Manager):
     def get_query_set(self):
@@ -61,6 +80,14 @@ class PrklVoteManager(models.Manager):
 
     def your_votes(self, request):
         return self.get_query_set().your_votes(request)
+
+
+class UserManager(auth_models.UserManager):
+    def get_query_set(self):
+        return LevenshteinQuerySet(self.model)
+
+    def search(self, name):
+        return self.filter().levenshtein('auth_user.username', name).order_by('levenshtein')
 
 # Create your models here.
 
