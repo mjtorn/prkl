@@ -320,6 +320,12 @@ def index(request, page=None, records=None):
     # Include vote statuses
     prkls = models.Prkl.objects.all()
     prkls = prkls.can_vote(your_votes)
+
+    # And liking statuses
+    if request.user.id:
+        your_likes = request.user.like_prkl.all()
+        prkls = prkls.does_like(your_likes)
+
     prkls = prkls.order_by('-created_at')
 
     # Pagination
