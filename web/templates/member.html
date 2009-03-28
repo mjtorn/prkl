@@ -14,6 +14,22 @@
 	{% include "tags/member_pic.html" %}
 	</div>
 
+	<div class="member_descr">
+	{% if not member.description %}
+		{% ifequal member.id user.id %}
+			{% if user.is_vip %}
+		Sinulla ei ole kuvausta
+			{% else %}
+		Liity VIPiksi, saat kirjoittaa kuvauksesi!
+			{% endif %}
+		{% endifequal %}
+	{% else %}
+		{% if member.is_vip %}
+		{{ member.description }}
+		{% endif %}
+	{% endif %}
+	</div>
+
 	<div>
 	{% ifequal user.id member.user.id %}
 	<a href="{% url edit_profile %}">MUOKKAA TIETOJA</a>
