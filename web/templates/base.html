@@ -20,7 +20,12 @@
 {% block menu %}
 {% with request.META.PATH_INFO as req_path %}
 {% url index as index_url %}
+{% ifequal req_path "/" %}
 <a href="{{ index_url }}" class="{% check_active req_path index_url %}">Pääsivu</a>
+{% else %}
+{% url index page results_per_page as index_stat_url %}
+<a href="{{ index_url }}" class="{% check_active req_path index_stat_url %}">Pääsivu</a>
+{% endifequal %}
 {% if user.id %}
 {% url member user.username as member_url %}
 <a href="{{ member_url }}" class="{% check_active req_path member_url %}">Oma</a>
