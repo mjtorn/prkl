@@ -593,6 +593,7 @@ def member(request, username):
         if request.user.id:
             your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
             liked_prkls = liked_prkls.does_like(your_likes)
+            liked_prkls = liked_prkls.distinct()
     else:
         liked_prkls = None
 
