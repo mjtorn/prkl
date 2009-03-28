@@ -534,9 +534,10 @@ def member(request, username):
 
 @dec_true_id_in
 @dec_recommend_register
-def members(request):
+def members(request, page=None, records=None):
     data = request.GET.copy() or None
 
+    find_friend = None
     find_friend_form = forms.FindFriendForm(data)
     if find_friend_form.is_bound and find_friend_form.is_valid():
         find_friend = find_friend_form.cleaned_data['find_friend']
@@ -547,12 +548,24 @@ def members(request):
     else:
         members = models.User.objects.all().order_by('-date_joined')
         
+    # Pagination
+    if not page:
+        page = 1
+    page = int(page)
+
+    if not records:
+        records = 5
+    records = int(records)
+    pag_ctx = get_paginator_context(members, page, records)
 
     context = {
         'title': 'Jäsenlista',
         'members': members,
+        'find_friend': find_friend,
         'find_friend_form': find_friend_form,
+        'members_page': True,
     }
+    context.update(pag_ctx)
     req_ctx = RequestContext(request, context)
 
     return render_to_response('members.html', req_ctx)

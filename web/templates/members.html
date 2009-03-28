@@ -11,8 +11,9 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block content %}
+{% digg_paginator %}
 <div class="members">
-	{% for member in members %}
+	{% for member in page_objects.object_list %}
 	<div class="member">
 		<div class="member_pic">
 			{% if member.is_vip %}

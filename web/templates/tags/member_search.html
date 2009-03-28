@@ -1,4 +1,4 @@
-{% ifequal strip_path "members" %}
+{% if members_page %}
 <div class="member_search">
 <form action="{{ request.META.PATH_INFO }}" method="GET">
 	ETSI KAVERI!
@@ -11,5 +11,5 @@
 	{% endif %}
 </form>
 </div>
-{% endifequal %}
+{% endif %}
 
