@@ -13,7 +13,9 @@ urlpatterns = patterns('',
     url(r'^forgot_password/$', views.forgot_password, name='forgot_password'),
     url(r'^reset_password/((?:[a-z0-9])+-(?:[a-z0-9])+)/$', views.reset_password, name='reset_password'),
     url(r'^logout', views.logout_view, name='logout'),
+    url(r'^top//page/(?P<page>\d+)/records/(?P<records>\d+)', views.top, name='top'),
     url(r'^top/$', views.top, name='top'),
+    url(r'^bottom//page/(?P<page>\d+)/records/(?P<records>\d+)', views.bottom, name='bottom'),
     url(r'^bottom/$', views.bottom, name='bottom'),
     url(r'^vote/(\d+)/(up|down)/([a-z0-9/]+)?/$', views.vote, name='vote'),
     url(r'^prkl/(\d+)/$', views.prkl, name='prkl'),
@@ -32,6 +34,7 @@ if settings.KLUDGE_STATIC:
 )
 
 urlpatterns += patterns('',
+    url(r'^page/(?P<page>\d+)/records/(?P<records>\d+)', views.index, name='index'),
     url(r'^$', views.index, name='index'),
 )
 
