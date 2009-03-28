@@ -480,6 +480,8 @@ def like(request, prkl_id, action, back_to):
 
     if not back_to:
         back_to = '/'
+    else:
+        back_to = '/%s' % back_to
 
     if action == 'yes':
         try:
