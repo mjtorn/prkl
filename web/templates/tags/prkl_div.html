@@ -27,9 +27,9 @@
 		{% if user.id %}
 		<span class="prkl_score">
 		{% if prkl.does_like %}
-			<a id="{{ prkl.id }}_dislike" name="{{ prkl.id }}_anchor" href="{% url like prkl.id "no" strip_path %}">Älä tykkääkään :(</a>
+			<a id="{{ prkl.id }}_dislike" name="{{ prkl.id }}_anchor" href="{% url like prkl.id "no" strip_path %}">Älä tykkääkään</a>
 		{% else %}
-			<a id="{{ prkl.id }}_like" name="{{ prkl.id }}_anchor" href="{% url like prkl.id "yes" strip_path %}">Tykkää :)</a>
+			<a id="{{ prkl.id }}_like" name="{{ prkl.id }}_anchor" href="{% url like prkl.id "yes" strip_path %}">Tykkää</a>
 		{% endif %}
 		</span>
 		{% endif %}
