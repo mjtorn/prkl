@@ -35,6 +35,28 @@ class PrklQuerySet(models.query.QuerySet):
 
         return self
 
+    def does_like(self, likes):
+        """Set liking status
+        """
+
+        liked_prkls = tuple([p.id for p in likes])
+
+        # And take care of those in prkls
+        if not liked_prkls:
+            self = self.extra({
+                'does_like': 'SELECT false',
+            })
+        elif len(liked_prkls) == 1:
+            self = self.extra({
+                'does_like': 'SELECT web_prkl.id = %d' % liked_prkls[0]
+            })
+        else:
+            self = self.extra({
+                'does_like': 'SELECT web_prkl.id IN %s' % str(liked_prkls)
+            })
+
+        return self
+
 
 class PrklVoteQuerySet(models.query.QuerySet):
     def your_votes(self, request):
