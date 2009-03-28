@@ -667,29 +667,37 @@ def edit_profile(request):
     data = request.POST.copy() or None
 
     # But also user info edit
-    initial = {
+    initial_profile = {
         'location': request.user.location,
         'birthday': request.user.birthday,
     }
+    initial_desc = {
+        'description': request.user.description
+    }
+
     if request.user.is_male is None:
-        initial['sex'] = 1
+        initial_profile['sex'] = 1
     elif request.user.is_male:
-        initial['sex'] = 2
+        initial_profile['sex'] = 2
     else:
-        initial['sex'] = 3
+        initial_profile['sex'] = 3
 
     if request.GET.get('rm_pic', None) and request.user.pic:
         request.user.pic.delete()
 
+    ## This is inoptimal, it deals in description form without checking vip
     if data and data['submit'] == 'Päivitä':
         change_pic_form = forms.ChangePicForm(data, files=request.FILES)
-        edit_profile_form = forms.EditProfileForm(initial=initial)
+        edit_profile_form = forms.EditProfileForm(initial=initial_profile)
+        edit_description_form = forms.EditDescriptionForm(initial_desc)
     elif data and data['submit'] == 'Muokkaa':
         change_pic_form = forms.ChangePicForm()
-        edit_profile_form = forms.EditProfileForm(data, initial=initial)
+        edit_profile_form = forms.EditProfileForm(data, initial=initial_profile)
+        edit_description_form = forms.EditDescriptionForm(data, initial_desc)
     else:
         change_pic_form = forms.ChangePicForm()
-        edit_profile_form = forms.EditProfileForm(initial=initial)
+        edit_profile_form = forms.EditProfileForm(initial=initial_profile)
+        edit_description_form = forms.EditDescriptionForm(initial=initial_desc)
 
     if change_pic_form.is_bound:
         if change_pic_form.is_valid():
@@ -698,16 +706,22 @@ def edit_profile(request):
 
             return HttpResponseRedirect(request.META['PATH_INFO'])
 
-    if edit_profile_form.is_bound:
-        if edit_profile_form.is_valid():
+    if edit_profile_form.is_bound or (edit_description_form.is_bound and request.user.is_vip):
+        if edit_profile_form.is_bound and edit_profile_form.is_valid():
             edit_profile_form.data['user'] = request.user
             edit_profile_form.save()
-            return HttpResponseRedirect(reverse('member', args=(request.user.username,)))
+
+        if edit_description_form.is_bound and edit_description_form.is_valid() and request.user.is_vip:
+            edit_description_form.data['user'] = request.user
+            edit_description_form.save()
+
+        return HttpResponseRedirect(reverse('member', args=(request.user.username,)))
 
     context = {
         'title': 'Profiilin editointi',
         'member': request.user,
         'change_pic_form': change_pic_form,
+        'edit_description_form': edit_description_form,
         'edit_profile_form': edit_profile_form,
     }
     req_ctx = RequestContext(request, context)

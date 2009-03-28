@@ -16,6 +16,11 @@
 	<div class="member_data">
 	<a href="{% url member member.username %}">PROFIILIIN</a>
 		<form method="POST" action="{{ request.META.PATH_INFO }}">
+		{% if member.is_vip %}
+		<div>
+		{{ edit_description_form.as_p }}
+		</div>
+		{% endif %}
 		<ul>
 		{{ edit_profile_form.as_ul }}
 		</ul>
