@@ -313,5 +313,23 @@ class FindFriendForm(forms.Form):
 
     find_friend = forms.CharField(label='Etsi', required=False, widget=forms.widgets.TextInput(attrs=attrs))
 
+
+class EditDescriptionForm(forms.Form):
+    attrs = {
+        'rows': 5,
+        'cols': 40,
+    }
+
+    description = forms.CharField(label='Kuvauksesi', required=False, widget=forms.widgets.Textarea(attrs=attrs))
+
+    def clean_description(self):
+        return self.data.get('description', '').strip() or None
+
+    def save(self):
+        user = self.data['user']
+        user.description = self.cleaned_data['description']
+
+        user.save()
+
 # EOF
 
