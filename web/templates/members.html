@@ -29,6 +29,9 @@ $(document).ready(function() {
 			{{ member.username }}
 			</div>
 			<div>
+			Liittynyt: {{ member.date_joined|date:"d. m. Y" }}
+			</div>
+			<div>
 			Sukupuoli:
 			{% ifequal member.is_male None %}
 			<span style="color: black";>
