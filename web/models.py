@@ -104,6 +104,8 @@ class User(auth_models.User):
 
     pic = thumbs.ImageWithThumbsField(upload_to='user_pics', sizes=((250,250), (50, 50), (25, 25)), null=True, blank=True)
 
+    like_prkl = models.ManyToManyField('Prkl', through='PrklLike', related_name='like_prkl')
+
     objects = UserManager()
 
     @property
