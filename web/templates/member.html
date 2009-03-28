@@ -54,6 +54,13 @@
 		</li>
 	</ul>
 	</div>
+	{% if member.is_vip and member_prkls %}
+	<div class="vip_data">
+	{% for prkl in member_prkls %}
+		{% include "tags/prkl_div.html" %}
+	{% endfor %}
+	</div>
+	{% endif %}
 </div>
 {% endblock %}
 

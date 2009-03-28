@@ -525,10 +525,16 @@ def member(request, username):
     else:
         change_pic_form = None
 
+    if member.is_vip:
+        member_prkls = member.prkl_set.all().order_by('-score', 'created_at')
+    else:
+        member_prkls = None
+
     context = {
         'title': '%s' % username,
         'member': member,
         'change_pic_form': change_pic_form,
+        'member_prkls': member_prkls,
     }
     req_ctx = RequestContext(request, context)
 
