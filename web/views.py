@@ -455,6 +455,33 @@ def vote(request, prkl_id, direction, back_to):
 
     return HttpResponseRedirect(back_to)
 
+@commit_on_success
+@dec_true_id_in
+@dec_recommend_register
+def like(request, prkl_id, action, back_to):
+    """Do you like this prkl?
+    """
+
+    if not back_to:
+        back_to = '/'
+
+    if action == 'yes':
+        try:
+            prkl_like = models.PrklLike.objects.get(prkl__id=prkl_id, user=request.user)
+        except models.PrklLike.DoesNotExist:
+            try:
+                prkl = models.Prkl.objects.get(id=prkl_id)
+                prkl_like = models.PrklLike()
+                prkl_like.prkl = prkl
+                prkl_like.user = request.user
+                prkl_like.save()
+            except models.Prkl.DoesNotExist:
+                pass
+    else:
+        your_likes = models.PrklLike.objects.filter(prkl__id=prkl_id, user=request.user).delete()
+
+    return HttpResponseRedirect(back_to)
+
 @dec_true_id_in
 def prkl(request, prkl_id):
     """Single-prkl view
