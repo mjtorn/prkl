@@ -55,7 +55,22 @@
 		</li>
 	</ul>
 	</div>
+
+	<div class="member_likes">
+	{% if member_likes %}
+	Näistä prkleistä {{ member.username }} tykkää
+	<div class="prkls">
+		{% for prkl in member_likes %}
+		{% include "tags/prkl_div.html" %}
+		{% endfor %}
+	</div>
+	{% else %}
+		{{ member.username }} ei ole vielä tykännyt yhdestäkään prkleestä o_O
+	{% endif %}
+	</div>
+
 	{% if member.is_vip %}
+	{% ifequal member user %}
 	<div id="vip_data" class="vip_data">
 	{% if liked_prkls %}
 		<div class="prkls">
@@ -67,6 +82,7 @@
 		Sinun prkleistä ei ole vielä pidetty
 	{% endif %}
 	</div>
+	{% endifequal %}
 	{% endif %}
 </div>
 {% endblock %}
