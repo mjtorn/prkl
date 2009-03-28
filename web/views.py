@@ -508,7 +508,7 @@ def member(request, username):
 
     data = request.POST.copy() or None
 
-    if member.id == request.user.id:
+    if member.id == request.user.id and request.user.is_vip:
         if request.GET.get('rm_pic', None) and member.pic:
             member.pic.delete()
         if data:
