@@ -323,7 +323,7 @@ def index(request, page=None, records=None):
 
     # And liking statuses
     if request.user.id:
-        your_likes = request.user.like_prkl.all()
+        your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
         prkls = prkls.does_like(your_likes)
 
     prkls = prkls.order_by('-created_at')
