@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 
 from django.db.transaction import commit_on_success
 
+from fad_tools.pagination.utils import get_paginator_context
+
 from django.conf import settings
 
 from django.core import mail
@@ -281,7 +283,7 @@ def notfound(request):
     return res
 
 @dec_true_id_in
-def index(request):
+def index(request, page=None, records=None):
     """Our index page
     """
 
@@ -318,18 +320,31 @@ def index(request):
     prkls = prkls.can_vote(your_votes)
     prkls = prkls.order_by('-created_at')
 
+    # Pagination
+    if not page:
+        page = 1
+    page = int(page)
+
+    if not records:
+        records = 10
+    records = int(records)
+
+    pag_ctx = get_paginator_context(prkls, page, records)
+
     context = {
         'title': 'Etusivu',
         'form': submit_prkl_form,
         'prkls': prkls,
+        'base_url': 'http://%s' % request.META['HTTP_HOST'],
     }
+    context.update(pag_ctx)
     req_ctx = RequestContext(request, context)
 
     return render_to_response('index.html', req_ctx)
 
 
 @dec_true_id_in
-def top(request):
+def top(request, page=None, records=None):
     """The best
     """
 
@@ -340,16 +355,29 @@ def top(request):
     prkls = prkls.can_vote(your_votes)
     prkls = prkls.order_by('-score', 'created_at')
 
+    # Pagination
+    if not page:
+        page = 1
+    page = int(page)
+
+    if not records:
+        records = 10
+    records = int(records)
+
+    pag_ctx = get_paginator_context(prkls, page, records)
+
     context = {
         'title': 'Parhaat',
         'prkls': prkls,
+        'base_url': reverse('top'),
     }
+    context.update(pag_ctx)
     req_ctx = RequestContext(request, context)
 
     return render_to_response('index.html', req_ctx)
 
 @dec_true_id_in
-def bottom(request):
+def bottom(request, page=None, records=None):
     """The worst
     """
 
@@ -360,10 +388,22 @@ def bottom(request):
     prkls = prkls.can_vote(your_votes)
     prkls = prkls.order_by('score', '-created_at')
 
+    # Pagination
+    if not page:
+        page = 1
+    page = int(page)
+
+    if not records:
+        records = 10
+    records = int(records)
+    pag_ctx = get_paginator_context(prkls, page, records)
+
     context = {
         'title': 'Huonoimmat',
         'prkls': prkls,
+        'base_url': reverse('bottom'),
     }
+    context.update(pag_ctx)
     req_ctx = RequestContext(request, context)
 
     return render_to_response('index.html', req_ctx)

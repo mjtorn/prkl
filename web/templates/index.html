@@ -37,8 +37,10 @@ Tämä avautuminen on nimeltään <em>prkl</em>
 {% endblock %}
 
 {% block content %}
+{% digg_paginator %}
+
 <div class="prkls">
-{% for prkl in prkls %}
+{% for prkl in page_objects.object_list %}
 	<div class="prkl">
 		<span class="prkl_content">
 		{{ prkl }}
