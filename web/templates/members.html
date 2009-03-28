@@ -26,7 +26,7 @@ $(document).ready(function() {
 
 		<div class="member_data">
 			<div>
-			{{ member.username }}
+			<a href="{% url member member.username %}">{{ member.username }}</a>
 			</div>
 			<div>
 			Liittynyt: {{ member.date_joined|date:"d. m. Y" }}
