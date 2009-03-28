@@ -17,11 +17,13 @@
 	</div>
 	{% endif %}
 	{% if member.is_vip and member.pic %}
+	{% ifequal member user %}
 	<a onClick="showDelPic();">POISTA</a>
 	<div id="delpic" style="display: none;">
 	<a href="{{ request.META.PATH_INFO }}?rm_pic=yes">Kyllä</a>
 	||
 	<a onClick="showDelPic();">Ei</a>
 	</div>
+	{% endifequal %}
 	{% endif %}
 
