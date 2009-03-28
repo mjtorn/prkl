@@ -27,6 +27,8 @@ from web import forms, models
 
 import datetime
 
+import itertools
+
 import sha
 
 FORGOT_PASSWORD_SUBJECT = 'prkl.es: salasanan vaihto'
@@ -547,7 +549,7 @@ def members(request, page=None, records=None):
             members = models.User.objects.all().order_by('-date_joined')
     else:
         members = models.User.objects.all().order_by('-date_joined')
-        
+
     # Pagination
     if not page:
         page = 1
@@ -558,11 +560,23 @@ def members(request, page=None, records=None):
     records = int(records)
     pag_ctx = get_paginator_context(members, page, records)
 
+    # Prkl counts
+    shown = pag_ctx['page_objects'].object_list
+    prkl_counts = models.Prkl.objects.filter(user__id__in=[u.id for u in shown])
+    prkl_counts = prkl_counts.extra(tables=('auth_user',), where=('web_prkl.user_id=auth_user.id',), select={
+        'username': 'auth_user.username',
+    })
+    prkl_counts = prkl_counts.order_by('user')
+    prkl_count_dict = {}
+    for group, prkls in itertools.groupby(prkl_counts, lambda x: x.username):
+        prkl_count_dict[group] = len(list(prkls))
+
     context = {
         'title': 'Jäsenlista',
         'members': members,
         'find_friend': find_friend,
         'find_friend_form': find_friend_form,
+        'prkl_count_dict': prkl_count_dict,
         'members_page': True,
     }
     context.update(pag_ctx)

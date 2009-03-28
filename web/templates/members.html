@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load utils %}
 
 {% block scripture %}
 {% if user.id and user.is_vip %}
@@ -38,6 +39,14 @@ $(document).ready(function() {
 				{% endif %}
 			{% endifequal %}
 			</span>
+			{% with prkl_count_dict|getitem:member.username as prkl_count %}
+			Prkleitä: 
+			{% if prkl_count %}
+			{{ prkl_count_dict|getitem:member.username }}
+			{% else %}
+			0
+			{% endif %}
+			{% endwith %}
 		</div>
 	</div>
 	{% endfor %}
