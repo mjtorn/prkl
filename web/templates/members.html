@@ -25,7 +25,11 @@ $(document).ready(function() {
 		</div>
 
 		<div class="member_data">
+			<div>
 			{{ member.username }}
+			</div>
+			<div>
+			Sukupuoli:
 			{% ifequal member.is_male None %}
 			<span style="color: black";>
 			Ei kerro
@@ -39,6 +43,8 @@ $(document).ready(function() {
 				{% endif %}
 			{% endifequal %}
 			</span>
+			</div>
+			<div>
 			{% with prkl_count_dict|getitem:member.username as prkl_count %}
 			Prkleitä: 
 			{% if prkl_count %}
@@ -47,6 +53,7 @@ $(document).ready(function() {
 			0
 			{% endif %}
 			{% endwith %}
+			</div>
 		</div>
 	</div>
 	{% endfor %}
