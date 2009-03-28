@@ -101,5 +101,13 @@ DEFAULT_FROM_EMAIL = 'yllapito@prkl.es'
 
 COOKIE_DOMAIN = 'fadconsulting.com'
 
+# http://www.djangosnippets.org/snippets/342/
+TEMPLATE_TAGS = (
+    'fad_tools.pagination.templatetags.pagination',
+)
+
+# fad_tools.pagination
+PAGE_PATH = '/page/'
+
 # EOF
 
