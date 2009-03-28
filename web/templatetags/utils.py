@@ -12,7 +12,7 @@ def getitem(ob, key):
 @register.simple_tag
 def check_active(req_path, path):
     # Deal with / being a path and all starting with /
-    if path == '/':
+    if path == '/' or not path:
         return 'active' if req_path == '/' else 'inactive'
     else:
         return 'active' if req_path.startswith(path) else 'inactive'
