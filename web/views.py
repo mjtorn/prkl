@@ -542,7 +542,7 @@ def members(request, page=None, records=None):
     if find_friend_form.is_bound and find_friend_form.is_valid():
         find_friend = find_friend_form.cleaned_data['find_friend']
         if find_friend:
-            members = models.User.objects.search(find_friend)
+            members = models.User.objects.search(find_friend, order_by=('username',))
         else:
             members = models.User.objects.all().order_by('-date_joined')
     else:
