@@ -86,8 +86,11 @@ class UserManager(auth_models.UserManager):
     def get_query_set(self):
         return LevenshteinQuerySet(self.model)
 
-    def search(self, name):
-        return self.filter().levenshtein('auth_user.username', name).order_by('levenshtein')
+    def search(self, name, order_by=None):
+        if order_by:
+            return self.filter().levenshtein('auth_user.username', name).order_by('levenshtein', *order_by)
+        else:
+            return self.filter().levenshtein('auth_user.username', name).order_by('levenshtein')
 
 # Create your models here.
 
