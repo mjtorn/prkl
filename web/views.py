@@ -523,7 +523,7 @@ def prkl(request, prkl_id):
         prkl = prkl.can_vote(your_votes)
         prkl = prkl[0]
     except IndexError:
-        return HttpResponseNotFound()
+        return notfound(request)
 
     comments = prkl.prklcomment_set.all().order_by('tstamp')
 
