@@ -107,7 +107,7 @@ TEMPLATE_TAGS = (
 )
 
 # fad_tools.pagination
-PAGE_PATH = '/page/'
+PAGE_PATH = '/p/'
 
 # EOF
 
