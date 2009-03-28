@@ -363,6 +363,11 @@ def top(request, page=None, records=None):
     prkls = prkls.can_vote(your_votes)
     prkls = prkls.order_by('-score', 'created_at')
 
+    # And liking statuses
+    if request.user.id:
+        your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
+        prkls = prkls.does_like(your_likes)
+
     # Pagination
     if not page:
         page = 1
@@ -395,6 +400,11 @@ def bottom(request, page=None, records=None):
     prkls = models.Prkl.objects.all()
     prkls = prkls.can_vote(your_votes)
     prkls = prkls.order_by('score', '-created_at')
+
+    # And liking statuses
+    if request.user.id:
+        your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
+        prkls = prkls.does_like(your_likes)
 
     # Pagination
     if not page:
@@ -560,6 +570,11 @@ def member(request, username):
 
     if member.is_vip:
         member_prkls = member.prkl_set.all().order_by('-score', 'created_at')
+        # And liking statuses
+        if request.user.id:
+            your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
+            member_prkls = member_prkls.does_like(your_likes)
+
     else:
         member_prkls = None
 
