@@ -243,6 +243,18 @@ class PrklVote(models.Model):
         unique_together = (('prkl', 'trueid'), ('prkl', 'user'))
 
 
+class PrklLike(models.Model):
+    """Who likes what. Only for registered people.
+    """
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    prkl = models.ForeignKey(Prkl)
+    user = models.ForeignKey(User)
+
+    class Meta:
+        unique_together = (('prkl', 'user'),)
+
+
 class PrklComment(models.Model):
     tstamp = models.DateTimeField(auto_now_add=True)
     prkl = models.ForeignKey(Prkl)
