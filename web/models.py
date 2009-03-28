@@ -99,7 +99,7 @@ class User(auth_models.User):
     # Denormalize here, partially because django and outer joins suck shit
     vip_expire_at = models.DateTimeField(null=True)
 
-    pic = thumbs.ImageWithThumbsField(upload_to='user_pics', sizes=((250,250), (50, 50), (25, 25)))
+    pic = thumbs.ImageWithThumbsField(upload_to='user_pics', sizes=((250,250), (50, 50), (25, 25)), null=True, blank=True)
 
     objects = UserManager()
 
