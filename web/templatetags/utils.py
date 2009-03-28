@@ -4,6 +4,11 @@ from django.template import Library
 
 register = Library()
 
+@register.filter
+def getitem(ob, key):
+    return ob.get(key, None)
+        
+
 @register.simple_tag
 def check_active(req_path, path):
     # Deal with / being a path and all starting with /
