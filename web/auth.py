@@ -11,7 +11,7 @@ class PrklModelBackend(ModelBackend):
         """
 
         try:
-            user = User.objects.get(username=username)
+            user = User.objects.get(username__iexact=username)
             if user.check_password(password):
                 return user
             return None
