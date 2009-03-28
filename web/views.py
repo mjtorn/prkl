@@ -285,6 +285,18 @@ def notfound(request):
     return res
 
 @dec_true_id_in
+def about_vip(request):
+    """VIP information
+    """
+
+    context = {
+        'title': 'vip-tietoa',
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('about_vip.html', req_ctx)
+
+@dec_true_id_in
 def index(request, page=None, records=None):
     """Our index page
     """
