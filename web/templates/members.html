@@ -24,16 +24,19 @@ $(document).ready(function() {
 		</div>
 
 		<div class="member_data">
+			{{ member.username }}
 			{% ifequal member.is_male None %}
 			<span style="color: black";>
+			Ei kerro
 			{% else %}
 				{% if not member.is_male %}
 					<span style="color: pink";>
+					Nainen
 				{% else %}
 					<span style="color: lightblue";>
+					Mies
 				{% endif %}
 			{% endifequal %}
-			{{ member.username }}
 			</span>
 		</div>
 	</div>
