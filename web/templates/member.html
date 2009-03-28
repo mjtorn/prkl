@@ -9,11 +9,12 @@
 {% block content %}
 <h1>{{ member }}</h1>
 <div class="member">
+	<div id="member_data" class="member_data">
 	<div class="member_pic">
 	{% include "tags/member_pic.html" %}
 	</div>
 
-	<div class="member_data">
+	<div>
 	{% ifequal user.id member.user.id %}
 	<a href="{% url edit_profile %}">MUOKKAA TIETOJA</a>
 	{% endifequal %}
@@ -55,10 +56,12 @@
 	</ul>
 	</div>
 	{% if member.is_vip and member_prkls %}
-	<div class="vip_data">
-	{% for prkl in member_prkls %}
-		{% include "tags/prkl_div.html" %}
-	{% endfor %}
+	<div id="vip_data" class="vip_data">
+		<div class="prkls">
+		{% for prkl in member_prkls %}
+			{% include "tags/prkl_div.html" %}
+		{% endfor %}
+		</div>
 	</div>
 	{% endif %}
 </div>
