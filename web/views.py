@@ -570,21 +570,20 @@ def member(request, username):
     else:
         change_pic_form = None
 
-    if member.is_vip:
-        member_prkls = member.prkl_set.all().order_by('-score', 'created_at')
+    if member.is_vip and request.user == member:
+        liked_prkls = models.Prkl.objects.filter(prkllike__prkl__user=member)
         # And liking statuses
         if request.user.id:
             your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
-            member_prkls = member_prkls.does_like(your_likes)
-
+            liked_prkls = liked_prkls.does_like(your_likes)
     else:
-        member_prkls = None
+        liked_prkls = None
 
     context = {
         'title': '%s' % username,
         'member': member,
         'change_pic_form': change_pic_form,
-        'member_prkls': member_prkls,
+        'liked_prkls': liked_prkls,
     }
     req_ctx = RequestContext(request, context)
 

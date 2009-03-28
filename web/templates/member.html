@@ -55,13 +55,17 @@
 		</li>
 	</ul>
 	</div>
-	{% if member.is_vip and member_prkls %}
+	{% if member.is_vip %}
 	<div id="vip_data" class="vip_data">
+	{% if liked_prkls %}
 		<div class="prkls">
-		{% for prkl in member_prkls %}
+		{% for prkl in liked_prkls %}
 			{% include "tags/prkl_div.html" %}
 		{% endfor %}
 		</div>
+	{% else %}
+		Sinun prkleistä ei ole vielä pidetty
+	{% endif %}
 	</div>
 	{% endif %}
 </div>
