@@ -135,3 +135,13 @@ a.active {
 	margin: 1em auto;
 }
 
+/* pagination */
+.page, .prev, .prev-na, .curr, .next, .next-na {
+	margin-right: 5px;
+}
+
+div.paginator {
+	background-color: white;
+	text-align: center;
+}
+
