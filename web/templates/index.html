@@ -11,22 +11,18 @@ $(document).ready(function() {
 {% block intro %}
 {% ifequal strip_path "" %}
 {% if not request.true_id.seen_intro %}
-<div class="rbroundbox">
-<div class="rbtop"><div></div></div>
-	<div class="rbcontent">
-		<h1>Tänään kerron tästä sivusta, prkl</h1>
-		<p>
-		Tälle sivustolle voit avautua, halutessasi anonyymisti, kunhan avautumisesi alkaa sanalla <b>Tänään</b>
-		ja loppuu sanaan <b>prkl</b>.
-		</p>
-		<p>
-		Tämä avautuminen on nimeltään <em>prkl</em>
-		</p>
-		<p>
-		<small><a href="/?mark_intro=yes">Merkkaa tiedote luetuksi</a></small>
-		</p>
-	</div>
-<div class="rbbot"><div></div></div>
+<div class="message">
+	<h1>Tänään kerron tästä sivusta, prkl</h1>
+	<p>
+	Tälle sivustolle voit avautua, halutessasi anonyymisti, kunhan avautumisesi alkaa sanalla <b>Tänään</b>
+	ja loppuu sanaan <b>prkl</b>.
+	</p>
+	<p>
+	Tämä avautuminen on nimeltään <em>prkl</em>
+	</p>
+	<p>
+	<small><a href="/?mark_intro=yes">Merkkaa tiedote luetuksi</a></small>
+	</p>
 </div>
 {% endif %}
 {% endifequal %}
