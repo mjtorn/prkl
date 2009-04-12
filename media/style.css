@@ -92,7 +92,7 @@ div.recommend_vip {
 	background-color: lightseagreen;
 }
 
-div.prkl, div.comment {
+div.prkl, div.comment, div.member_data {
 	border: solid 1px white;
 	margin-bottom: 0.5em;
 	background-color: #ffffff;
@@ -104,6 +104,10 @@ div.prkl, div.comment {
 div.comment {
 	/* 500 + 2*7 margins */
 	width: 514px;
+}
+
+div.member_data {
+	width: 540px;
 }
 
 div.prkl a, div.comment a, div.register a, div.login a, div.prklform a {
