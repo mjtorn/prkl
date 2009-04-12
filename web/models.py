@@ -239,6 +239,9 @@ class TrueId(models.Model):
     seen_intro = models.BooleanField(default=False)
     hash = models.CharField(max_length=40, db_index=True, unique=True)
     user = models.ForeignKey(User, null=True)
+    # My god shit like this sucks
+    visible_prklform = models.BooleanField(default=False)
+    visible_regform = models.BooleanField(default=False)
 
     def mark_seen_intro(self):
         self.seen_intro = True
