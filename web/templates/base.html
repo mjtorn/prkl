@@ -42,17 +42,18 @@
 {% endblock %}
 </div>
 
-<div class="left">
+<div class="intro">
+{% block intro %}
+{% endblock %}
+</div>
+
+<div class="right">
 {% include "tags/login.html" %}
 {% include "tags/register.html" %}
 {% include "tags/member_search.html" %}
 {% include "tags/recommend_vip.html" %}
 </div>
 
-<div class="intro">
-{% block intro %}
-{% endblock %}
-</div>
 
 <div class="prklform">
 {% block prklform %}

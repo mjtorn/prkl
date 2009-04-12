@@ -4,28 +4,44 @@ div.notfound h1 {
 
 div.top {
 	background-color: pink;
-	margin-left: 15%;
+	margin-left: 180px;
 }
 
 div.left {
 	font-size: 8pt;
-	width: 15%;
+	width: 170px;
 	color: black;
+   float: left;
+   margin-right: 20px;
+}
+
+div.right {
+	font-size: 8pt;
+   position: absolute;
+   right: 20px;
+	width: 150px;
+	color: black;
+   margin-left: 700px;
+   
 }
 
 div.content {
 	margin-top: 1em;
-	margin-left: 16%;
+	float: left;
+   margin-left: 20px;
 }
 
 div.intro {
-	margin-top: 25px;
-	margin-left: 16%;
+	margin-left: 20px;
+   width: 500px;
+   float: left;
 }
 
 div.prklform {
-	margin-top: 25px;
-	margin-left: 16%;
+   width: 500px;
+	margin-top: 20px;
+	margin-left: 20px;
+   float: block;
 }
 
 div.login {

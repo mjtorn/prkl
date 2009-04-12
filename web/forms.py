@@ -146,7 +146,7 @@ class SubmitPrklForm(forms.Form):
         'required': 'Taisi jäädä prkl kirjoittamatta!',
     }
     attrs = {
-        'cols': 80,
+        'cols': 55,
         'rows': 3,
     }
     content = forms.CharField(label='Sinun prkleesi', error_messages=error_messages, widget=forms.widgets.Textarea(attrs=attrs))
