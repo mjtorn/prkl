@@ -26,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^member/([a-zA-Z0-9-]+)/$', views.member, name='member'),
     url(r'^members//p/(?P<page>\d+)/(?P<records>\d+)', views.members, name='members'),
     url(r'^members/$', views.members, name='members'),
+    url(r'^set_form_visibility/', views.set_form_visibility, name='set_form_visibility'),
     url(r'^api/extend_vip/(?P<username>[a-zA-Z0-9_]+)/(?P<period>30|180|360)/', api_views.extend_vip, name='api_extend_vip'),
     url(r'^api/post_prkl/', api_views.post_prkl, name='api_post_prkl'),
 )

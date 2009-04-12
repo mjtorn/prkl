@@ -14,10 +14,13 @@ from django.conf import settings
 from django.core import mail
 
 from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 
 from django.shortcuts import render_to_response
 
 from django.template import RequestContext
+
+from django.utils import simplejson
 
 from django import forms as django_forms
 
@@ -728,6 +731,69 @@ def edit_profile(request):
 
     return render_to_response('edit_profile.html', req_ctx)
 
+@dec_true_id_in
+def set_form_visibility(request):
+    """Semi-api view for dealing with visibilities
+    """
+
+    true_id = request.POST.get('h', '')
+    form = request.POST.get('f', '')
+    visibility = request.POST.get('v', '')
+
+    context = {
+        'status': 'NOK',
+        'message': 'No request',
+        'errors': ('No request',)
+    }
+
+    if request.true_id.hash != true_id:
+        context['message'] = 'Value mismatch'
+        context['errors'] = ('Value mismatch',)
+
+        ctx = simplejson.dumps(context)
+
+        return HttpResponse(ctx, content_type='text/json')
+
+    try:
+        true_id_ob = models.TrueId.objects.get(hash=true_id)
+    except models.TrueId.DoesNotExist, msg:
+        context['message'] = 'Not found'
+        context['errors'] = (str(msg),)
+
+        ctx = simplejson.dumps(context)
+
+        return HttpResponse(ctx, content_type='text/json')
+
+    if form == 'prklform':
+        if visibility == 'true':
+            true_id_ob.visible_prklform = True
+        else:
+            true_id_ob.visible_prklform = False
+
+        true_id_ob.save()
+
+        context['status'] = 'OK'
+        context['message'] = 'Updated'
+        context['errors'] = None
+
+    elif form == 'regform':
+        if visibility == 'true':
+            true_id_ob.visible_regform = True
+        else:
+            true_id_ob.visible_regform = False
+
+        true_id_ob.save()
+
+        context['status'] = 'OK'
+        context['message'] = 'Updated'
+        context['errors'] = None
+    else:
+        context['message'] = 'Bad form'
+        context['errors'] = ('Bad form',)
+
+    ctx = simplejson.dumps(context)
+
+    return HttpResponse(ctx, content_type='text/json')
     
 
 # EOF
