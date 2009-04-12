@@ -10,85 +10,85 @@
 <h1>{{ member }}</h1>
 <div class="member">
 	<div id="member_data" class="member_data">
-	<div class="member_pic">
-	{% include "tags/member_pic.html" %}
-	</div>
+		<div class="member_pic">
+		{% include "tags/member_pic.html" %}
+		</div>
 
-	<div class="member_descr">
-	{% if not member.description %}
-		{% ifequal member.id user.id %}
-			{% if user.is_vip %}
-		Sinulla ei ole kuvausta
-			{% else %}
-		Liity VIPiksi, saat kirjoittaa kuvauksesi!
-			{% endif %}
-		{% endifequal %}
-	{% else %}
-		{% if member.is_vip %}
-		{{ member.description }}
-		{% endif %}
-	{% endif %}
-	</div>
-
-	<div>
-	{% ifequal user.id member.user.id %}
-	<a href="{% url edit_profile %}">MUOKKAA TIETOJA</a>
-	{% endifequal %}
-	<ul>
-		<li class="member_data">
-			<span class="member_data_heading">
-				Sijainti:
-			</span>
-			{% if member.location %}
-			{{ member.location }}
-			{% else %}
-			Ei kerro
-			{% endif %}
-		</li>
-		<li class="member_data">
-			<span class="member_data_heading">
-				Sukupuoli:
-			</span>
-			{% ifequal member.is_male None %}
-			Ei kerro
-			{% else %}
-			{% if member.is_male %}
-			Mies
-			{% else %}
-			Nainen
-			{% endif %}
+		<div class="member_descr">
+		{% if not member.description %}
+			{% ifequal member.id user.id %}
+				{% if user.is_vip %}
+			Sinulla ei ole kuvausta
+				{% else %}
+			Liity VIPiksi, saat kirjoittaa kuvauksesi!
+				{% endif %}
 			{% endifequal %}
-		</li>
-		<li class="member_data">
-			<span class="member_data_heading">
-				Syntymäpäivä:
-			</span>
-			{% if member.birthday %}
-			{{ member.birthday|date:"d. m. Y" }}
-			{% else %}
-			Ei kerro
+		{% else %}
+			{% if member.is_vip %}
+			{{ member.description }}
 			{% endif %}
-		</li>
-	</ul>
+		{% endif %}
+		</div>
+
+		{% ifequal user.id member.user.id %}
+		<a href="{% url edit_profile %}">MUOKKAA TIETOJA</a>
+		{% endifequal %}
+
+		<ul>
+			<li class="member_data">
+				<span class="member_data_heading">
+					Sijainti:
+				</span>
+				{% if member.location %}
+				{{ member.location }}
+				{% else %}
+				Ei kerro
+				{% endif %}
+			</li>
+			<li class="member_data">
+				<span class="member_data_heading">
+					Sukupuoli:
+				</span>
+				{% ifequal member.is_male None %}
+				Ei kerro
+				{% else %}
+				{% if member.is_male %}
+				Mies
+				{% else %}
+				Nainen
+				{% endif %}
+				{% endifequal %}
+			</li>
+			<li class="member_data">
+				<span class="member_data_heading">
+					Syntymäpäivä:
+				</span>
+				{% if member.birthday %}
+				{{ member.birthday|date:"d. m. Y" }}
+				{% else %}
+				Ei kerro
+				{% endif %}
+			</li>
+		</ul>
 	</div>
 
 	<div class="member_likes">
-	{% if member_likes %}
-	Näistä prkleistä {{ member.username }} tykkää
-	<div class="prkls">
-		{% for prkl in member_likes %}
-		{% include "tags/prkl_div.html" %}
-		{% endfor %}
-	</div>
-	{% else %}
-		{{ member.username }} ei ole vielä tykännyt yhdestäkään prkleestä o_O
-	{% endif %}
+		{% if member_likes %}
+		<h2>Näistä prkleistä {{ member.username }} tykkää</h2>
+		<div class="prkls">
+			{% for prkl in member_likes %}
+			{% include "tags/prkl_div.html" %}
+			{% endfor %}
+		</div>
+		{% else %}
+			{{ member.username }} ei ole vielä tykännyt yhdestäkään prkleestä o_O
+		{% endif %}
 	</div>
 
 	{% if member.is_vip %}
 	{% ifequal member user %}
 	<div id="vip_data" class="vip_data">
-	Näistä prkleistäsi tykätään
+	<h2>Näistä prkleistäsi tykätään</h2>
 	{% if liked_prkls %}
 		<div class="prkls">
 		{% for prkl in liked_prkls %}
