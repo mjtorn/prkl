@@ -10,6 +10,17 @@
 	<!-- script -->
 	<script type="text/javascript" src="/media/jquery.js">
 	</script>
+	<script type="text/javascript">
+	var toggleRegister = function() {
+		if ($("#register_form").css("display") == "none") {
+			$("#register_form").show(300);
+			$("#toggle_reg").text("Piilota lomake");
+		} else {
+			$("#register_form").hide(300);
+			$("#toggle_reg").text("Rekisteröidy");
+		}
+	}
+	</script>
 	{% block scripture %}
 	{% endblock %}
 	<!-- /script -->
