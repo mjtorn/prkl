@@ -81,7 +81,7 @@ div.recommend_vip {
 	background-color: lightseagreen;
 }
 
-div.prkl {
+div.prkl, div.comment {
 	border: solid 1px white;
 	margin-bottom: 0.5em;
 	background-color: #ffffff;
@@ -90,13 +90,18 @@ div.prkl {
    font-size: 0.8em;
 }
 
-div.prkl a {
+div.comment {
+	/* 500 + 2*7 */
+	width: 514px;
+}
+
+div.prkl a, div.comment a {
    font-family: gothic;
    font-size: 1.2em;
    text-decoration: none;
 }
 
-div.prkl a:hover {
+div.prkl a:hover, div.comment a:hover {
    font-family: gothic;
    font-size: 1.2em;
    text-decoration: underline;

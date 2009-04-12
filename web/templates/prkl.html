@@ -13,21 +13,21 @@ $(document).ready(function() {
 	{% include "tags/prkl_div.html" %}
 </div>
 
-<div class="prkls">
+<div class="comments">
 	{% for comment in comments %}
-	<div class="prkl">
-		<span class="prkl_content">
+	<div class="comment">
+		<span class="comment_content">
 		{{ comment.content }}
 		</span>
 		<br />
-		<span class="prkl_user">
+		<span class="comment_user">
 		{% if comment.commenting_user_id %}
 		<a href="{% url member comment.commenting_user %}">{{ comment.commenting_user }}</a>
 		{% else %}
 		Anonyymi
 		{% endif %}
 		</span>
-		<span class="prkl_date">
+		<span class="comment_date">
 		{{ comment.tstamp|date:"Y-m-d H:i:s" }}
 		</span>
 	</div>
