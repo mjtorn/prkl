@@ -59,6 +59,13 @@ div.prklform {
 	width: 400px;
 	margin-top: 90px;
 	margin-left: 20px;
+}
+
+div.commentform {
+	width: 514px;
+	background-color: white;
+	padding: 5px;
+	border: solid 1px white;
 	float: block;
 }
 
