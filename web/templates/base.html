@@ -20,6 +20,15 @@
 			$("#toggle_reg").text("Rekisteröidy");
 		}
 	}
+	var togglePrklForm = function() {
+		if ($("#prkl_form").css("display") == "none") {
+			$("#prkl_form").show(300);
+			$("#toggle_prklform").text("Piilota lomake");
+		} else {
+			$("#prkl_form").hide(300);
+			$("#toggle_prklform").text("Kirjoita prkl");
+		}
+	}
 	</script>
 	{% block scripture %}
 	{% endblock %}

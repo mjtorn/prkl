@@ -30,11 +30,14 @@ $(document).ready(function() {
 
 {% block prklform %}
 {% if form %}
-<form method="POST" action="{% url index %}">
-{{ form.as_p }}
+	<a id="toggle_prklform" href="#" onClick="togglePrklForm();">Kirjoita prkl</a>
+	<div id="prkl_form" class="prkl_form" style="display: none;">
+		<form method="POST" action="{% url index %}">
+		{{ form.as_p }}
 
-<input type="submit" name="submit" value="Lisää" />
-</form>
+		<input type="submit" name="submit" value="Lisää" />
+		</form>
+	</div>
 {% endif %}
 {% endblock %}
 

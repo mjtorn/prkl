@@ -102,13 +102,13 @@ div.comment {
 	width: 514px;
 }
 
-div.prkl a, div.comment a, div.register a, div.login a {
+div.prkl a, div.comment a, div.register a, div.login a, div.prklform a {
 	font-family: gothic;
 	font-size: 1.2em;
 	text-decoration: none;
 }
 
-div.prkl a:hover, div.comment a:hover, div.register a:hover, div.login a:hover {
+div.prkl a:hover, div.comment a:hover, div.register a:hover, div.login a:hover, div.prklform a:hover {
 	font-family: gothic;
 	font-size: 1.2em;
 	text-decoration: underline;
