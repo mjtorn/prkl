@@ -11,14 +11,16 @@
 		<br />
 		<a href="{% url logout %}?prev_path={{ request.META.PATH_INFO}}">Ulos</a>
 		<br />
-		KUTSU KAVERI!
-		{{ invite_friend_form.as_p}}
-		<br />
-		<input type="submit" name="submit" value="Kutsu" />
-		{% if invite_result %}
-		<br />
-		{{ invite_result }}
-		{% endif %}
+		<div class="invite">
+			KUTSU KAVERI!
+			{{ invite_friend_form.as_p}}
+			<br />
+			<input type="submit" name="submit" value="Kutsu" />
+			{% if invite_result %}
+			<br />
+			{{ invite_result }}
+			{% endif %}
+		</div>
 	{% endif %}
 
 </form>

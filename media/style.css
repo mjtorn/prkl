@@ -73,7 +73,7 @@ div.login {
 	
 }
 
-div.register, div.message {
+div.register, div.message, div.invite {
 	background-color: white;
 	padding: 5px 5px 5px 5px;
 	margin-top: 5px;
