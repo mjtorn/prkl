@@ -169,9 +169,9 @@ class User(auth_models.User):
 
         VipExpiry.objects.create(
             user = self,
-            expire_at = expiry.expire_at + time
+            expire_at = self.vip_expire_at + time
         )
-        self.vip_expire_at = expiry.expire_at + time
+        self.vip_expire_at = self.vip_expire_at + time
 
         self.save()
 
