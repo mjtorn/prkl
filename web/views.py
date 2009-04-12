@@ -356,7 +356,7 @@ def index(request, page=None, records=None):
 
     context = {
         'title': 'Etusivu',
-        'form': submit_prkl_form,
+        'submit_prkl_form': submit_prkl_form,
         'prkls': prkls,
         'base_url': 'http://%s' % request.META['HTTP_HOST'],
     }

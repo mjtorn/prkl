@@ -29,7 +29,7 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block prklform %}
-{% if form %}
+{% if submit_prkl_form %}
 	{% if request.true_id.visible_prklform %}
 	<a id="toggle_prklform" href="#" onClick="togglePrklForm();">Piilota lomake</a>
 	<div id="prkl_form" class="prkl_form" style="display: block;">
@@ -38,7 +38,7 @@ $(document).ready(function() {
 	<div id="prkl_form" class="prkl_form" style="display: none;">
 	{% endif %}
 		<form method="POST" action="{% url index %}">
-		{{ form.as_p }}
+		{{ submit_prkl_form.as_p }}
 
 		<input type="submit" name="submit" value="Lisää" />
 		</form>
