@@ -1,7 +1,12 @@
 {% if not request.user.id %}
 <div class="register">
+{% if request.true_id.visible_regform %}
+<a id="toggle_reg" href="#" onClick="toggleRegister();">Piilota lomake</a>
+<div id="register_form" class="register_form" style="display: block;">
+{% else %}
 <a id="toggle_reg" href="#" onClick="toggleRegister();">Rekisteröidy</a>
 <div id="register_form" class="register_form" style="display: none;">
+{% endif %}
 	<form action="{{ request.META.PATH_INFO }}" method="POST">
 		{{ register_form.as_p }}
 		<br />
