@@ -45,17 +45,15 @@
 <div id="prkl-logo">
    <img src="../../media/prkl-logo.png" alt="prkl-logo"/>
 </div>
-
-<div class="intro">
-{% block intro %}
-{% endblock %}
-</div>
-
 <div class="right">
 {% include "tags/login.html" %}
 {% include "tags/register.html" %}
 {% include "tags/member_search.html" %}
 {% include "tags/recommend_vip.html" %}
+
+{% block intro %}
+{% endblock %}
+
 </div>
 
 <div class="prklform">
