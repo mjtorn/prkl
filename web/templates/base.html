@@ -11,21 +11,36 @@
 	<script type="text/javascript" src="/media/jquery.js">
 	</script>
 	<script type="text/javascript">
+	var setFormState = function(h, f, v) {
+		$.ajax({
+			type: "POST",
+			url: "{% url set_form_visibility %}",
+			data: "h=" + h  + "&f=" + f + "&v=" + v,
+		});
+	}
 	var toggleRegister = function() {
 		if ($("#register_form").css("display") == "none") {
-			$("#register_form").show(300);
+			$("#register_form").show(300, function() {
+				setFormState("{{ request.true_id.hash }}", "regform", "true");
+			});
 			$("#toggle_reg").text("Piilota lomake");
 		} else {
-			$("#register_form").hide(300);
+			$("#register_form").hide(300, function() {
+				setFormState("{{ request.true_id.hash }}", "regform", "false");
+			});
 			$("#toggle_reg").text("Rekisteröidy");
 		}
 	}
 	var togglePrklForm = function() {
 		if ($("#prkl_form").css("display") == "none") {
-			$("#prkl_form").show(300);
+			$("#prkl_form").show(300, function() {
+				setFormState("{{ request.true_id.hash }}", "prklform", "true");
+			});
 			$("#toggle_prklform").text("Piilota lomake");
 		} else {
-			$("#prkl_form").hide(300);
+			$("#prkl_form").hide(300, function() {
+				setFormState("{{ request.true_id.hash }}", "prklform", "false");
+			});
 			$("#toggle_prklform").text("Kirjoita prkl");
 		}
 	}
