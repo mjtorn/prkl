@@ -2,11 +2,11 @@
 <div class="register">
 <a id="toggle_reg" href="#" onClick="toggleRegister();">Rekisteröidy</a>
 <div id="register_form" class="register_form" style="display: none;">
-<form action="{{ request.META.PATH_INFO }}" method="POST">
+	<form action="{{ request.META.PATH_INFO }}" method="POST">
 		{{ register_form.as_p }}
 		<br />
 		<input type="submit" name="submit" value="Rekisteröidy" />
-</form>
+	</form>
 </div>
 </div>
 {% endif %}
