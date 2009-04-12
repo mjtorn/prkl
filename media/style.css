@@ -1,47 +1,60 @@
+body {
+	background-color: #737373;
+}
+
+div#prkl-logo {
+	position: absolute;
+	left: 0px;
+	top:  0px;
+}
+
 div.notfound h1 {
 	font-size: 20pt;
 }
 
 div.top {
 	background-color: pink;
-	margin-left: 180px;
+	margin-left: 200px;
 }
 
 div.left {
 	font-size: 8pt;
 	width: 170px;
 	color: black;
-   float: left;
-   margin-right: 20px;
+	float: left;
+	margin-right: 20px;
 }
 
 div.right {
 	font-size: 8pt;
-   position: absolute;
-   right: 20px;
+	position: absolute;
+	right: 20px;
 	width: 150px;
 	color: black;
-   margin-left: 700px;
-   
+	margin-left: 700px;
+	
 }
 
 div.content {
 	margin-top: 1em;
 	float: left;
-   margin-left: 20px;
+	margin-left: 20px;
 }
 
 div.intro {
 	margin-left: 20px;
-   width: 500px;
-   float: left;
+	width: 500px;
+	float: left;
+	margin-top: 80px;
+	background-color: #ffffff;
+	padding: 5px;
 }
 
 div.prklform {
-   width: 500px;
+	width: 500px;
 	margin-top: 20px;
 	margin-left: 20px;
-   float: block;
+	float: block;
 }
 
 div.login {
@@ -63,6 +76,8 @@ div.recommend_vip {
 div.prkl {
 	border: solid 1px black;
 	margin-bottom: 0.5em;
+	background-color: #ffffff;
+	padding: 5px;
 }
 
 a.active {
