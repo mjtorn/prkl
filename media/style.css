@@ -57,9 +57,13 @@ div.intro {
 }
 
 div.prklform {
-	width: 400px;
+	/* 550 - 2*5px padding */
+	width: 540px;
+	background-color: white;
+	background-color: white;
 	margin-top: 90px;
 	margin-left: 20px;
+	padding: 5px 5px 5px 5px;
 }
 
 div.commentform {
