@@ -30,6 +30,7 @@ $(document).ready(function() {
 
 {% block prklform %}
 {% if submit_prkl_form %}
+<div class="prklform">
 	{% if request.true_id.visible_prklform %}
 	<a id="toggle_prklform" href="#" onClick="togglePrklForm();">Piilota lomake</a>
 	<div id="prkl_form" class="prkl_form" style="display: block;">
@@ -43,7 +44,10 @@ $(document).ready(function() {
 		<input type="submit" name="submit" value="Lisää" />
 		</form>
 	</div>
+{% else %}
+<div class="prklbuffer">
 {% endif %}
+</div>
 {% endblock %}
 
 {% block content %}
