@@ -9,23 +9,23 @@
 {% block content %}
 <h1>{{ member }}</h1>
 <div class="member">
-	<div class="member_pic">
-	{% include "tags/member_pic.html" %}
-	</div>
+	<div id="member_data" class="member_data">
+		{% include "tags/member_pic.html" %}
 
-	<div class="member_data">
-	<a href="{% url member member.username %}">PROFIILIIN</a>
-		<form method="POST" action="{{ request.META.PATH_INFO }}">
-		{% if member.is_vip %}
-		<div>
-		{{ edit_description_form.as_p }}
-		</div>
-		{% endif %}
-		<ul>
-		{{ edit_profile_form.as_ul }}
-		</ul>
-		<input type="submit" name="submit" value="Muokkaa" />
-		</form>
+		<a class="do_edit_data" href="{% url member member.username %}">PROFIILIIN</a>
+
+			<form method="POST" action="{{ request.META.PATH_INFO }}">
+			{% if member.is_vip %}
+			<div>
+			{{ edit_description_form.as_p }}
+			</div>
+			{% endif %}
+			<ul>
+			{{ edit_profile_form.as_ul }}
+			</ul>
+			<input type="submit" name="submit" value="Muokkaa" />
+			</form>
+
 	</div>
 </div>
 {% endblock %}
