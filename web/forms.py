@@ -161,7 +161,7 @@ class SubmitPrklForm(forms.Form):
         if not content.lower().endswith('prkl'):
             raise forms.ValidationError('Päätäthän Prkleesi sanalla prkl')
 
-        return content
+        return '%s%s' % ('T', content[1:])
 
     @commit_on_success
     def save(self):
