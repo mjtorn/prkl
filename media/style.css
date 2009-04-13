@@ -80,7 +80,7 @@ div.login {
 	
 }
 
-div.register, div.message, div.invite {
+div.register, div.message, div.invite, div.recommend_vip {
 	background-color: white;
 	padding: 5px 5px 5px 5px;
 	margin-top: 5px;
@@ -90,11 +90,8 @@ div.member_search {
 	background-color: lightskyblue;
 }
 
-div.recommend_vip {
-	background-color: lightseagreen;
-}
 
-div.prkl, div.comment, div.member_data {
+div.prkl, div.comment, div.member_data, div.about_vip {
 	border: solid 1px white;
 	margin-bottom: 0.5em;
 	background-color: #ffffff;
