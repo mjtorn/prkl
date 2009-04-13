@@ -110,13 +110,17 @@ div.member_data {
 	width: 540px;
 }
 
-div.prkl a, div.comment a, div.register a, div.login a, div.prklform a {
+div.prkl a, div.comment a, div.register a, div.login a, div.prklform a, a.show_ch_pic, a.show_rm_pic, a.do_rm_pic, a.do_not_rm_pic, a.do_edit_data {
 	font-family: gothic;
 	font-size: 1.2em;
 	text-decoration: none;
 }
 
-div.prkl a:hover, div.comment a:hover, div.register a:hover, div.login a:hover, div.prklform a:hover {
+a.show_ch_pic, a.show_rm_pic, a.do_rm_pic, a.do_not_rm_pic, a.do_edit_data {
+	color: #0000ee;
+}
+
+div.prkl a:hover, div.comment a:hover, div.register a:hover, div.login a:hover, div.prklform a:hover, a.show_ch_pic:hover, a.show_rm_pic:hover, a.do_rm_pic:hover, a.do_not_rm_pic:hover, a.do_edit_data:hover {
 	font-family: gothic;
 	font-size: 1.2em;
 	text-decoration: underline;

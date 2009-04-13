@@ -13,7 +13,7 @@
 		{% include "tags/member_pic.html" %}
 
 		{% ifequal user.id member.user.id %}
-		<a href="{% url edit_profile %}">MUOKKAA TIETOJA</a>
+		<a class="do_edit_data" href="{% url edit_profile %}">MUOKKAA TIETOJA</a>
 		{% endifequal %}
 
 		<ul>
