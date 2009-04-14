@@ -51,6 +51,11 @@
 </head>
 
 <body>
+<div id="prkl-logo">
+   <img src="../../media/prkl-logo.jpg" alt="prkl-logo"/>
+</div>
+
+
 <div class="top">
 {% block menu %}
 {% with request.META.PATH_INFO as req_path %}
@@ -77,9 +82,6 @@
 {% endblock %}
 </div>
 
-<div id="prkl-logo">
-   <img src="../../media/prkl-logo.png" alt="prkl-logo"/>
-</div>
 <div class="right">
 {% include "tags/login.html" %}
 {% include "tags/register.html" %}
