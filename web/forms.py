@@ -123,8 +123,16 @@ class RegisterForm(forms.Form):
         username = self.cleaned_data['reg_username']
         password = self.cleaned_data['reg_password']
         email = self.cleaned_data['reg_email']
-        user = models.User.objects.create_user(username, email, password)
+        user = auth_models.User()
+        user.username = username
+        user.email = email
+        # Until the confirmation is in
+        user.is_active = False
+        user.set_password(password)
 
+        user.save()
+
+        ## Give vip even if registered user doesn't confirm so the inviter doesn't feel screwed
         # Also see if this was an invite
         try:
             invite = models.FriendInvite.objects.get(recipient=email)
