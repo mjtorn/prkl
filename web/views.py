@@ -22,6 +22,8 @@ from django.template import RequestContext
 
 from django.utils import simplejson
 
+from fad_tools.messager import models as messager_models
+
 from django import forms as django_forms
 
 from django import template
@@ -36,6 +38,8 @@ import sha
 
 FORGOT_PASSWORD_SUBJECT = 'prkl.es: salasanan vaihto'
 INVITE_FRIEND_SUBJECT = 'Kutsu prkl.es -sivustolle!'
+
+CAT_REG = 'registration'
 
 def dec_login(func):
     def wrap(*args, **kwargs):
@@ -66,11 +70,14 @@ def dec_login(func):
 
                     username = register_form.cleaned_data['reg_username']
                     password = register_form.cleaned_data['reg_password']
-                    user = authenticate(username=username, password=password)
-                    login(request, user)
+                    #user = authenticate(username=username, password=password)
+                    #login(request, user)
 
-                    request.true_id.user = user
-                    request.true_id.save()
+                    #request.true_id.user = user
+                    #request.true_id.save()
+
+                    msg = messager_models.Message.objects.create(content='Sähköpostiisi on lähetetty vahvistusviesti!')
+                    request.true_id.messageattribute_set.create(message=msg, category=CAT_REG)
 
                     return HttpResponseRedirect(request.META['PATH_INFO'])
                 login_form = forms.LoginForm()
@@ -116,6 +123,16 @@ def dec_login(func):
 
         if not req_ctx.has_key('title') or not req_ctx['title']:
             raise ValueError('Title needed')
+
+        # Hurts...
+        try:
+            reg_msg = messager_models.Message.objects.filter(trueid=request.true_id, messageattribute__category='registration', messageattribute__read_at__isnull=True).order_by('-id')[0]
+            reg_msg.messageattribute_set.update(read_at=datetime.datetime.now())
+            reg_msg.save()
+        except IndexError:
+            reg_msg = None
+
+        req_ctx['reg_msg'] = reg_msg
 
         return func(*args, **kwargs)
     return wrap
