@@ -175,8 +175,12 @@ a.active {
 	margin-right: 5px;
 }
 
-div.paginator {
+div.paginator, div.members_paginator {
 	background-color: white;
 	text-align: center;
+}
+
+div.members_paginator {
+	margin-bottom: 20px;
 }
 
