@@ -90,6 +90,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'prkl.web',
+    'fad_tools.messager',
 )
 
 AUTHENTICATION_BACKENDS = (
