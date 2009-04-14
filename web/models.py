@@ -7,6 +7,8 @@ from django.utils.datastructures import SortedDict
 from django.db import models
 from django.db import transaction
 
+from fad_tools.messager import models as messager_models
+
 from prkl import thumbs
 
 import datetime
@@ -113,6 +115,10 @@ class UserManager(auth_models.UserManager):
             return self.filter().levenshtein('auth_user.username', name).order_by('levenshtein', *order_by)
         else:
             return self.filter().levenshtein('auth_user.username', name).order_by('levenshtein')
+
+# Message stuff
+
+MessageTrueidAttribute = messager_models.get_attr_model('web.TrueId', 'web_messagetrueidattribute')
 
 # Create your models here.
 
@@ -242,6 +248,9 @@ class TrueId(models.Model):
     # My god shit like this sucks
     visible_prklform = models.BooleanField(default=False)
     visible_regform = models.BooleanField(default=False)
+
+    # Messages
+    message = models.ManyToManyField(messager_models.Message, through=MessageTrueidAttribute)
 
     def mark_seen_intro(self):
         self.seen_intro = True
