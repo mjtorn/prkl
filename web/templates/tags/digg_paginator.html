@@ -1,7 +1,7 @@
 {% spaceless %}
  
 {% if is_paginated %}
-<div class="paginator">
+<div class="{{ css_paginator }}">
 {% if not request.META.QUERY_STRING %}
 {% if has_previous %}<span class="prev"><a href="{{base_url}}/p/{{ previous }}/{{results_per_page}}" title="Previous Page">&laquo; Edelliset</a></span>{% else %}<span class="prev-na">&laquo; Edelliset</span>{% endif %}
 {% else %}
