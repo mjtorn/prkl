@@ -19,7 +19,7 @@ div.notfound h1 {
 
 div.top {
 	
-	margin-left: 200px;
+	margin-left: 210px;
 }
 
 div.left {
@@ -176,7 +176,7 @@ a.active {
 }
 
 div.paginator, div.members_paginator {
-	background-color: white;
+	/* background-color: white; */
 	text-align: center;
 }
 
