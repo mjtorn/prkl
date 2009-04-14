@@ -16,13 +16,11 @@ $(document).ready(function() {
 <div class="members">
 	{% for member in page_objects.object_list %}
 	<div class="member">
+		{% if member.is_vip %}
 		<div class="member_pic">
-			{% if member.is_vip %}
 			<img src="/media/{{ member.pic.url_50x50 }}" />
-			{% else %}
-			--
-			{% endif %}
 		</div>
+		{% endif %}
 
 		<div class="member_data">
 			<div>
