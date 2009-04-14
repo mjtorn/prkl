@@ -635,7 +635,13 @@ def members(request, page=None, records=None):
     if not records:
         records = 5
     records = int(records)
-    pag_ctx = get_paginator_context(members, page, records)
+
+    # Affect css
+    css_ctx = {
+        'css_paginator': 'members_paginator',
+    }
+
+    pag_ctx = get_paginator_context(members, page, records, def_ctx=css_ctx)
 
     # Prkl counts
     shown = pag_ctx['page_objects'].object_list
