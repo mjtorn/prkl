@@ -1,0 +1,20 @@
+Terve!
+
+Tänään sinä rekisteröidyit prkl.es -palveluun ja tämä
+on sen vahvistusviesti.
+
+Mikäli et oikeasti rekisteröitynyt, jätä tämä viesti
+huomioimatta. Muuten vahvistus on voimassa viikon, jonka
+jälkeen sinun täytyy rekisteröityä uudelleen.
+
+Klikkaathan tätä linkkiä:
+
+http://{{ request.META.HTTP_HOST }}/register/{{ reg_token }}/
+
+Tervetuloa!
+
+(prkl)
+
+-- 
+prkl-tiimi
+

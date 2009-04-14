@@ -38,6 +38,7 @@ import sha
 
 FORGOT_PASSWORD_SUBJECT = 'prkl.es: salasanan vaihto'
 INVITE_FRIEND_SUBJECT = 'Kutsu prkl.es -sivustolle!'
+CONFIRM_REGISTRATION_SUBJECT = 'Tänään rekisteröidyit prkleeseen prkl'
 
 CAT_REG = 'registration'
 
@@ -78,6 +79,21 @@ def dec_login(func):
 
                     msg = messager_models.Message.objects.create(content='Sähköpostiisi on lähetetty vahvistusviesti!')
                     request.true_id.messageattribute_set.create(message=msg, category=CAT_REG)
+
+                    # Send email
+                    reg_token = 666
+                    mail_context = {
+                        'reg_token': reg_token,
+                    }
+                    mail_req_context = RequestContext(request, mail_context)
+
+                    s = template.loader.get_template('mail/confirm_registration.txt')
+                    content = s.render(mail_req_context)
+
+                    subj = CONFIRM_REGISTRATION_SUBJECT
+                    from_email = settings.DEFAULT_FROM_EMAIL
+                    to_list = (register_form.cleaned_data['reg_email'],)
+                    mail.send_mail(subj, content, from_email, to_list)
 
                     return HttpResponseRedirect(request.META['PATH_INFO'])
                 login_form = forms.LoginForm()
