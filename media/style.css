@@ -109,6 +109,16 @@ div.member_data {
 	width: 540px;
 }
 
+div.member_pic {
+	background-color: white;
+	border: solid 1px white;
+	width: 55px;
+	padding-left: 5px;
+	padding-top: 5px;
+	margin-top: 0.5em;
+	margin-left: 5px;
+}
+
 div.prkl a, div.comment a, div.register a, div.login a, div.prklform a, a.show_ch_pic, a.show_rm_pic, a.do_rm_pic, a.do_not_rm_pic, a.do_edit_data {
 	font-family: gothic;
 	font-size: 1.2em;
