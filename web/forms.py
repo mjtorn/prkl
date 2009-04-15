@@ -150,14 +150,19 @@ class RegisterForm(forms.Form):
 
 
 class SubmitPrklForm(forms.Form):
-    error_messages = {
+    content_error_messages = {
         'required': 'Taisi jäädä prkl kirjoittamatta!',
+    }
+    tag_error_messages = {
+        'invalid_choice': 'Tänään vaihtoehto %(value)s ei ole listassa prkl',
+        'invalid_list': 'Lista ei ole pätevä',
     }
     attrs = {
         'cols': 55,
         'rows': 3,
     }
-    content = forms.CharField(label='Sinun prkleesi', error_messages=error_messages, widget=forms.widgets.Textarea(attrs=attrs))
+    content = forms.CharField(label='Sinun prkleesi', error_messages=content_error_messages, widget=forms.widgets.Textarea(attrs=attrs))
+    tags = forms.MultipleChoiceField(label='Tagit', error_messages=tag_error_messages, choices=(), widget=forms.widgets.CheckboxSelectMultiple())
 
     def clean_content(self):
         content = self.data['content'].strip()
@@ -181,6 +186,7 @@ class SubmitPrklForm(forms.Form):
             if not self.data.has_key('anonymous'):
                 new_prkl.user = user
         new_prkl.save()
+        new_prkl.tag.add(*self.cleaned_data['tags'])
 
 
 class CommentPrklForm(forms.Form):
