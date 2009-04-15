@@ -2,7 +2,9 @@
 
 from django.contrib.auth.backends import ModelBackend
 
-from models import User
+from prkl.web.models import User, PendingRegistration
+
+import datetime
 
 class PrklModelBackend(ModelBackend):
     def authenticate(self, username=None, password=None):
@@ -16,6 +18,30 @@ class PrklModelBackend(ModelBackend):
                 return user
             return None
         except User.DoesNotExist:
+            return None
+
+    def get_user(self, user_id):
+        """User getter
+        """
+
+        try:
+            return User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return None
+
+
+class PrklRegistrationBackend(ModelBackend):
+    def authenticate(self, username=None, token=None):
+        """Verify registration
+        """
+
+        week_ago = datetime.datetime.now() - datetime.timedelta(days=7)
+        try:
+            pend_reg = PendingRegistration.objects.select_related(depth=1).filter(token=token, confirmed_at__isnull=True, tstamp__gte=week_ago)[0]
+            pend_reg.confirm()
+            user = pend_reg.user
+            return user
+        except IndexError:
             return None
 
     def get_user(self, user_id):

@@ -94,6 +94,7 @@ INSTALLED_APPS = (
 )
 
 AUTHENTICATION_BACKENDS = (
+    'prkl.web.auth.PrklRegistrationBackend',
     'prkl.web.auth.PrklModelBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
