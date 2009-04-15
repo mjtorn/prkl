@@ -182,8 +182,9 @@ class User(auth_models.User):
         self.save()
 
 
-class Category(models.Model):
+class Tag(models.Model):
     name = models.CharField(max_length=32, db_index=True)
+    is_default = models.BooleanField()
 
     def __unicode__(self):
         return u'%s' % self.name
@@ -194,6 +195,8 @@ class Prkl(models.Model):
     content = models.CharField(max_length=1024)
     user = models.ForeignKey(User, null=True)
     score = models.IntegerField(default=0)
+
+    tag = models.ManyToManyField(Tag)
 
     objects = PrklManager()
 
