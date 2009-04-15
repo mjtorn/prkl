@@ -369,6 +369,10 @@ def index(request, page=None, records=None):
 
     submit_prkl_form = forms.SubmitPrklForm(data)
 
+    tags = models.Tag.objects.filter(is_default=True).values('id', 'name')
+    tags = [(t['id'], t['name']) for t in tags]
+    submit_prkl_form.fields['tags'].choices = tags
+
     if request.user.id:
         checkbox = django_forms.BooleanField(label='Anonyymisti?', required=False)
         submit_prkl_form.fields['anonymous'] = checkbox
