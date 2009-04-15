@@ -237,6 +237,22 @@ class ResetRequest(models.Model):
     reset_at = models.DateTimeField(null=True, blank=True)
 
 
+class PendingRegistration(models.Model):
+    """Deal with unconfirmed registrations
+    """
+
+    tstamp = models.DateTimeField(auto_now_add=True)
+    token = models.CharField(max_length=64)
+    user = models.ForeignKey(User)
+    trueid = models.ForeignKey('TrueId')
+    from_ip = models.IPAddressField()
+    confirmed_at = models.DateTimeField(null=True, blank=True)
+
+    def confirm(self):
+        self.confirmed_at = datetime.datetime.now()
+        self.save()
+
+
 class TrueId(models.Model):
     """Better-than-session cookie data
     """
