@@ -5,7 +5,18 @@
 				<span class="prkl_content">
 				{{ prkl }}
 				</span>
-				<br />
+				{# FIXME: pile of shit #}
+				{% with prkl.tag.all as tags %}
+				{% if tags %}
+				<hr />
+				<span class="prkl_tags">
+				{% for tag in tags %}
+				{{ tag }}
+				{% endfor %}
+				{% endif %}
+				{% endwith %}
+				</span>
+				<hr />
 				<span class="prkl_user">
 				{% if prkl.user.id %}
 				<a href="{% url member prkl.user %}">{{ prkl.user }}</a>
@@ -16,7 +27,7 @@
 				<span class="prkl_date">
 				{{ prkl.created_at|date:"Y-m-d H:i:s" }}
 				</span>
-				<br />
+				<hr />
 				<span class="prkl_score">
 				<a href="{% url prkl prkl.id %}">Keskustele.</a><br />
 				{% if prkl.can_vote %}
