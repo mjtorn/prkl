@@ -29,6 +29,7 @@ from django import forms as django_forms
 from django import template
 
 from web import forms, models
+from web import utils
 
 import datetime
 
@@ -80,8 +81,17 @@ def dec_login(func):
                     msg = messager_models.Message.objects.create(content='Sähköpostiisi on lähetetty vahvistusviesti!')
                     request.true_id.messageattribute_set.create(message=msg, category=CAT_REG)
 
+                    reg_token = utils.gen_reg_token(request.true_id, username)
+
+                    # Pend
+                    pend_reg = models.PendingRegistration()
+                    pend_reg.token = reg_token
+                    pend_reg.user = user
+                    pend_reg.trueid = request.true_id
+                    pend_reg.from_ip = request.META['REMOTE_ADDR']
+                    pend_reg.save()
+
                     # Send email
-                    reg_token = 666
                     mail_context = {
                         'reg_token': reg_token,
                     }
@@ -293,6 +303,14 @@ def reset_password(request, token):
     req_ctx = RequestContext(request, context)
 
     return render_to_response('reset_password.html', req_ctx)
+
+def register(request, token):
+    if not request.user.id:
+        user = authenticate(token=token)
+        if user:
+            login(request, user)
+
+    return HttpResponseRedirect(reverse('index'))
 
 @dec_true_id_in
 def logout_view(request):
