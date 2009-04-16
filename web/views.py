@@ -512,6 +512,16 @@ def vote(request, prkl_id, direction, back_to):
     """And I found direction...
     """
 
+    # First off, see where we're returned
+    if back_to is None:
+        back_to = '/'
+    else:
+        back_to = '/%s' % back_to
+
+    # And if we don't have a cookie, bail out
+    if not request.COOKIES.has_key('true_id'):
+        return HttpResponseRedirect(back_to)
+
     your_votes = models.PrklVote.objects.your_votes(request)
     prkls = models.Prkl.objects.all()
     prkls = prkls.can_vote(your_votes)
@@ -523,11 +533,6 @@ def vote(request, prkl_id, direction, back_to):
             good = True
     except models.Prkl.DoesNotExist:
         pass
-
-    if back_to is None:
-        back_to = '/'
-    else:
-        back_to = '/%s' % back_to
 
     if not good:
         return HttpResponseRedirect(back_to)
