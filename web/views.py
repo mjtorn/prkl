@@ -406,7 +406,7 @@ def index(request, page=None, records=None):
     # Include vote statuses
     prkls = models.Prkl.objects.all()
 
-    if not request.COOKIES.has_key('true_id'):
+    if request.META['unreal_true_id']:
         prkls.disable_votes()
     else:
         # FIXME: Django and OUTER JOINs :(
@@ -453,7 +453,7 @@ def top(request, page=None, records=None):
     # FIXME: Django and OUTER JOINs :(
     # There is no way to emulate an OUTER JOIN in a subquery or anything
     prkls = models.Prkl.objects.all()
-    if not request.COOKIES.has_key('true_id'):
+    if request.META['unreal_true_id']:
         prkls.disable_votes()
     else:
         your_votes = models.PrklVote.objects.your_votes(request)
@@ -494,7 +494,7 @@ def bottom(request, page=None, records=None):
     # FIXME: Django and OUTER JOINs :(
     # There is no way to emulate an OUTER JOIN in a subquery or anything
     prkls = models.Prkl.objects.all()
-    if not request.COOKIES.has_key('true_id'):
+    if request.META['unreal_true_id']:
         prkls.disable_votes()
     else:
         your_votes = models.PrklVote.objects.your_votes(request)
@@ -613,7 +613,7 @@ def prkl(request, prkl_id):
     your_votes = models.PrklVote.objects.your_votes(request)
     try:
         prkl = models.Prkl.objects.filter(id= prkl_id)
-        if not request.COOKIES.has_key('true_id'):
+        if request.META['unreal_true_id']:
             prkl = prkl.disable_votes()
         else:
             prkl = prkl.can_vote(your_votes)
