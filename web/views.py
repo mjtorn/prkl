@@ -167,15 +167,35 @@ def dec_true_id_in(func):
     """Check before calling view function if we have a true id
     """
 
+    def _gen_true_id():
+        """Something more random would be nice
+        """
+
+        true_id = sha.sha('%s|%s|%s' % (datetime.datetime.now().isoformat(), datetime.datetime.now().microsecond, datetime.datetime.now().microsecond)).hexdigest()
+
+        return true_id
+
     def wrap(*args, **kwargs):
         request = args[0]
 
+        # Did we just fake an entry in cookies?
+        request.META['unreal_true_id'] = False
         if not request.COOKIES.has_key('true_id'):
-            true_id = sha.sha('%s|%s|%s' % (datetime.datetime.now().isoformat(), datetime.datetime.now().microsecond, datetime.datetime.now().microsecond)).hexdigest()
+            true_id = _gen_true_id()
+            true_id_ob = models.TrueId.objects.create(hash=true_id)
+            request.COOKIES['true_id'] = true_id
+            request.META['unreal_true_id'] = True
         else:
             true_id = request.COOKIES['true_id']
 
-        true_id_ob, created = models.TrueId.objects.get_or_create(hash=true_id)
+            try:
+                true_id_ob = models.TrueId.objects.get(hash=true_id)
+            except models.TrueId.DoesNotExist:
+                # Just to be sure we didn't get tampered, recreate the id
+                true_id = _gen_true_id()
+                request.COOKIES['true_id'] = true_id
+                request.META['unreal_true_id'] = True
+                true_id_ob = models.TrueId.objects.create(hash=true_id)
 
         request.true_id = true_id_ob
 
@@ -191,7 +211,7 @@ def dec_true_id_out(func):
         req_ctx = args[1]
         request = req_ctx['request']
         response = func(*args, **kwargs)
-        if not request.COOKIES.has_key('true_id'):
+        if not request.COOKIES.has_key('true_id') or (request.COOKIES.has_key('true_id') and request.META.get('unreal_true_id', False)):
             if not hasattr(request, 'true_id'):
                 true_id = sha.sha('%s|%s|%s' % (datetime.datetime.now().isoformat(), datetime.datetime.now().microsecond, datetime.datetime.now().microsecond)).hexdigest()
                 true_id_ob, created = models.TrueId.objects.get_or_create(hash=true_id)
