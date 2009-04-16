@@ -383,18 +383,22 @@ def index(request, page=None, records=None):
             
             return HttpResponseRedirect(request.META['PATH_INFO'])
 
-    # FIXME: Django and OUTER JOINs :(
-    # There is no way to emulate an OUTER JOIN in a subquery or anything
-    your_votes = models.PrklVote.objects.your_votes(request)
-
     # Include vote statuses
     prkls = models.Prkl.objects.all()
-    prkls = prkls.can_vote(your_votes)
 
-    # And liking statuses
-    if request.user.id:
-        your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
-        prkls = prkls.does_like(your_likes)
+    if not request.COOKIES.has_key('true_id'):
+        prkls.disable_votes()
+    else:
+        # FIXME: Django and OUTER JOINs :(
+        # There is no way to emulate an OUTER JOIN in a subquery or anything
+        your_votes = models.PrklVote.objects.your_votes(request)
+
+        prkls = prkls.can_vote(your_votes)
+
+        # And liking statuses
+        if request.user.id:
+            your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
+            prkls = prkls.does_like(your_likes)
 
     prkls = prkls.order_by('-created_at')
 
@@ -428,15 +432,18 @@ def top(request, page=None, records=None):
 
     # FIXME: Django and OUTER JOINs :(
     # There is no way to emulate an OUTER JOIN in a subquery or anything
-    your_votes = models.PrklVote.objects.your_votes(request)
     prkls = models.Prkl.objects.all()
-    prkls = prkls.can_vote(your_votes)
-    prkls = prkls.order_by('-score', 'created_at')
+    if not request.COOKIES.has_key('true_id'):
+        prkls.disable_votes()
+    else:
+        your_votes = models.PrklVote.objects.your_votes(request)
+        prkls = prkls.can_vote(your_votes)
+        prkls = prkls.order_by('-score', 'created_at')
 
-    # And liking statuses
-    if request.user.id:
-        your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
-        prkls = prkls.does_like(your_likes)
+        # And liking statuses
+        if request.user.id:
+            your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
+            prkls = prkls.does_like(your_likes)
 
     # Pagination
     if not page:
@@ -466,15 +473,18 @@ def bottom(request, page=None, records=None):
 
     # FIXME: Django and OUTER JOINs :(
     # There is no way to emulate an OUTER JOIN in a subquery or anything
-    your_votes = models.PrklVote.objects.your_votes(request)
     prkls = models.Prkl.objects.all()
-    prkls = prkls.can_vote(your_votes)
-    prkls = prkls.order_by('score', '-created_at')
+    if not request.COOKIES.has_key('true_id'):
+        prkls.disable_votes()
+    else:
+        your_votes = models.PrklVote.objects.your_votes(request)
+        prkls = prkls.can_vote(your_votes)
+        prkls = prkls.order_by('score', '-created_at')
 
-    # And liking statuses
-    if request.user.id:
-        your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
-        prkls = prkls.does_like(your_likes)
+        # And liking statuses
+        if request.user.id:
+            your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
+            prkls = prkls.does_like(your_likes)
 
     # Pagination
     if not page:
@@ -578,7 +588,10 @@ def prkl(request, prkl_id):
     your_votes = models.PrklVote.objects.your_votes(request)
     try:
         prkl = models.Prkl.objects.filter(id= prkl_id)
-        prkl = prkl.can_vote(your_votes)
+        if not request.COOKIES.has_key('true_id'):
+            prkl = prkl.disable_votes()
+        else:
+            prkl = prkl.can_vote(your_votes)
         prkl = prkl[0]
     except IndexError:
         return notfound(request)
