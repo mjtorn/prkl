@@ -28,8 +28,22 @@
 				{{ prkl.created_at|date:"Y-m-d H:i:s" }}
 				</span>
 				<hr />
-				<span class="prkl_score">
-				<a href="{% url prkl prkl.id %}">Keskustele.</a><br />
+				<div class="prkl_score">
+				<a href="{% url prkl prkl.id %}">Keskustele.</a>
+				</div>
+
+				{% if user.id %}
+
+				<div class="prkl_score">
+				{% if prkl.does_like %}
+					<a id="{{ prkl.id }}_dislike" name="{{ prkl.id }}_anchor" href="{% url like prkl.id "no" strip_path %}">Älä tykkääkään</a>
+				{% else %}
+					<a id="{{ prkl.id }}_like" name="{{ prkl.id }}_anchor" href="{% url like prkl.id "yes" strip_path %}">Tykkää</a>
+				{% endif %}
+				</div>
+				{% endif %}
+
+				<div class="prkl_score">
 				{% if prkl.can_vote %}
 					<a id="{{ prkl.id }}_minus" name="{{ prkl.id }}_anchor" href="{% url vote prkl.id "down" strip_path %}">Hajoa siihen</a>
 					{{ prkl.score }}
@@ -37,16 +51,7 @@
 				{% else %}
 					{{ prkl.score }}
 				{% endif %}
-				</span>
-				{% if user.id %}
-				<span class="prkl_score">
-				{% if prkl.does_like %}
-					<a id="{{ prkl.id }}_dislike" name="{{ prkl.id }}_anchor" href="{% url like prkl.id "no" strip_path %}">Älä tykkääkään</a>
-				{% else %}
-					<a id="{{ prkl.id }}_like" name="{{ prkl.id }}_anchor" href="{% url like prkl.id "yes" strip_path %}">Tykkää</a>
-				{% endif %}
-				</span>
-				{% endif %}
+				</div>
 			</div>
 		</div>
 	<div class="rbbot"><div></div></div>
