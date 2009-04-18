@@ -127,6 +127,7 @@ div.prkl a, div.comment a, div.register a, div.login a, div.prklform a, a.show_c
 	font-family: gothic;
 	font-size: 1.2em;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 a.show_ch_pic, a.show_rm_pic, a.do_rm_pic, a.do_not_rm_pic, a.do_edit_data {
