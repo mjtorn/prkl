@@ -3,23 +3,20 @@
 		<div class="rbcontent">
 			<div class="prkl">
 				<span class="prkl_content">
-				{{ prkl }}
+				{{ prkl.content }}
 				</span>
-				{# FIXME: pile of shit #}
-				{% with prkl.tag.all as tags %}
-				{% if tags %}
+				{% if prkl.tags %}
 				<hr />
 				<span class="prkl_tags">
-				{% for tag in tags %}
-				{{ tag }}
+				{% for tag in prkl.tags %}
+				{{ tag.name }}
 				{% endfor %}
-				{% endif %}
-				{% endwith %}
 				</span>
+				{% endif %}
 				<hr />
 				<span class="prkl_user">
 				{% if prkl.user.id %}
-				<a href="{% url member prkl.user %}">{{ prkl.user }}</a>
+				<a href="{% url member prkl.user.username %}">{{ prkl.user.username }}</a>
 				{% else %}
 				Anonyymi
 				{% endif %}
