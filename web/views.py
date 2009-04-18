@@ -180,11 +180,18 @@ def dec_true_id_in(func):
 
         # Did we just fake an entry in cookies?
         request.META['unreal_true_id'] = False
+        request.has_session = (request.session.session_key == request.COOKIES.get('sessionid', ''))
         if not request.COOKIES.has_key('true_id'):
             true_id = _gen_true_id()
             true_id_ob = models.TrueId.objects.create(hash=true_id)
-            request.COOKIES['true_id'] = true_id
-            request.META['unreal_true_id'] = True
+            # Cookies are denied, label this fake true_id as fake
+            if not request.has_session:
+                request.META['unreal_true_id'] = True
+                request.COOKIES['true_id'] = true_id
+            else:
+                response = HttpResponseRedirect(request.META['PATH_INFO'])
+                response.set_cookie('true_id', true_id_ob.hash, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
+                return response
         else:
             true_id = request.COOKIES['true_id']
 
@@ -193,7 +200,6 @@ def dec_true_id_in(func):
             except models.TrueId.DoesNotExist:
                 # Just to be sure we didn't get tampered, recreate the id
                 true_id = _gen_true_id()
-                request.COOKIES['true_id'] = true_id
                 request.META['unreal_true_id'] = True
                 true_id_ob = models.TrueId.objects.create(hash=true_id)
 
@@ -406,7 +412,7 @@ def index(request, page=None, records=None):
     # Include vote statuses
     prkls = models.Prkl.objects.all()
 
-    if request.META['unreal_true_id']:
+    if not request.has_session or request.META['unreal_true_id']:
         prkls.disable_votes()
     else:
         # FIXME: Django and OUTER JOINs :(
@@ -453,7 +459,7 @@ def top(request, page=None, records=None):
     # FIXME: Django and OUTER JOINs :(
     # There is no way to emulate an OUTER JOIN in a subquery or anything
     prkls = models.Prkl.objects.all()
-    if request.META['unreal_true_id']:
+    if not request.has_session or request.META['unreal_true_id']:
         prkls.disable_votes()
     else:
         your_votes = models.PrklVote.objects.your_votes(request)
@@ -494,7 +500,7 @@ def bottom(request, page=None, records=None):
     # FIXME: Django and OUTER JOINs :(
     # There is no way to emulate an OUTER JOIN in a subquery or anything
     prkls = models.Prkl.objects.all()
-    if request.META['unreal_true_id']:
+    if not request.has_session or request.META['unreal_true_id']:
         prkls.disable_votes()
     else:
         your_votes = models.PrklVote.objects.your_votes(request)
@@ -613,7 +619,7 @@ def prkl(request, prkl_id):
     your_votes = models.PrklVote.objects.your_votes(request)
     try:
         prkl = models.Prkl.objects.filter(id= prkl_id)
-        if request.META['unreal_true_id']:
+        if not request.has_session or request.META['unreal_true_id']:
             prkl = prkl.disable_votes()
         else:
             prkl = prkl.can_vote(your_votes)

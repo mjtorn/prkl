@@ -54,6 +54,10 @@ $(document).ready(function() {
 {% digg_paginator %}
 
 <div class="prkls">
+{% if not request.has_session %}
+Tänään sivumme toimii paremmin jos hyväksyt evästeet prkl
+{% endif %}
+
 {% for prkl in page_objects.object_list %}
 	{% include "tags/prkl_div.html" %}
 {% endfor %}
