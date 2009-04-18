@@ -1,0 +1,2 @@
+ALTER TABLE web_prkl ALTER COLUMN score SET DEFAULT 0;
+
