@@ -20,8 +20,11 @@ FROM web_prkl p
     LEFT OUTER JOIN auth_user u ON wu.user_ptr_id=u.id
     LEFT OUTER JOIN web_prkl_tag pt ON p.id=pt.prkl_id
     LEFT OUTER JOIN web_tag t ON pt.tag_id=t.id
+WHERE p.id IN (
+    SELECT id FROM web_prkl
+    %(limit)s
+)
 ORDER BY %(order_by)s, p.id, u.id, t.id
-%(limit)s
 """
 
     VOTE_SNIPPET_USERID_QRY = """\
@@ -39,6 +42,7 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
     def __init__(self, **kwargs):
         # Everything related to the query here
         self.opts = {}
+        self.db_res = None
         self.res = None
 
         ## User id or true id for votes
@@ -97,7 +101,7 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
 
             self.execute()
 
-            return self.res
+            return self.get_res()
 
         return self.res[item]
 
@@ -115,10 +119,10 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
 
         cursor = connection.cursor()
         cursor.execute(qry)
-        self.res = cursor.fetchall()
+        self.db_res = cursor.fetchall()
 
     def get_res(self):
-        if self.res is None:
+        if self.db_res is None:
             self.execute()
 
         IDX_P_ID = 0
@@ -126,7 +130,7 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
         IDX_L_ID = 5
         IDX_U_ID = 6
         IDX_T_ID = 8
-        g = itertools.groupby(self.res, lambda x: x[IDX_P_ID])
+        g = itertools.groupby(self.db_res, lambda x: x[IDX_P_ID])
         prkl_list = []
         while True:
             try:
@@ -170,7 +174,8 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
             except StopIteration:
                 break
 
-        return prkl_list
+        self.res = prkl_list
+        return self.res
 
 # EOF
 
