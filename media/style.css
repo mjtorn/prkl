@@ -1,5 +1,5 @@
 body {
-	background-color: #daecea;
+	background-color: #c3d3d6;
 	font-family: verdana;
 }
 
@@ -9,7 +9,7 @@ h1 {
 
 div#prkl-logo {
 	position: absolute;
-	left: 0px;
+	left: 20px;
 	top:  0px;
 }
 
