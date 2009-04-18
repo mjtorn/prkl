@@ -64,5 +64,47 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
             cursor.execute(qry)
             self.res = cursor.fetchall()
 
+
+if __name__ == '__main__':
+    import itertools
+
+    prkls = PrklQuery(vote_userid=1, like_userid=1)
+    prkls.execute()
+    IDX_P_ID = 0
+    IDX_U_ID = 6
+    IDX_T_ID = 8
+    g = itertools.groupby(prkls.res, lambda x: x[IDX_P_ID])
+    prkl_list = []
+    while True:
+        try:
+            prkl_dict = {}
+            prkl_id, groups = g.next()
+            prkl_dict['id'] = prkl_id
+            # Simple user
+            prkl_dict['user'] = {}
+            # Tag list
+            prkl_dict['tags'] = []
+            done_user = False
+            groups = list(groups)
+            for group in groups:
+                # The user is always the same for a prkl, foreign key
+                if not done_user and group[IDX_U_ID]:
+                    # Simple for user
+                    prkl_dict['user']['id']= group[IDX_U_ID]
+                    prkl_dict['user']['username'] = group[IDX_U_ID + 1]
+                    done_user = True
+                if group[IDX_T_ID]:
+                    tag = {
+                        'id': group[IDX_T_ID],
+                        'name': group[IDX_T_ID + 1],
+                    }
+                    prkl_dict['tags'].append(tag)
+
+            prkl_list.append(prkl_dict)
+        except StopIteration:
+            break
+
+    print prkl_list
+
 # EOF
 
