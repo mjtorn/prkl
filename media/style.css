@@ -13,6 +13,10 @@ div#prkl-logo {
 	top:  0px;
 }
 
+div#prkl-logo img {
+	border: none;
+}
+
 div.notfound h1 {
 	font-size: 20pt;
 }
