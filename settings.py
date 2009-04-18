@@ -6,6 +6,8 @@ TEMPLATE_DEBUG = DEBUG
 
 KLUDGE_STATIC = True
 
+DEBUG_TOOLBAR = False
+
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
@@ -75,7 +77,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
-if DEBUG:
+if DEBUG_TOOLBAR:
     MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES)
     MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
     MIDDLEWARE_CLASSES = tuple(MIDDLEWARE_CLASSES)
@@ -98,12 +100,12 @@ INSTALLED_APPS = (
     'fad_tools.messager',
 )
 
-if DEBUG:
+if DEBUG_TOOLBAR:
     INSTALLED_APPS = list(INSTALLED_APPS)
     INSTALLED_APPS.append('debug_toolbar')
     INSTALLED_APPS = tuple(INSTALLED_APPS)
 
-if DEBUG:
+if DEBUG_TOOLBAR:
     INTERNAL_IPS = ('127.0.0.1', '88.112.189.238')
 
 AUTHENTICATION_BACKENDS = (
