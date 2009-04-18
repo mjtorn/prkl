@@ -39,6 +39,10 @@ NOT EXISTS(SELECT 1 FROM web_prklvote WHERE prkl_id=p.id AND true_id='%s')
 EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
 """
 
+    COUNT_PRKL_QRY = """\
+SELECT COUNT(id) FROM web_prkl
+"""
+
     def __init__(self, **kwargs):
         # Everything related to the query here
         self.opts = {}
@@ -71,7 +75,10 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
 
     def __len__(self):
         if self.res is None:
-            return 0
+            cursor = connection.cursor()
+            cursor.execute(self.COUNT_PRKL_QRY)
+            # THERE CAN BE ONLY ONE!
+            return cursor.fetchone()[0]
 
         return len(self.res)
 
