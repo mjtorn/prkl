@@ -80,6 +80,8 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
             self.execute()
 
         IDX_P_ID = 0
+        IDX_V_ID = 4
+        IDX_L_ID = 5
         IDX_U_ID = 6
         IDX_T_ID = 8
         g = itertools.groupby(self.res, lambda x: x[IDX_P_ID])
@@ -112,6 +114,8 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
                         prkl_dict['content'] = group[IDX_P_ID + 1]
                         prkl_dict['score'] = group[IDX_P_ID + 2]
                         prkl_dict['created_at'] = group[IDX_P_ID + 3]
+                        prkl_dict['can_vote'] = group[IDX_V_ID]
+                        prkl_dict['does_like'] = group[IDX_L_ID]
 
                     if group[IDX_T_ID]:
                         tag = {
