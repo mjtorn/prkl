@@ -58,6 +58,12 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
         else:
             self.opts['like_snippet_qry'] = ''
 
+    def __len__(self):
+        if self.res is None:
+            return 0
+
+        return len(self.res)
+
     def disable_votes(self):
         self.opts['vote_snippet_qry'] = 'false'
 
