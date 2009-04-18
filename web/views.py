@@ -459,6 +459,9 @@ def top(request, page=None, records=None):
     if not request.has_session or request.META['unreal_true_id']:
         prkls.disable_votes()
 
+    # order
+    prkls.top()
+
     prkls = prkls.get_res()
 
     # Pagination
@@ -495,6 +498,9 @@ def bottom(request, page=None, records=None):
 
     if not request.has_session or request.META['unreal_true_id']:
         prkls.disable_votes()
+
+    # order
+    prkls.bottom()
 
     prkls = prkls.get_res()
 
