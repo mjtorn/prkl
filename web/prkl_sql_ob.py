@@ -89,11 +89,16 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
                 prkl_dict = {}
                 prkl_id, groups = g.next()
                 prkl_dict['id'] = prkl_id
+
                 # Simple user
                 prkl_dict['user'] = {}
+
                 # Tag list
                 prkl_dict['tags'] = []
+
                 done_user = False
+                done_prkl = False
+
                 groups = list(groups)
                 for group in groups:
                     # The user is always the same for a prkl, foreign key
@@ -102,6 +107,12 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
                         prkl_dict['user']['id']= group[IDX_U_ID]
                         prkl_dict['user']['username'] = group[IDX_U_ID + 1]
                         done_user = True
+
+                    if not done_prkl:
+                        prkl_dict['content'] = group[IDX_P_ID + 1]
+                        prkl_dict['score'] = group[IDX_P_ID + 2]
+                        prkl_dict['created_at'] = group[IDX_P_ID + 3]
+
                     if group[IDX_T_ID]:
                         tag = {
                             'id': group[IDX_T_ID],
