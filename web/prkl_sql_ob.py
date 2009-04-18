@@ -30,12 +30,13 @@ NOT EXISTS(SELECT 1 FROM web_prklvote WHERE prkl_id=p.id AND true_id='%s')
 """
 
     LIKE_SNIPPET_USERID_QRY = """\
-NOT EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
+EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
 """
 
     def __init__(self, **kwargs):
         # Everything related to the query here
         self.opts = {}
+        self.res = None
 
         ## User id or true id for votes
         if kwargs.has_key('vote_userid'):
@@ -56,9 +57,12 @@ NOT EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
             self.opts['like_snippet_qry'] = ''
 
     def execute(self):
-        qry = self.RAW_QRY % self.opts 
+        if self.res is None:
+            qry = self.RAW_QRY % self.opts 
 
-        return qry
+            cursor = connection.cursor()
+            cursor.execute(qry)
+            self.res = cursor.fetchall()
 
 # EOF
 
