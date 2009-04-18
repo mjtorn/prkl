@@ -20,7 +20,7 @@ FROM web_prkl p
     LEFT OUTER JOIN auth_user u ON wu.user_ptr_id=u.id
     LEFT OUTER JOIN web_prkl_tag pt ON p.id=pt.prkl_id
     LEFT OUTER JOIN web_tag t ON pt.tag_id=t.id
-ORDER BY created_at DESC, p.id, u.id, t.id
+ORDER BY %(order_by)s, p.id, u.id, t.id
 """
 
     VOTE_SNIPPET_USERID_QRY = """\
@@ -58,6 +58,9 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
         else:
             self.opts['like_snippet_qry'] = ''
 
+        ## Default order
+        self.opts['order_by'] = 'created_at DESC'
+
     def __len__(self):
         if self.res is None:
             return 0
@@ -66,6 +69,12 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
 
     def disable_votes(self):
         self.opts['vote_snippet_qry'] = 'false'
+
+    def top(self):
+        self.opts['order_by'] = 'score DESC, created_at DESC'
+
+    def bottom(self):
+        self.opts['order_by'] = 'score ASC, created_at DESC'
 
     def execute(self):
         if self.res is None:
