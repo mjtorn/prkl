@@ -450,20 +450,16 @@ def top(request, page=None, records=None):
     """The best
     """
 
-    # FIXME: Django and OUTER JOINs :(
-    # There is no way to emulate an OUTER JOIN in a subquery or anything
-    prkls = models.Prkl.objects.all()
+    # Get prkls
+    if request.user.id:
+        prkls = prkl_sql_ob.PrklQuery(vote_userid=request.user.id, like_userid=request.user.id)
+    else:
+        prkls = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id)
+
     if not request.has_session or request.META['unreal_true_id']:
         prkls.disable_votes()
-    else:
-        your_votes = models.PrklVote.objects.your_votes(request)
-        prkls = prkls.can_vote(your_votes)
-        prkls = prkls.order_by('-score', 'created_at')
 
-        # And liking statuses
-        if request.user.id:
-            your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
-            prkls = prkls.does_like(your_likes)
+    prkls = prkls.get_res()
 
     # Pagination
     if not page:
@@ -491,20 +487,16 @@ def bottom(request, page=None, records=None):
     """The worst
     """
 
-    # FIXME: Django and OUTER JOINs :(
-    # There is no way to emulate an OUTER JOIN in a subquery or anything
-    prkls = models.Prkl.objects.all()
+    # Get prkls
+    if request.user.id:
+        prkls = prkl_sql_ob.PrklQuery(vote_userid=request.user.id, like_userid=request.user.id)
+    else:
+        prkls = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id)
+
     if not request.has_session or request.META['unreal_true_id']:
         prkls.disable_votes()
-    else:
-        your_votes = models.PrklVote.objects.your_votes(request)
-        prkls = prkls.can_vote(your_votes)
-        prkls = prkls.order_by('score', '-created_at')
 
-        # And liking statuses
-        if request.user.id:
-            your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
-            prkls = prkls.does_like(your_likes)
+    prkls = prkls.get_res()
 
     # Pagination
     if not page:
