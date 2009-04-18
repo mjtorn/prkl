@@ -75,6 +75,11 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 )
 
+if DEBUG:
+    MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES)
+    MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+    MIDDLEWARE_CLASSES = tuple(MIDDLEWARE_CLASSES)
+
 ROOT_URLCONF = 'prkl.urls'
 
 TEMPLATE_DIRS = (
@@ -92,6 +97,14 @@ INSTALLED_APPS = (
     'prkl.web',
     'fad_tools.messager',
 )
+
+if DEBUG:
+    INSTALLED_APPS = list(INSTALLED_APPS)
+    INSTALLED_APPS.append('debug_toolbar')
+    INSTALLED_APPS = tuple(INSTALLED_APPS)
+
+if DEBUG:
+    INTERNAL_IPS = ('127.0.0.1', '88.112.189.238')
 
 AUTHENTICATION_BACKENDS = (
     'prkl.web.auth.PrklRegistrationBackend',
