@@ -21,6 +21,7 @@ FROM web_prkl p
     LEFT OUTER JOIN web_prkl_tag pt ON p.id=pt.prkl_id
     LEFT OUTER JOIN web_tag t ON pt.tag_id=t.id
 ORDER BY %(order_by)s, p.id, u.id, t.id
+%(limit)s
 """
 
     VOTE_SNIPPET_USERID_QRY = """\
@@ -61,11 +62,44 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
         ## Default order
         self.opts['order_by'] = 'created_at DESC'
 
+        ## No limit by default
+        self.opts['limit'] = ''
+
     def __len__(self):
         if self.res is None:
             return 0
 
         return len(self.res)
+
+    def __getitem__(self, item):
+        """Re-hit db every time we get a slice
+        """
+        if isinstance(item, slice):
+            # Hngh...
+            start, stop, step = item.indices(2**32)
+
+            if start < 0:
+                raise ValueError('Negative start not ok')
+
+            if stop < 0:
+                raise ValueError('Negative stop not ok')
+
+            limit = stop - start
+
+            if limit < 0:
+                raise ValueError('Negative limit not ok')
+
+            if limit:
+                self.opts['limit'] = 'LIMIT %d' % limit
+
+                if start:
+                    self.opts['limit'] = '%s OFFSET %d' % (self.opts['limit'], start)
+
+            self.execute()
+
+            return self.res
+
+        return self.res[item]
 
     def disable_votes(self):
         self.opts['vote_snippet_qry'] = 'false'
@@ -77,12 +111,11 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
         self.opts['order_by'] = 'score ASC, created_at DESC'
 
     def execute(self):
-        if self.res is None:
-            qry = self.RAW_QRY % self.opts 
+        qry = self.RAW_QRY % self.opts 
 
-            cursor = connection.cursor()
-            cursor.execute(qry)
-            self.res = cursor.fetchall()
+        cursor = connection.cursor()
+        cursor.execute(qry)
+        self.res = cursor.fetchall()
 
     def get_res(self):
         if self.res is None:
