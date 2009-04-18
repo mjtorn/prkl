@@ -20,7 +20,7 @@ FROM web_prkl p
     LEFT OUTER JOIN auth_user u ON wu.user_ptr_id=u.id
     LEFT OUTER JOIN web_prkl_tag pt ON p.id=pt.prkl_id
     LEFT OUTER JOIN web_tag t ON pt.tag_id=t.id
-ORDER BY p.id, u.id, t.id
+ORDER BY created_at DESC, p.id, u.id, t.id
 """
 
     VOTE_SNIPPET_USERID_QRY = """\
