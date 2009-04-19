@@ -406,8 +406,11 @@ def index(request, page=None, records=None):
 
     if submit_prkl_form.is_bound:
         if submit_prkl_form.is_valid():
+            request.true_id.visible_prklform = False
+            request.true_id.save()
+
             submit_prkl_form.save()
-            
+
             return HttpResponseRedirect(request.META['PATH_INFO'])
 
     ### Was 27 queries 70.39ms for index
