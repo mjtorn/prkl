@@ -22,6 +22,7 @@ FROM web_prkl p
     LEFT OUTER JOIN web_tag t ON pt.tag_id=t.id
 WHERE p.id IN (
     SELECT id FROM web_prkl
+    ORDER BY %(order_by)s, p.id, u.id, t.id
     %(limit)s
 )
 ORDER BY %(order_by)s, p.id, u.id, t.id
