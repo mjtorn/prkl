@@ -33,7 +33,7 @@ NOT EXISTS(SELECT 1 FROM web_prklvote WHERE prkl_id=p.id AND user_id=%d)
 """
 
     VOTE_SNIPPET_TRUEID_QRY = """\
-NOT EXISTS(SELECT 1 FROM web_prklvote WHERE prkl_id=p.id AND true_id='%s')
+NOT EXISTS(SELECT 1 FROM web_prklvote, web_trueid WHERE prkl_id=p.id AND web_prklvote.trueid_id=web_trueid.id AND web_trueid.hash='%s')
 """
 
     LIKE_SNIPPET_USERID_QRY = """\
@@ -66,7 +66,7 @@ SELECT COUNT(id) FROM web_prkl
             # We always have vote_snippet_qry so we always need comma here
             self.opts['like_snippet_qry'] = '%s, ' % like_userid
         else:
-            self.opts['like_snippet_qry'] = ''
+            self.opts['like_snippet_qry'] = 'NULL, '
 
         ## Default order
         self.opts['order_by'] = 'created_at DESC'
