@@ -109,16 +109,11 @@ div.login {
 	
 }
 
-div.register, div.message, div.invite, div.recommend_vip {
+div.register, div.message, div.invite, div.member_search, div.recommend_vip {
 	background-color: white;
 	padding: 5px 5px 5px 5px;
 	margin-top: 5px;
 }
-
-div.member_search {
-	background-color: lightskyblue;
-}
-
 
 div.prkl, div.comment, div.member_data, div.about_vip {
 	border: solid 1px white;
@@ -127,6 +122,10 @@ div.prkl, div.comment, div.member_data, div.about_vip {
 	padding: 5px;
 	width: 500px;
 	font-size: 0.8em;
+}
+
+div.invite, div.member_search {
+	background-color: #c3d3d6;
 }
 
 div.comment {
