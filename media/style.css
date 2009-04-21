@@ -46,6 +46,7 @@ div.top a.inactive:visited {
 	text-decoration: none;
 	cursor: pointer;
 	font-weight: bold;
+	margin-right: 7px;
 }
 
 div.top a.active {
