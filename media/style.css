@@ -144,6 +144,10 @@ div.prkl a, div.comment a, div.register a, div.login a, div.prklform a, a.show_c
 	cursor: pointer;
 }
 
+div.prklform a {
+    color: black;
+}
+
 a.show_ch_pic, a.show_rm_pic, a.do_rm_pic, a.do_not_rm_pic, a.do_edit_data {
 	color: #0000ee;
 }
