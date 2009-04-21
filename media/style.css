@@ -59,7 +59,7 @@ div.top a.active {
 	margin-right: 7px;
 }
 
-div.top a:hover {
+div.top a.active:hover, div.top a.inactive:hover {
 	text-decoration: underline;
 }
 
