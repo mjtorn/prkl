@@ -39,7 +39,7 @@ $(document).ready(function() {
 	<div id="prkl_form" class="prkl_form" style="display: none;">
 	{% endif %}
 		<form method="POST" action="{% url index %}">
-		{{ submit_prkl_form.as_p }}
+		{{ submit_prkl_form.as_prkl }}
 
 		<input type="submit" name="submit" value="Lisää" />
 		</form>
