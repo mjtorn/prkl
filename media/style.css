@@ -231,17 +231,17 @@ div.paginator, div.members_paginator {
 	text-color: black;
 }
 
-div.paginator a {
+div.members_paginator {
+	margin-bottom: 20px;
+}
+
+div.paginator a, div.members_paginator a {
 	color: #5b261f;
 	text-decoration: none;
 }
 
-div.paginator a:hover {
+div.paginator a:hover, div.members_paginator a:hover {
 	text-decoration: underline;
 }
 
-
-div.members_paginator {
-	margin-bottom: 20px;
-}
 
