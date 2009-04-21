@@ -352,6 +352,7 @@ def logout_view(request):
 
     return HttpResponseRedirect(prev_path)
 
+@dec_true_id_in
 def notfound(request):
     """Not found view
     """
