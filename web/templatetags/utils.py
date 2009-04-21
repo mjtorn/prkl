@@ -17,5 +17,9 @@ def check_active(req_path, path):
     else:
         return 'active' if req_path.startswith(path) else 'inactive'
 
+@register.filter
+def prkltagjoin(tags, joiner):
+    return joiner.join([t['name'] for t in tags])
+
 # EOF
 
