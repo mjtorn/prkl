@@ -201,6 +201,7 @@ class SubmitPrklForm(PrklSuperForm):
     tag_error_messages = {
         'invalid_choice': 'Tänään vaihtoehto %(value)s ei ole listassa prkl',
         'invalid_list': 'Lista ei ole pätevä',
+        'required': 'Jotain tarvitaan, valitse edes Satunnainen ;)',
     }
     attrs = {
         'cols': 55,
