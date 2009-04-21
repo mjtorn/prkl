@@ -26,7 +26,7 @@ div.top {
 }
 
 div.top:before {
-   content: url(red-arrow.png);
+	content: url(red-arrow.png);
 }
 
 div.top a.inactive {
@@ -35,8 +35,8 @@ div.top a.inactive {
 	color: #7c352b;
 	text-decoration: none;
 	cursor: pointer;
-   font-weight: bold;
-   margin-right: 7px;
+	font-weight: bold;
+	margin-right: 7px;
 }
 
 div.top a.inactive:visited {
@@ -45,7 +45,7 @@ div.top a.inactive:visited {
 	color: #7c352b;
 	text-decoration: none;
 	cursor: pointer;
-   font-weight: bold;
+	font-weight: bold;
 }
 
 div.top a.active {
@@ -54,8 +54,8 @@ div.top a.active {
 	color: #000000;
 	text-decoration: none;
 	cursor: pointer;
-   font-weight: bold;
-   margin-right: 7px;
+	font-weight: bold;
+	margin-right: 7px;
 }
 
 div.top a:hover {
@@ -261,7 +261,7 @@ div.paginator, div.members_paginator {
 	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
 	font-size: 1em;
 	color: black;
-   font-weight: bold;
+	font-weight: bold;
 }
 
 div.members_paginator {
@@ -278,8 +278,8 @@ div.paginator a:hover, div.members_paginator a:hover {
 }
 
 
-div.prklform a::before{
-   content: url(black-arrow.png);
-   margin-right: 3px;
+div.prklform a:before {
+	content: url(black-arrow.png);
+	margin-right: 3px;
 }
 
