@@ -7,13 +7,14 @@
 				</span>
 				{% if prkl.tags %}
 				<hr />
-				<span class="prkl_tags">
+				<div class="prkl_tags">
 				{% for tag in prkl.tags %}
 				{{ tag.name }}
 				{% endfor %}
-				</span>
+				</div>
 				{% endif %}
-				<hr />
+
+                <div>
 				<span class="prkl_user">
 				{% if prkl.user.id %}
 				<a href="{% url member prkl.user.username %}">{{ prkl.user.username }}</a>
@@ -24,31 +25,37 @@
 				<span class="prkl_date">
 				{{ prkl.created_at|date:"Y-m-d H:i:s" }}
 				</span>
-				<hr />
-				<div class="prkl_score">
+                </div>
+
+                <div>
+
+				<span class="prkl_score">
+				{% if prkl.can_vote %}
+					<a id="{{ prkl.id }}_minus" name="{{ prkl.id }}_anchor" href="{% url vote prkl.id "down" strip_path %}">Hajoa siihen</a>
+					[ {{ prkl.score }} ]
+					<a id="{{ prkl.id }}_plus" name="{{ prkl.id }}_anchor" href="{% url vote prkl.id "up" strip_path %}">Awww</a>
+				{% else %}
+					{{ prkl.score }}
+				{% endif %}
+				</span>
+
+				<span class="prkl_score">
+                &raquo;
 				<a href="{% url prkl prkl.id %}">Keskustele.</a>
-				</div>
+				</span>
 
 				{% if user.id %}
-
-				<div class="prkl_score">
+				<span class="prkl_score">
+                &raquo;
 				{% if prkl.does_like %}
 					<a id="{{ prkl.id }}_dislike" name="{{ prkl.id }}_anchor" href="{% url like prkl.id "no" strip_path %}">Älä tykkääkään</a>
 				{% else %}
 					<a id="{{ prkl.id }}_like" name="{{ prkl.id }}_anchor" href="{% url like prkl.id "yes" strip_path %}">Tykkää</a>
 				{% endif %}
-				</div>
+				</span>
 				{% endif %}
 
-				<div class="prkl_score">
-				{% if prkl.can_vote %}
-					<a id="{{ prkl.id }}_minus" name="{{ prkl.id }}_anchor" href="{% url vote prkl.id "down" strip_path %}">Hajoa siihen</a>
-					{{ prkl.score }}
-					<a id="{{ prkl.id }}_plus" name="{{ prkl.id }}_anchor" href="{% url vote prkl.id "up" strip_path %}">Awww</a>
-				{% else %}
-					{{ prkl.score }}
-				{% endif %}
-				</div>
+                </div>
 			</div>
 		</div>
 	<div class="rbbot"><div></div></div>
