@@ -22,8 +22,19 @@ div.notfound h1 {
 }
 
 div.top {
-	
 	margin-left: 210px;
+}
+
+div.top a {
+    font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+	font-size: 1em;
+    color: #5b261f;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+div.top a:hover {
+    text-decoration: underline;
 }
 
 span.prkl_user, span.prkl_user a,span.prkl_date, span.prkl_da {
