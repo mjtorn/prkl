@@ -26,6 +26,20 @@ div.top {
 	margin-left: 210px;
 }
 
+span.prkl_user, span.prkl_user a,span.prkl_date, span.prkl_da {
+ font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+ font-size: 8pt;
+ color: #575656;
+}
+
+.prkl_score, .prkl_score a {
+ font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+ font-size: 8pt;
+ color: #5b261f;
+}
+
+
+
 div.left {
 	font-size: 8pt;
 	width: 170px;
