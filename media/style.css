@@ -206,6 +206,16 @@ div.prklform a {
 	color: black;
 }
 
+div.register a {
+	font-weight: bold;
+	color: #7c352b;
+}
+
+div.register a:before {
+	content: url(red-arrow-white.png);
+	margin-right: 3px;
+}
+
 div.login a {
 	color: #0000ee;
 }
