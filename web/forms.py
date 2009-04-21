@@ -37,7 +37,17 @@ class PrklSuperForm(forms.Form):
 
     def as_prkl(self):
         # normal_row, error_row, row_ender, help_text_html, errors_on_separate_row
-        normal_row = '<p><div><span class="required">*</span>%(label)s</div> <br />%(field)s <br /><span class="required">%(errors)s</span> %(help_text)s '
+        normal_row = '<p><div>%(label)s</div> <br />%(field)s <br /><span class="error">%(errors)s</span> %(help_text)s '
+        error_row = '<span style="color: red;">%s</span>'
+        row_ender = '</p>'
+        help_text_html = ' %s'
+        errors_on_separate_row = False
+
+        return self._html_output(normal_row, error_row, row_ender, help_text_html, errors_on_separate_row)
+
+    def as_prkl_all_req(self):
+        # normal_row, error_row, row_ender, help_text_html, errors_on_separate_row
+        normal_row = '<p><div><span class="required">*</span>%(label)s</div> <br />%(field)s <br /><span class="error">%(errors)s</span> %(help_text)s '
         error_row = '<span style="color: red;">%s</span>'
         row_ender = '</p>'
         help_text_html = ' %s'
