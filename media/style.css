@@ -22,15 +22,40 @@ div.notfound h1 {
 }
 
 div.top {
-	margin-left: 210px;
+	margin-left: 180px;
 }
 
-div.top a {
+div.top:before {
+   content: url(red-arrow.png);
+}
+
+div.top a.inactive {
 	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
-	font-size: 1em;
-	color: #5b261f;
+	font-size: 15px;
+	color: #7c352b;
 	text-decoration: none;
 	cursor: pointer;
+   font-weight: bold;
+   margin-right: 7px;
+}
+
+div.top a.inactive:visited {
+	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+	font-size: 15px;
+	color: #7c352b;
+	text-decoration: none;
+	cursor: pointer;
+   font-weight: bold;
+}
+
+div.top a.active {
+	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+	font-size: 15px;
+	color: #000000;
+	text-decoration: none;
+	cursor: pointer;
+   font-weight: bold;
+   margin-right: 7px;
 }
 
 div.top a:hover {
@@ -49,7 +74,11 @@ span.prkl_user, span.prkl_user a,span.prkl_date, span.prkl_da {
 	color: #5b261f;
 }
 
-
+.prkl_tags {
+	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+	font-size: 8pt;
+	color: #5b261f;
+}
 
 div.left {
 	font-size: 8pt;
@@ -105,14 +134,22 @@ div.commentform {
 	float: block;
 }
 
-div.login {
-	
-}
-
-div.register, div.message, div.invite, div.member_search, div.recommend_vip {
+div.login, div.register, div.message, div.invite, div.member_search, div.recommend_vip {
 	background-color: white;
 	padding: 5px 5px 5px 5px;
 	margin-top: 5px;
+}
+
+div.login {
+	background-color: #c3d3d6;
+}
+
+span.required {
+	color: red;
+}
+
+div.prkl_content {
+	padding-bottom: 1em;
 }
 
 div.prkl, div.comment, div.member_data, div.about_vip {
@@ -183,10 +220,6 @@ div.prkl a:hover, div.comment a:hover, div.register a:hover, div.login a:hover, 
 }
 
 
-a.active {
-	font-weight: bold;
-}
-
 /* set millions of background images */
 .rbroundbox {
 	background: url(nt.gif) repeat;
@@ -227,7 +260,8 @@ div.paginator, div.members_paginator {
 	text-align: center;
 	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
 	font-size: 1em;
-	text-color: black;
+	color: black;
+   font-weight: bold;
 }
 
 div.members_paginator {
@@ -235,7 +269,7 @@ div.members_paginator {
 }
 
 div.paginator a, div.members_paginator a {
-	color: #5b261f;
+	color: #7c352b;
 	text-decoration: none;
 }
 
@@ -243,4 +277,9 @@ div.paginator a:hover, div.members_paginator a:hover {
 	text-decoration: underline;
 }
 
+
+div.prklform a::before{
+   content: url(black-arrow.png);
+   margin-right: 3px;
+}
 
