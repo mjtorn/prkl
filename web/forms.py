@@ -12,7 +12,14 @@ from web import models
 
 import datetime
 
-class RequestResetForm(forms.Form):
+## SuperClass Me (harder)
+
+class PrklSuperForm(forms.Form):
+    pass
+
+## Children
+
+class RequestResetForm(PrklSuperForm):
     error_messages = {
         'required': 'Tämä kenttä tarvitaan',
         'invalid': 'Epävalidi sähköpostiosoite',
@@ -46,14 +53,14 @@ class RequestResetForm(forms.Form):
         return token
 
 
-class PasswordResetForm(forms.Form):
+class PasswordResetForm(PrklSuperForm):
     error_messages = {
         'required': 'Annathan uuden salasanasi :)'
     }
     new_password = forms.CharField(label='Uusi salasana', error_messages=error_messages, widget=forms.widgets.PasswordInput())
 
 
-class LoginForm(forms.Form):
+class LoginForm(PrklSuperForm):
     # Localizbation
     error_messages = {
         'required': 'Tämä kenttä tarvitaan',
@@ -78,7 +85,7 @@ class LoginForm(forms.Form):
         return self.data['username']
 
 
-class RegisterForm(forms.Form):
+class RegisterForm(PrklSuperForm):
     # Custom Finnish error messages
     error_messages = {
         'required': 'Tämä kenttä tarvitaan',
@@ -149,7 +156,7 @@ class RegisterForm(forms.Form):
         return user
 
 
-class SubmitPrklForm(forms.Form):
+class SubmitPrklForm(PrklSuperForm):
     content_error_messages = {
         'required': 'Taisi jäädä prkl kirjoittamatta!',
     }
@@ -189,7 +196,7 @@ class SubmitPrklForm(forms.Form):
         new_prkl.tag.add(*self.cleaned_data['tags'])
 
 
-class CommentPrklForm(forms.Form):
+class CommentPrklForm(PrklSuperForm):
     error_messages = {
         'required': 'Kirjoitathan kommentin!',
     }
@@ -216,7 +223,7 @@ class CommentPrklForm(forms.Form):
         prkl_comment.save()
 
 
-class InviteFriendForm(forms.Form):
+class InviteFriendForm(PrklSuperForm):
     # Error
     error_messages = {
         'invalid': 'Tämä sähköposti ei toimi',
@@ -253,7 +260,7 @@ class InviteFriendForm(forms.Form):
 
         friend_invite.save()
 
-class ChangePicForm(forms.Form):
+class ChangePicForm(PrklSuperForm):
     error_messages = {
         'required': 'Kuvaa tulee',
         'invalid': 'Kuvassa on jotain vialla',
@@ -274,7 +281,7 @@ class ChangePicForm(forms.Form):
         user.pic.save(pic.name, pic)
         user.save()
 
-class EditProfileForm(forms.Form):
+class EditProfileForm(PrklSuperForm):
     loc_errors = {
         'max_length': 'Kerrothan ylläpidolle jos paikkakuntasi ei mahdu 24 merkkiin'
     }
@@ -320,7 +327,7 @@ class EditProfileForm(forms.Form):
         user.save()
 
 
-class FindFriendForm(forms.Form):
+class FindFriendForm(PrklSuperForm):
     attrs = {
         'size': 10,
     }
@@ -328,7 +335,7 @@ class FindFriendForm(forms.Form):
     find_friend = forms.CharField(label='Etsi', required=False, widget=forms.widgets.TextInput(attrs=attrs))
 
 
-class EditDescriptionForm(forms.Form):
+class EditDescriptionForm(PrklSuperForm):
     attrs = {
         'rows': 5,
         'cols': 40,
