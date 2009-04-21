@@ -1,16 +1,15 @@
+	{% load utils %}
 	<div class="rbroundbox">
 	<div class="rbtop"><div></div></div>
 		<div class="rbcontent">
 			<div class="prkl">
-				<span class="prkl_content">
+				<div class="prkl_content">
 				{{ prkl.content }}
-				</span>
+				</div>
 				{% if prkl.tags %}
-				<hr />
+
 				<div class="prkl_tags">
-				{% for tag in prkl.tags %}
-				{{ tag.name }}
-				{% endfor %}
+                {{ prkl.tags|prkltagjoin:", " }}
 				</div>
 				{% endif %}
 
