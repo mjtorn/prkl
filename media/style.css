@@ -26,27 +26,27 @@ div.top {
 }
 
 div.top a {
-    font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
 	font-size: 1em;
-    color: #5b261f;
+	color: #5b261f;
 	text-decoration: none;
 	cursor: pointer;
 }
 
 div.top a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 span.prkl_user, span.prkl_user a,span.prkl_date, span.prkl_da {
-    font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
-    font-size: 8pt;
-    color: #575656;
+	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+	font-size: 8pt;
+	color: #575656;
 }
 
 .prkl_score, .prkl_score a {
-    font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
-    font-size: 8pt;
-    color: #5b261f;
+	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+	font-size: 8pt;
+	color: #5b261f;
 }
 
 
@@ -138,6 +138,15 @@ div.member_data {
 	width: 540px;
 }
 
+div.member_data a {
+	color: #0000ee;
+	text-decoration: none;
+}
+
+div.member_data a:hover {
+	text-decoration: underline;
+}
+
 div.member_pic {
 	background-color: white;
 	border: solid 1px white;
@@ -156,8 +165,12 @@ div.prkl a, div.comment a, div.register a, div.login a, div.prklform a, a.show_c
 }
 
 div.prklform a {
-    font-weight: bold;
-    color: black;
+	font-weight: bold;
+	color: black;
+}
+
+div.login a {
+	color: #0000ee;
 }
 
 a.show_ch_pic, a.show_rm_pic, a.do_rm_pic, a.do_not_rm_pic, a.do_edit_data {
@@ -213,7 +226,20 @@ a.active {
 div.paginator, div.members_paginator {
 	/* background-color: white; */
 	text-align: center;
+	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+	font-size: 1em;
+	text-color: black;
 }
+
+div.paginator a {
+	color: #5b261f;
+	text-decoration: none;
+}
+
+div.paginator a:hover {
+	text-decoration: underline;
+}
+
 
 div.members_paginator {
 	margin-bottom: 20px;
