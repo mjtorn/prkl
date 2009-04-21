@@ -6,6 +6,10 @@ from django.contrib.auth import tokens
 
 from django.db.transaction import commit_on_success
 
+from django.utils.html import conditional_escape, force_unicode
+
+from django.utils.safestring import mark_safe
+
 from django import forms
 
 from web import models
@@ -14,8 +18,32 @@ import datetime
 
 ## SuperClass Me (harder)
 
+class PrklErrorField(forms.util.ErrorList):
+    def __unicode__(self):
+        return self.as_prkl()
+
+    def as_prkl(self):
+        if not self:
+            return ''
+
+        return mark_safe('%s'
+            % ''.join([u'%s<br />' % conditional_escape(force_unicode(e)) for e in self]))
+
+
 class PrklSuperForm(forms.Form):
-    pass
+    def __init__(self, *args, **kwargs):
+        kwargs['error_class'] = PrklErrorField
+        forms.Form.__init__(self, *args, **kwargs)
+
+    def as_prkl(self):
+        # normal_row, error_row, row_ender, help_text_html, errors_on_separate_row
+        normal_row = '<p><div><span class="required">*</span>%(label)s</div> <br />%(field)s <br /><span class="required">%(errors)s</span> %(help_text)s '
+        error_row = '<span style="color: red;">%s</span>'
+        row_ender = '</p>'
+        help_text_html = ' %s'
+        errors_on_separate_row = False
+
+        return self._html_output(normal_row, error_row, row_ender, help_text_html, errors_on_separate_row)
 
 ## Children
 
