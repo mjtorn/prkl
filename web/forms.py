@@ -266,7 +266,7 @@ class InviteFriendForm(PrklSuperForm):
     # Error
     error_messages = {
         'invalid': 'Tämä sähköposti ei toimi',
-        'required': 'Tämä sähköposti vaaditaan',
+        'required': 'Annathan kaverisi sähköpostin',
     }
 
     # Widget attributes
