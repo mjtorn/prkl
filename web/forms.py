@@ -371,7 +371,11 @@ class FindFriendForm(PrklSuperForm):
         'size': 10,
     }
 
-    find_friend = forms.CharField(label='Etsi', required=False, widget=forms.widgets.TextInput(attrs=attrs))
+    error_messages = {
+        'required': 'Ketä mahdat etsiä?',
+    }
+
+    find_friend = forms.CharField(label='Etsi', required=True, error_messages=error_messages, widget=forms.widgets.TextInput(attrs=attrs))
 
 
 class EditDescriptionForm(PrklSuperForm):
