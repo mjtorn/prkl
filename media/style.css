@@ -149,6 +149,10 @@ span.required {
 	color: red;
 }
 
+span.error {
+	color: red;
+}
+
 div.prkl_content {
 	padding-bottom: 1em;
 }
