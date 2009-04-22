@@ -14,7 +14,9 @@ $(document).ready(function() {
 <h1>Tänään haen kunnolla prkl</h1>
 <div class="search">
 	<form method="GET" action="{{ request.META.PATH_INFO }}">
-	{{ user_search_form.as_prkl }}
+	<table>
+	{{ user_search_form.as_custom }}
+	</table>
 	<br />
 	<input type="submit" name="submit" value="Etsi" />
 	</form>

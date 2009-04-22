@@ -457,5 +457,80 @@ class UserSearchForm(PrklSuperForm):
 
         return users
 
+    def as_custom(self):
+        """This crap is based on forms.Form's _html_output
+        """
+
+        # These would have been passed
+        # but alter slightly
+        normal_row = '<tr>%s'
+        normal_content= '<td>%(label)s<br />%(field)s <br /><span class="error">%(errors)s</span> %(help_text)s '
+        age_content= '<td>%(label)s<br />%(age_low)s-%(age_high)s <br /><span class="error">%(errors)s</span> %(help_text)s '
+        error_row = '%s'
+        row_ender = '%s</tr>'
+
+        # Cheat key order to match table
+        keys = ('username', 'age_low', 'age_high', 'location', 'sex')
+
+        # Check modulo to see if we break a line
+        i = 0
+        output = []
+        for name in keys:
+            field = self.fields[name]
+            bf = forms.forms.BoundField(self, field, name)
+            ## Directly use PrklErrorField
+            bf_errors = PrklErrorField([conditional_escape(error) for error in bf.errors])
+            ## Skip hidden fields, don't have any
+            # Don't care about separate-row variable
+            if bf_errors:
+                output.append(error_row % force_unicode(bf_errors))
+
+            # Age is special
+            if bf.label and name != 'age_low' and name != 'age_high':
+                label = conditional_escape(force_unicode('%s:' % bf.label))
+                label = bf.label_tag(label) or ''
+            elif bf.label and name == 'age_low':
+                label = 'Ikä:'
+                age_content = age_content % {
+                    'label': force_unicode(label),
+                    'age_low': unicode(bf),
+                    'age_high': '%(age_high)s',
+                    'errors': force_unicode(bf_errors),
+                    'help_text': '',
+                }
+            elif bf.label and name == 'age_high':
+                label = ''
+                age_content = age_content % {
+                    'age_high': unicode(bf),
+                    'errors': force_unicode(bf_errors),
+                    'help_text': '',
+                }
+                i -= 1
+            else:
+                label = ''
+
+            # Retain as is
+            if field.help_text:
+                help_text = help_text_html % force_unicode(field.help_text)
+            else:
+                help_text = u''
+
+            # Content
+            if name == 'age_low':
+                pass
+            elif name == 'age_high':
+                content = age_content
+                output.append(row_ender % content)
+            else:
+                content = normal_content % {'errors': force_unicode(bf_errors), 'label': force_unicode(label), 'field': unicode(bf), 'help_text': help_text}
+
+                # Do we break the line?
+                if i % 2 == 0:
+                    output.append(normal_row % content)
+                else:
+                    output.append(row_ender % content)
+
+            i += 1
+        return mark_safe(u'\n'.join(output))
 # EOF
 
