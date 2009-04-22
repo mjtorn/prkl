@@ -898,7 +898,14 @@ def search(request):
 
     data = request.GET.copy() or None
 
-    user_search_form = forms.UserSearchForm(data)
+    initial = {
+        'sex': '4',
+    }
+
+    user_search_form = forms.UserSearchForm(data, initial=initial)
+    if user_search_form.is_bound:
+        if user_search_form.is_valid():
+            results = user_search_form.search()
 
     context = {
         'title': 'Haku',

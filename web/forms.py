@@ -410,12 +410,52 @@ class UserSearchForm(PrklSuperForm):
     age_attrs = {
         'size': 3,
     }
+    age_errors = {
+        'invalid': 'Tämä ei näytä numerolta',
+    }
 
     username = forms.CharField(label='Käyttäjä', required=False, widget=forms.widgets.TextInput(attrs=attrs))
     location = forms.CharField(label='Sijainti', required=False, widget=forms.widgets.TextInput(attrs=attrs))
     sex = forms.ChoiceField(label='Sukupuoli', error_messages=sex_errors, choices=sex_choices)
-    age_low = forms.IntegerField(label='Ikä alkaen', required=False, widget=forms.widgets.TextInput(attrs=age_attrs))
-    age_high = forms.IntegerField(label='Ikä päättyen', required=False, widget=forms.widgets.TextInput(attrs=age_attrs))
+    age_low = forms.IntegerField(label='Ikä alkaen', required=False, error_messages=age_errors, widget=forms.widgets.TextInput(attrs=age_attrs))
+    age_high = forms.IntegerField(label='Ikä päättyen', required=False, error_messages=age_errors, widget=forms.widgets.TextInput(attrs=age_attrs))
+
+    def search(self):
+        """Breaking the law! Breaking the law!
+        """
+
+        now = datetime.datetime.now()
+
+        # Shortcut
+        d = self.cleaned_data
+
+        users = models.User.objects.filter()
+        if d['username']:
+            users = users.search(d['username'])
+
+        if d['location']:
+            users = users.search_location(d['location'])
+
+        if d['sex']:
+            sex = int(d['sex'])
+            if sex == 1:
+                users = users.filter(is_male__isnull=True)
+            elif sex == 2:
+                users = users.filter(is_male=True)
+            elif sex == 3:
+                users = users.filter(is_male=False)
+
+        if d['age_low']:
+            age_low = int(d['age_low'])
+            age_low_bday = now - datetime.timedelta(days=365 * age_low)
+            users = users.filter(birthday__lte=age_low_bday)
+
+        if d['age_high']:
+            age_high = int(d['age_high'])
+            age_high_bday = now - datetime.timedelta(days=365 * age_high)
+            users = users.filter(birthday__gte=age_high_bday)
+
+        print users
 
 # EOF
 
