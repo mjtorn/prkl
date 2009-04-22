@@ -963,7 +963,8 @@ def search(request, page=None, records=None):
         'user_search_form': user_search_form,
         'prkl_count_dict': prkl_count_dict,
     }
-    context.update(pag_ctx)
+    if result:
+        context.update(pag_ctx)
     req_ctx = RequestContext(request, context)
 
     return render_to_response('search.html', req_ctx)
