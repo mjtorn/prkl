@@ -90,7 +90,7 @@ class LevenshteinQuerySet(models.query.QuerySet):
     """Queryset that allows us passing in a query for Levenshtein distances
     """
 
-    def levenshtein(self, col, val):
+    def levenshtein(self, col, val, prefix=None):
         """Levenshtein attribute for objects, using extra, a subquery,
         so it's marginally slower than an extra column
         """
@@ -98,9 +98,24 @@ class LevenshteinQuerySet(models.query.QuerySet):
         select_dict = SortedDict()
 
         # Don't escape col or it goes bad
-        select_dict['levenshtein'] = QRY_LEVENSHTEIN % (col, '%s')
+        if prefix is None:
+            select_dict['levenshtein'] = QRY_LEVENSHTEIN % (col, '%s')
+        else:
+            select_dict['%slevenshtein' % prefix] = QRY_LEVENSHTEIN % (col, '%s')
 
         return self.extra(select=select_dict, select_params=(val,))
+
+    def search(self, name, order_by=None):
+        if order_by:
+            return self.levenshtein('auth_user.username', name).order_by('levenshtein', *order_by)
+        else:
+            return self.levenshtein('auth_user.username', name).order_by('levenshtein')
+
+    def search_location(self, name, order_by=None):
+        if order_by:
+            return self.levenshtein('web_user.location', name, prefix='loc_').order_by('loc_levenshtein', *order_by)
+        else:
+            return self.levenshtein('web_user.location', name, prefix='loc_').order_by('loc_levenshtein')
 
 # Create your managers here
 class PrklManager(models.Manager):
@@ -125,6 +140,12 @@ class UserManager(auth_models.UserManager):
             return self.filter().levenshtein('auth_user.username', name).order_by('levenshtein', *order_by)
         else:
             return self.filter().levenshtein('auth_user.username', name).order_by('levenshtein')
+
+    def search_location(self, name, order_by=None):
+        if order_by:
+            return self.filter().levenshtein('web_user.location', name, prefix='loc_').order_by('levenshtein', *order_by)
+        else:
+            return self.filter().levenshtein('web_user.location', name, prefix='loc_').order_by('levenshtein')
 
 # Message stuff
 
