@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load utils %}
 
 {% block scripture %}
 {% if user.id and user.is_vip %}
@@ -15,48 +14,7 @@ $(document).ready(function() {
 {% digg_paginator %}
 <div class="members">
 	{% for member in page_objects.object_list %}
-	<div class="member">
-		{% if member.is_vip %}
-		<div class="member_pic">
-			<img src="/media/{{ member.pic.url_50x50 }}" />
-		</div>
-		{% endif %}
-
-		<div class="member_data">
-			<div>
-			<a href="{% url member member.username %}">{{ member.username }}</a>
-			</div>
-			<div>
-			Liittynyt: {{ member.date_joined|date:"d. m. Y" }}
-			</div>
-			<div>
-			Sukupuoli:
-			{% ifequal member.is_male None %}
-			<span style="color: black";>
-			Ei kerro
-			{% else %}
-				{% if not member.is_male %}
-					<span style="color: deeppink";>
-					Nainen
-				{% else %}
-					<span style="color: royalblue";>
-					Mies
-				{% endif %}
-			{% endifequal %}
-			</span>
-			</div>
-			<div>
-			{% with prkl_count_dict|getitem:member.username as prkl_count %}
-			Prkleitä: 
-			{% if prkl_count %}
-			{{ prkl_count_dict|getitem:member.username }}
-			{% else %}
-			0
-			{% endif %}
-			{% endwith %}
-			</div>
-		</div>
-	</div>
+    {% include "tags/member_div.html" %}
 	{% endfor %}
 </div>
 {% endblock %}
