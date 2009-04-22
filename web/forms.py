@@ -395,5 +395,27 @@ class EditDescriptionForm(PrklSuperForm):
 
         user.save()
 
+
+class UserSearchForm(PrklSuperForm):
+    sex_choices = ((1, 'Ei kerro'), (2, 'Mies'), (3, 'Nainen'), (4, 'Ei väliä'))
+    sex_errors = {
+        'required': 'Valitse edes "Ei kerro"',
+        'invalid_choice': 'Tuo ei ole sukupuoli',
+    }
+
+    attrs = {
+        'size': 12,
+    }
+
+    age_attrs = {
+        'size': 3,
+    }
+
+    username = forms.CharField(label='Käyttäjä', required=False, widget=forms.widgets.TextInput(attrs=attrs))
+    location = forms.CharField(label='Sijainti', required=False, widget=forms.widgets.TextInput(attrs=attrs))
+    sex = forms.ChoiceField(label='Sukupuoli', error_messages=sex_errors, choices=sex_choices)
+    age_low = forms.IntegerField(label='Ikä alkaen', required=False, widget=forms.widgets.TextInput(attrs=age_attrs))
+    age_high = forms.IntegerField(label='Ikä päättyen', required=False, widget=forms.widgets.TextInput(attrs=age_attrs))
+
 # EOF
 

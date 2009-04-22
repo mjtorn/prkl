@@ -890,6 +890,23 @@ def set_form_visibility(request):
 
     return HttpResponse(ctx, content_type='text/json')
     
+@dec_true_id_in
+@dec_recommend_register
+def search(request):
+    """Detailed search
+    """
+
+    data = request.GET.copy() or None
+
+    user_search_form = forms.UserSearchForm(data)
+
+    context = {
+        'title': 'Haku',
+        'user_search_form': user_search_form,
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('search.html', req_ctx)
 
 # EOF
 

@@ -157,7 +157,7 @@ div.prkl_content {
 	padding-bottom: 1em;
 }
 
-div.prkl, div.comment, div.member_data, div.about_vip {
+div.prkl, div.comment, div.member_data, div.about_vip, div.search {
 	border: solid 1px white;
 	margin-bottom: 0.5em;
 	background-color: #ffffff;

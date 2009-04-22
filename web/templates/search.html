@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block scripture %}
+<!--
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#id_content").focus();
+});
+</script>
+-->
+{% endblock %}
+
+{% block content %}
+<h1>Tänään haen kunnolla prkl</h1>
+<div class="search">
+	<form method="GET" action="{{ request.META.PATH_INFO }}">
+	{{ user_search_form.as_prkl }}
+	<br />
+	<input type="submit" name="submit" value="Etsi" />
+	</form>
+</div>
+
+{% endblock %}
+
