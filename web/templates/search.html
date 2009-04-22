@@ -12,6 +12,7 @@ $(document).ready(function() {
 
 {% block content %}
 <h1>Tänään haen kunnolla prkl</h1>
+{% digg_paginator %}
 <div class="search">
 	<form method="GET" action="{{ request.META.PATH_INFO }}">
 	{{ user_search_form.as_prkl }}
@@ -20,9 +21,9 @@ $(document).ready(function() {
 	</form>
 </div>
 
-{% if result %}
+{% if page_objects.object_list %}
 <div class="members">
-{% for member in result %}
+{% for member in page_objects.object_list %}
 {% include "tags/member_div.html" %}
 {% endfor %}
 </div>

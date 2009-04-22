@@ -913,7 +913,7 @@ def set_form_visibility(request):
     
 @dec_true_id_in
 @dec_recommend_vip
-def search(request):
+def search(request, page=None, records=None):
     """Detailed search
     """
 
@@ -929,12 +929,27 @@ def search(request):
         if user_search_form.is_valid():
             result = user_search_form.search()
 
-    ### TODO: Pagination
-    # Prkl counts
-    #shown = pag_ctx['page_objects'].object_list
+    # Pagination
+    if not page:
+        page = 1
+    page = int(page)
+
+    if not records:
+        records = 5
+    records = int(records)
+
+    # Affect css
+    css_ctx = {
+        'css_paginator': 'members_paginator',
+    }
+
     prkl_count_dict = {}
-    shown = result
-    if shown:
+    if result:
+        pag_ctx = get_paginator_context(result, page, records, def_ctx=css_ctx)
+
+        # Prkl counts
+        shown = pag_ctx['page_objects'].object_list
+
         prkl_counts = models.Prkl.objects.filter(user__id__in=[u.id for u in shown])
         prkl_counts = prkl_counts.extra(tables=('auth_user',), where=('web_prkl.user_id=auth_user.id',), select={
             'username': 'auth_user.username',
@@ -946,9 +961,9 @@ def search(request):
     context = {
         'title': 'Haku',
         'user_search_form': user_search_form,
-        'result': result,
         'prkl_count_dict': prkl_count_dict,
     }
+    context.update(pag_ctx)
     req_ctx = RequestContext(request, context)
 
     return render_to_response('search.html', req_ctx)
