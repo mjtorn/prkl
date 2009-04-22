@@ -1,7 +1,7 @@
 <div class="login">
 <form action="{{ request.META.PATH_INFO }}" method="POST">
 	{% if not request.user.id %}
-		{{ login_form.as_prkl_all_req }}
+		{{ login_form.as_prkl }}
 		<br />
 		<!--
 		<span class="required">* Vaadittu kenttä</span>
@@ -16,7 +16,7 @@
 		<br />
 		<div class="invite">
 			KUTSU KAVERI!
-			{{ invite_friend_form.as_prkl_all_req }}
+			{{ invite_friend_form.as_prkl }}
 			<br />
 			<input type="submit" name="submit" value="Kutsu" />
 			{% if invite_result %}

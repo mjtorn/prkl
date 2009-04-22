@@ -2,7 +2,7 @@
 <div class="member_search">
 <form action="{{ request.META.PATH_INFO }}" method="GET">
 	ETSI KAVERI!
-	{{ find_friend_form.as_prkl_all_req }}
+	{{ find_friend_form.as_prkl }}
 	<br />
 	{% if user.is_vip %}
 	<input type="submit" name="submit" value="Etsi" />
