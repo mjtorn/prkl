@@ -902,14 +902,30 @@ def search(request):
         'sex': '4',
     }
 
+    result = None
     user_search_form = forms.UserSearchForm(data, initial=initial)
     if user_search_form.is_bound:
         if user_search_form.is_valid():
-            results = user_search_form.search()
+            result = user_search_form.search()
+
+    ### TODO: Pagination
+    # Prkl counts
+    #shown = pag_ctx['page_objects'].object_list
+    shown = result
+    prkl_counts = models.Prkl.objects.filter(user__id__in=[u.id for u in shown])
+    prkl_counts = prkl_counts.extra(tables=('auth_user',), where=('web_prkl.user_id=auth_user.id',), select={
+        'username': 'auth_user.username',
+    })
+    prkl_counts = prkl_counts.order_by('user')
+    prkl_count_dict = {}
+    for group, prkls in itertools.groupby(prkl_counts, lambda x: x.username):
+        prkl_count_dict[group] = len(list(prkls))
 
     context = {
         'title': 'Haku',
         'user_search_form': user_search_form,
+        'result': result,
+        'prkl_count_dict': prkl_count_dict,
     }
     req_ctx = RequestContext(request, context)
 

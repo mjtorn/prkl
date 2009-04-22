@@ -455,7 +455,7 @@ class UserSearchForm(PrklSuperForm):
             age_high_bday = now - datetime.timedelta(days=365 * age_high)
             users = users.filter(birthday__gte=age_high_bday)
 
-        print users
+        return users
 
 # EOF
 
