@@ -34,7 +34,7 @@ $(document).ready(function() {
 	{% endfor %}
 	<div class="commentform">
 	<form method="POST" action="{{ request.META.PATH_INFO }}">
-	{{ comment_prkl_form }}
+	{{ comment_prkl_form.as_prkl }}
 	<br />
 	<input type="submit" name="submit" value="Kommentoi" />
 	</form>
