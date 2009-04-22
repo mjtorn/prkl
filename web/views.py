@@ -249,6 +249,27 @@ def dec_recommend_register(func):
         return func(*args, **kwargs)
     return wrap
 
+def dec_recommend_vip(func):
+    """Decorate vip-only pages
+    """
+
+    def wrap(*args, **kwargs):
+        request = args[0]
+
+        if not request.user.id:
+            return dec_recommend_register(func)(*args, **kwargs)
+
+        if not request.user.is_vip:
+            context = {
+                'title': 'Vain vipeille :(',
+            }
+            req_ctx = RequestContext(request, context)
+
+            return render_to_response('only_vip.html', req_ctx)
+
+        return func(*args, **kwargs)
+    return wrap
+
 render_to_response = dec_login(render_to_response)
 render_to_response = dec_true_id_out(render_to_response)
 
@@ -891,7 +912,7 @@ def set_form_visibility(request):
     return HttpResponse(ctx, content_type='text/json')
     
 @dec_true_id_in
-@dec_recommend_register
+@dec_recommend_vip
 def search(request):
     """Detailed search
     """
@@ -911,15 +932,16 @@ def search(request):
     ### TODO: Pagination
     # Prkl counts
     #shown = pag_ctx['page_objects'].object_list
-    shown = result
-    prkl_counts = models.Prkl.objects.filter(user__id__in=[u.id for u in shown])
-    prkl_counts = prkl_counts.extra(tables=('auth_user',), where=('web_prkl.user_id=auth_user.id',), select={
-        'username': 'auth_user.username',
-    })
-    prkl_counts = prkl_counts.order_by('user')
     prkl_count_dict = {}
-    for group, prkls in itertools.groupby(prkl_counts, lambda x: x.username):
-        prkl_count_dict[group] = len(list(prkls))
+    shown = result
+    if shown:
+        prkl_counts = models.Prkl.objects.filter(user__id__in=[u.id for u in shown])
+        prkl_counts = prkl_counts.extra(tables=('auth_user',), where=('web_prkl.user_id=auth_user.id',), select={
+            'username': 'auth_user.username',
+        })
+        prkl_counts = prkl_counts.order_by('user')
+        for group, prkls in itertools.groupby(prkl_counts, lambda x: x.username):
+            prkl_count_dict[group] = len(list(prkls))
 
     context = {
         'title': 'Haku',
