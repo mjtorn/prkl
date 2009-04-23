@@ -180,6 +180,7 @@ class PrivMessage(models.Model):
 
     subject = models.CharField(max_length=120)
     body = models.TextField()
+    body_html = models.TextField()
     sender = models.ForeignKey('User', related_name='sent_messages')
     recipient = models.ForeignKey('User', related_name='received_messages', null=True, blank=True)
     parent = models.ForeignKey('self', related_name='parent_privmsg', null=True, blank=True)
@@ -193,24 +194,34 @@ class PrivMessage(models.Model):
 
     def __unicode__(self):
         return self.subject
-    
+
     def is_new(self):
         """returns whether the recipient has read the message or not
         """
 
         return self.read_at is None
-        
+
     def is_replied_to(self):
         """returns whether the recipient has written a reply to this message
         """
 
         return self.replied_at is not None
 
+    def to_html(self):
+        """Make a copy of body that takes care of paragraphs etc
+        """
+
+        from django.utils.html import escape
+        body = escape(self.body)
+
+        self.body_html = '<p>' + '</p><p>'.join(body.splitlines()) + '</p>'
+
     def save(self, force_insert=False, force_update=False):
         if not self.id:
             self.sent_at = datetime.datetime.now()
+        self.to_html()
         super(PrivMessage, self).save(force_insert, force_update) 
-    
+
     class Meta:
         ordering = ['-sent_at']
         verbose_name = 'Message'
