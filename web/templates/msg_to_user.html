@@ -33,13 +33,13 @@ var toggleDiv = function(div, a) {
 	<a style="cursor: pointer;" onClick="toggleDiv('#msg_container', this);">Näytä</a> lähettämäsi viestit
 	<div id="msg_container" style="display: none;">
 	{% for msg in your_sent %}
-		<div id="subj_{{ msg.id }}">
+		<div id="subj_{{ msg.id }}" style="margin-top: 1em;">
 			<span class="msg_subject">{{ msg.subject }}</span> <a style="cursor: pointer;" onClick="toggleDiv('#body_{{ msg.id }}', this);">Näytä</a>
 			<br />
-			<span class="msg_user">{{ msg.sender }}</span>
 			<div id="body_{{ msg.id }}" style="display: none;">
 				{{ msg.body }}
 			</div>
+			<span class="msg_user">{{ msg.sender }}</span>
 			<span class="msg_date">{{ msg.sent_at }}</span>
 		</div>
 	{% endfor %}
