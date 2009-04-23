@@ -29,6 +29,13 @@
 			{% endifequal %}
 			</span>
 			</div>
+
+			{% if member.location %}
+			<div>
+			Sijainti: {{ member.location }}
+			</div>
+			{% endif %}
+
 			<div>
 			{% with prkl_count_dict|getitem:member.username as prkl_count %}
 			Prkleitä: 
