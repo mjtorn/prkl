@@ -63,10 +63,14 @@ div.top a.active:hover, div.top a.inactive:hover {
 	text-decoration: underline;
 }
 
-span.prkl_user, span.prkl_user a, span.prkl_date, span.prkl_da, span.comment_user, span.comment_user a, span.comment_date {
+span.prkl_user, span.prkl_user a, span.prkl_date, span.prkl_da, span.comment_user, span.comment_user a, span.comment_date, span.msg_user, span.msg_date, span.msg_subject {
 	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
 	font-size: 8pt;
 	color: #575656;
+}
+
+span.msg_subject {
+	font-size: 10pt;
 }
 
 .prkl_score, .prkl_score a {
@@ -157,13 +161,17 @@ div.prkl_content {
 	padding-bottom: 1em;
 }
 
-div.prkl, div.comment, div.member_data, div.about_vip, div.search, div.write_msg {
+div.prkl, div.comment, div.member_data, div.about_vip, div.search, div.write_msg, div.your_sent {
 	border: solid 1px white;
 	margin-bottom: 0.5em;
 	background-color: #ffffff;
 	padding: 5px;
 	width: 500px;
 	font-size: 0.8em;
+}
+
+div.write_msg, div.your_sent {
+	width: 540px;
 }
 
 div.invite, div.member_search {
@@ -208,6 +216,14 @@ div.member_pic {
 }
 
 div.prkl a, div.comment a, div.register a, div.login a, div.prklform a, a.show_ch_pic, a.show_rm_pic, a.do_rm_pic, a.do_not_rm_pic, a.do_edit_data {
+	font-family: gothic;
+	font-size: 1.2em;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+div.your_sent a {
+	color: #0000ee;
 	font-family: gothic;
 	font-size: 1.2em;
 	text-decoration: none;

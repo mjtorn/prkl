@@ -980,6 +980,8 @@ def msg_to_user(request, rcpt):
     except models.User.DoesNotExist:
         return notfound(request)
 
+    your_sent = request.user.sent_messages.filter(recipient__user_ptr=member).order_by('-sent_at')
+
     data = request.POST.copy() or None
 
     msg_to_user_form = forms.MsgToUserForm(data)
@@ -994,6 +996,7 @@ def msg_to_user(request, rcpt):
     context = {
         'title': 'Viestiä käyttäjälle %s' % rcpt,
         'member': member,
+        'your_sent': your_sent,
         'msg_to_user_form': msg_to_user_form,
     }
     req_ctx = RequestContext(request, context)
