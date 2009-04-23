@@ -396,6 +396,36 @@ class EditDescriptionForm(PrklSuperForm):
         user.save()
 
 
+class MsgToUserForm(PrklSuperForm):
+    subject_attrs = {
+        'size': 15,
+    }
+    subject_errors = {
+        'required': 'Otsikko tarvitaan, edes "moi" :)',
+    }
+
+    body_attrs = {
+        'rows': 5,
+        'cols': 60,
+    }
+    body_errors = {
+        'required': 'Jotain sisältöä tarvitaan :)',
+    }
+
+    subject = forms.CharField(label='Otsikko', error_messages=subject_errors, widget=forms.widgets.TextInput(attrs=subject_attrs))
+    body = forms.CharField(label='Viestisi', error_messages=body_errors, widget=forms.widgets.Textarea(attrs=body_attrs))
+
+    @commit_on_success
+    def save(self):
+        message = models.PrivMessage()
+        message.subject = self.cleaned_data['subject']
+        message.body = self.cleaned_data['body']
+        message.sender = self.data['sender']
+        message.recipient = self.data['recipient']
+
+        message.save()
+
+
 class UserSearchForm(PrklSuperForm):
     sex_choices = ((1, 'Ei kerro'), (2, 'Mies'), (3, 'Nainen'), (4, 'Ei väliä'))
     sex_errors = {
