@@ -993,6 +993,8 @@ def msg_to_user(request, rcpt):
             msg_to_user_form.data['recipient'] = member
             msg_to_user_form.save()
 
+            return HttpResponseRedirect(request.META['PATH_INFO'])
+
     context = {
         'title': 'Viestiä käyttäjälle %s' % rcpt,
         'member': member,
