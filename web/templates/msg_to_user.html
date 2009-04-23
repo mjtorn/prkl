@@ -38,7 +38,7 @@ var toggleDiv = function(div, a) {
 			<span class="msg_subject">{{ msg.subject }}</span> <a style="cursor: pointer;" onClick="toggleDiv('#body_{{ msg.id }}', this);">Näytä</a>
 			<br />
 			<div id="body_{{ msg.id }}" style="display: none;">
-				{{ msg.body }}
+				{{ msg.body_html|safe }}
 			</div>
 			<span class="msg_user">{{ msg.sender }}</span>
 			<span class="msg_date">{{ msg.sent_at }}</span>
