@@ -188,6 +188,15 @@ div.member_data a:hover {
 	text-decoration: underline;
 }
 
+div.member_data a.msg_member {
+	color: #7c352b;
+	text-decoration: none;
+}
+
+div.member_data a.msg_member:hover {
+	text-decoration: underline;
+}
+
 div.member_pic {
 	background-color: white;
 	border: solid 1px white;

@@ -9,6 +9,9 @@
 		<div class="member_data">
 			<div>
 			<a href="{% url member member.username %}">{{ member.username }}</a>
+			{% if user.id %}
+			(<a class="msg_member" href="#">Lähetä viesi</a>)
+			{% endif %}
 			</div>
 			<div>
 			Liittynyt: {{ member.date_joined|date:"d. m. Y" }}
