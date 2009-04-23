@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block scripture %}
+{% if user.id and user.is_vip %}
+<script type="text/javascript">
+$(document).ready(function() {
+	var targetOffset = $("#member_data").offset().top;
+	$("html").animate({scrollTop: targetOffset}, 500);
+
+	$("#id_subject").focus();
+});
+</script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+	<div id="member_data" class="member_data">
+	{% include "tags/member_pic.html" %}
+	{% include "tags/member_data.html" %}
+	</div>
+<div class="write_msg">
+	<form method="POST" action="{{ request.META.PATH_INFO }}">
+		{{ msg_to_user_form.as_prkl }}
+		<input type="submit" name="submit" value="Lähetä" />
+	</form>
+</div>
+{% endblock %}
+
+

@@ -969,5 +969,36 @@ def search(request, page=None, records=None):
 
     return render_to_response('search.html', req_ctx)
 
+@dec_true_id_in
+@dec_recommend_register
+def msg_to_user(request, rcpt):
+    """Send a message to user
+    """
+
+    try:
+        member = models.User.objects.get(username__iexact=rcpt)
+    except models.User.DoesNotExist:
+        return notfound(request)
+
+    data = request.POST.copy() or None
+
+    msg_to_user_form = forms.MsgToUserForm(data)
+
+    if msg_to_user_form.is_bound:
+        if msg_to_user_form.is_valid():
+            # Traditionally smuggle data
+            msg_to_user_form.data['sender'] = request.user
+            msg_to_user_form.data['recipient'] = member
+            msg_to_user_form.save()
+
+    context = {
+        'title': 'Viestiä käyttäjälle %s' % rcpt,
+        'member': member,
+        'msg_to_user_form': msg_to_user_form,
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('msg_to_user.html', req_ctx)
+
 # EOF
 
