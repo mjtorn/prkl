@@ -151,6 +151,72 @@ class UserManager(auth_models.UserManager):
 
 MessageTrueidAttribute = messager_models.get_attr_model('web.TrueId', 'web_messagetrueidattribute')
 
+class PrivMessageManager(models.Manager):
+    def inbox(self, user):
+        """
+        User's messages
+        """
+
+        return self.filter(recipient=user, recipient_deleted_at__isnull=True)
+
+    def sent(self, user):
+        """
+        User's sent messages
+        """
+
+        return self.filter(sender=user, sender_deleted_at__isnull=True)
+
+    def trash(self, user):
+        """
+        Deleted
+        """
+
+        return self.filter(recipient=user, recipient_deleted_at__isnull=False,) | self.filter(sender=user, sender_deleted_at__isnull=False)
+
+class PrivMessage(models.Model):
+    """
+    A private message from user to user
+    """
+
+    subject = models.CharField(max_length=120)
+    body = models.TextField()
+    sender = models.ForeignKey('User', related_name='sent_messages')
+    recipient = models.ForeignKey('User', related_name='received_messages', null=True, blank=True)
+    parent = models.ForeignKey('self', related_name='parent_privmsg', null=True, blank=True)
+    sent_at = models.DateTimeField(null=True, blank=True)
+    read_at = models.DateTimeField(null=True, blank=True)
+    replied_at = models.DateTimeField(null=True, blank=True)
+    sender_deleted_at = models.DateTimeField(null=True, blank=True)
+    recipient_deleted_at = models.DateTimeField(null=True, blank=True)
+
+    objects = PrivMessageManager()
+
+    def __unicode__(self):
+        return self.subject
+    
+    def is_new(self):
+        """returns whether the recipient has read the message or not
+        """
+
+        return self.read_at is None
+        
+    def is_replied_to(self):
+        """returns whether the recipient has written a reply to this message
+        """
+
+        return self.replied_at is not None
+
+    def save(self, force_insert=False, force_update=False):
+        if not self.id:
+            self.sent_at = datetime.datetime.now()
+        super(Message, self).save(force_insert, force_update) 
+    
+    class Meta:
+        ordering = ['-sent_at']
+        verbose_name = 'Message'
+        verbose_name_plural = 'Messages'
+
+
 # Create your models here.
 
 class User(auth_models.User):
