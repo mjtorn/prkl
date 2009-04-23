@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block scripture %}
-{% if user.id and user.is_vip %}
+{% if user.id %}
 <script type="text/javascript">
 $(document).ready(function() {
 	var targetOffset = $("#member_data").offset().top;
@@ -29,6 +29,7 @@ var toggleDiv = function(div, a) {
 	{% include "tags/member_data.html" %}
 	</div>
 
+{% if your_sent %}
 <div class="your_sent">
 	<a style="cursor: pointer;" onClick="toggleDiv('#msg_container', this);">Näytä</a> lähettämäsi viestit
 	<div id="msg_container" style="display: none;">
@@ -45,6 +46,7 @@ var toggleDiv = function(div, a) {
 	{% endfor %}
 	</div>
 </div>
+{% endif %}
 
 <div class="write_msg">
 	<form method="POST" action="{{ request.META.PATH_INFO }}">
