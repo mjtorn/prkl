@@ -874,8 +874,10 @@ def init_json_ctx(request, data):
         true_id_ob = models.TrueId.objects.get(hash=true_id)
     except models.TrueId.DoesNotExist, msg:
         true_id_ob = None
+        #msg = '%s (%s)' % (msg, true_id)
         context['message'] = 'Not found'
         context['errors'] = (str(msg),)
+        #context['errors'] = (msg,)
 
         good = False
 
