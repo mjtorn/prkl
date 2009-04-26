@@ -1038,5 +1038,40 @@ def user_inbox(request):
 
     return render_to_response('user_inbox.html', req_ctx)
 
+
+@dec_true_id_in
+def mark_msg_read(request):
+    """Mark a message you received read
+    """
+
+    context, true_id_ob, good = init_json_ctx(request, request.POST)
+    if not good:
+        ctx = simplejson.dumps(context)
+
+        return HttpResponse(ctx, content_type='text/json')
+
+    message = models.PrivMessage.objects.inbox(request.user)
+    message = message.filter(read_at__isnull=True)
+    message = message.filter(recipient=request.user)
+    try:
+        message = message[0]
+        message.mark_read()
+        context = {
+            'status': 'OK',
+            'message': 'Marked read',
+            'errors': None,
+        }
+    except IndexError:
+        context = {
+            'status': 'NOK',
+            'message': 'No message',
+            'errors': ('No message',)
+        }
+
+    ctx = simplejson.dumps(context)
+
+    return HttpResponse(ctx, content_type='text/json')
+
+
 # EOF
 

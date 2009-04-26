@@ -17,7 +17,17 @@ var toggleDiv = function(div, a) {
 			subj_msg_id = "#subj_" + msg_id;
 			star_span = $(subj_msg_id).find("span.msg_is_new");
 			if (star_span.text()) {
-				star_span.text('');
+				$.ajax({
+					type: 'POST',
+					url: '{% url mark_msg_read %}',
+					data: "h={{ request.true_id }}&m=" + msg_id,
+					dataType: 'json',
+					success: function(retData) {
+						if (retData['status'] == 'OK') {
+							star_span.text('');
+						}
+					}
+				});
 			}
 		});
 		$(a).text("Piilota");
