@@ -216,6 +216,11 @@ class PrivMessage(models.Model):
 
         self.body_html = '<p>' + '</p><p>'.join(body.splitlines()) + '</p>'
 
+    def mark_read(self):
+        if not self.read_at:
+            self.read_at = datetime.datetime.now()
+            self.save()
+
     def save(self, force_insert=False, force_update=False):
         if not self.id:
             self.sent_at = datetime.datetime.now()
