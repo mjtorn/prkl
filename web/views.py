@@ -1029,7 +1029,13 @@ def user_inbox(request):
     """Incoming messages
     """
 
-    messages = models.PrivMessage.objects.inbox(request.user)
+    messages = models.PrivMessage.objects.inbox(request.user).values()
+
+    for i in xrange(len(messages)):
+        initial = {
+            'in_reply_to': messages[i]['id'],
+        }
+        messages[i]['reply_form'] = reply_form = forms.ReplyForm(initial=initial)
 
     context = {
         'title': 'Saapuneet viestisi',

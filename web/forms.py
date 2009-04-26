@@ -562,5 +562,45 @@ class UserSearchForm(PrklSuperForm):
 
             i += 1
         return mark_safe(u'\n'.join(output))
+
+
+class ReplyForm(PrklSuperForm):
+    body_attrs = {
+        'rows': 5,
+        'cols': 60,
+    }
+    body_errors = {
+        'required': 'Jotain sisältöä tarvitaan :)',
+    }
+
+    in_reply_to = forms.IntegerField(widget=forms.widgets.HiddenInput())
+    body = forms.CharField(label='Viestisi', error_messages=body_errors, widget=forms.widgets.Textarea(attrs=body_attrs))
+
+    def clean_in_reply_to(self):
+        in_reply_to = self.data['in_reply_to']
+        if self.data.has_key('user'):
+            user = self.data['user']
+
+            try:
+                # Remember parent
+                self.parent = models.PrivMessage.objects.get(id=in_reply_to, recipient=user)
+            except models.PrivMessage.DoesNotExist:
+                raise forms.ValidationError('Viestiä ei löydy tai se ei kuulu sinulle')
+
+        return in_reply_to
+
+    @commit_on_success
+    def save(self):
+        message = models.PrivMessage()
+        message.body = self.cleaned_data['body']
+        # All this is smuggled
+        message.sender = self.data['user']
+        message.subject = self.parent.subject
+        message.recipient = self.parent.sender
+
+        message.save()
+
+        return message
+
 # EOF
 
