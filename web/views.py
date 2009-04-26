@@ -1029,7 +1029,6 @@ def user_inbox(request):
 
     messages = models.PrivMessage.objects.inbox(request.user)
 
-    print messages
     context = {
         'title': 'Saapuneet viestisi',
         'inbox_messages': messages,
