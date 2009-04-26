@@ -130,9 +130,9 @@ var handleErrors = function(form, data) {
 				<a style="cursor: pointer;" onClick="toggleReply('#reply_to_{{ msg.id }}', this);">Vastaa</a>
 				<div id="reply_to_{{ msg.id }}" style="display: none;">
 				<form id="form_{{msg.id}}">
-				{{ msg.reply_form.as_prkl }}
-				<input type="submit" name="submit" value="Lähetä" onClick="validateReply('{{ msg.id }}');" />
-			</form>
+					{{ msg.reply_form.as_prkl }}
+					<input type="button" name="submit" value="Lähetä" onClick="validateReply('{{ msg.id }}');" />
+				</form>
 				</div>
 			</div>
 			<span class="msg_user">{{ msg.sender }}</span>
