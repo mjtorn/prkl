@@ -1048,6 +1048,33 @@ def user_inbox(request):
 
     return render_to_response('user_inbox.html', req_ctx)
 
+@dec_true_id_in
+@dec_recommend_register
+def user_sent(request):
+    """Sent messages
+    """
+
+    messages = models.PrivMessage.objects.sent(request.user)
+
+    """
+    for i in xrange(len(messages)):
+        initial = {
+            'in_reply_to': messages[i].id,
+        }
+        messages[i].reply_form = forms.ReplyForm(initial=initial, prefix=str(messages[i].id))
+        messages[i].reply_form.fields['in_reply_to'].initial = messages[i].id
+        messages[i].reply_form.fields['prefix'].initial = messages[i].id
+    """
+
+    context = {
+        'title': 'Lähettämäsi viestit',
+        'sent_messages': messages,
+        'member': request.user,
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('user_sent.html', req_ctx)
+
 
 @dec_true_id_in
 def mark_msg_read(request):

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block scripture %}
+<script type="text/javascript">
+var toggleDiv = function(div, a) {
+	if ($(div).css("display") == "none") {
+		$(div).show(300);
+		$(a).text("Piilota");
+	} else {
+		$(div).hide(300);
+		$(a).text("Näytä");
+	}
+}
+</script>
+{% endblock %}
+
+
+{% block content %}
+	<div id="member_data" class="member_data">
+	{% include "tags/member_pic.html" %}
+	</div>
+
+<div class="messages">
+	<div id="msg_container" style="display: block;">
+	{% for msg in sent_messages %}
+		<div id="subj_{{ msg.id }}" style="margin-top: 1em;">
+			<span class="msg_is_new">
+			{% if not msg.read_at %}
+			*
+			{% endif %}
+			</span>
+			<span class="msg_subject">{{ msg.subject }}</span> <a style="cursor: pointer;" onClick="toggleDiv('#body_{{ msg.id }}', this);">Näytä</a>
+			<br />
+			<div id="body_{{ msg.id }}" style="display: none;">
+				{{ msg.body_html|safe }}
+			</div>
+			<span class="msg_user">{{ msg.recipient }}</span>
+			<span class="msg_date">{{ msg.sent_at }}</span>
+		</div>
+	{% endfor %}
+	</div>
+</div>
+
+{% endblock %}
