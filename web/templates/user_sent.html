@@ -34,7 +34,7 @@ var toggleDiv = function(div, a) {
 			<div id="body_{{ msg.id }}" style="display: none;">
 				{{ msg.body_html|safe }}
 			</div>
-			<span class="msg_user">{{ msg.recipient }}</span>
+			<span class="msg_user"><a href="{% url member msg.recipient %}">{{ msg.recipient }}</a></span>
 			<span class="msg_date">{{ msg.sent_at }}</span>
 		</div>
 	{% endfor %}

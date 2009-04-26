@@ -132,7 +132,7 @@ var handleErrors = function(form, data) {
 				</form>
 				</div>
 			</div>
-			<span class="msg_user">{{ msg.sender }}</span>
+			<span class="msg_user"><a href="{% url member msg.sender %}">{{ msg.sender }}</a></span>
 			<span class="msg_date">{{ msg.sent_at }}</span>
 		</div>
 	{% endfor %}
