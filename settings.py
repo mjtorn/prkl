@@ -98,6 +98,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'prkl.web',
     'fad_tools.messager',
+    'ajax_validation',
 )
 
 if DEBUG_TOOLBAR:

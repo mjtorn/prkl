@@ -1081,5 +1081,38 @@ def mark_msg_read(request):
     return HttpResponse(ctx, content_type='text/json')
 
 
+@dec_true_id_in
+def post_reply(request):
+    """Reply to a message
+    """
+
+    context, true_id_ob, good = init_json_ctx(request, request.POST)
+    print context, true_id_ob, good
+    if not good:
+        ctx = simplejson.dumps(context)
+
+        return HttpResponse(ctx, content_type='text/json')
+
+    data = request.POST.copy() or None
+    reply_form = forms.ReplyForm(data=data)
+
+    if reply_form.is_bound:
+        # Smuggle in user to validate in_reply_to
+        reply_form.data['user'] = request.user
+        if reply_form.is_valid():
+            msg = reply_form.save()
+            context['data'] = {
+                'id': msg.id,
+            }
+        else:
+            context['message'] = 'invalid data'
+            context['errors'] = [str(e) for e in reply_form.errors]
+    else:
+        context['message'] = 'Empty data'
+
+    ctx = simplejson.dumps(context)
+
+    return HttpResponse(ctx, content_type='text/json')
+
 # EOF
 

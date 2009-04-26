@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% load jquery_validation %}
 
 {% block scripture %}
+{% include_validation %}
 <script type="text/javascript">
 $(document).ready(function() {
 	var targetOffset = $("#member_data").offset().top;
@@ -8,6 +10,11 @@ $(document).ready(function() {
 
 	$("#id_subject").focus();
 });
+
+function inputs(form) {
+	return form.find("input, select, textarea")
+}
+
 
 var toggleDiv = function(div, a) {
 	if ($(div).css("display") == "none") {
@@ -45,6 +52,60 @@ var toggleReply = function(div, a) {
 		$(a).text("Vastaa");
 	}
 }
+
+var postReply = function(data) {
+	data['h'] = '{{ request.true_id }}';
+	$.ajax({
+		url: "{% url post_reply %}",
+		type: 'POST',
+		data: data,
+		dataType: 'json',
+		success: function(retData, statusText) {
+			//getReplyMessageHtml(retData['data']['id']);
+			alert('retdata ' + retData['data']['id']);
+		}
+	});
+}
+
+
+/*
+ * AJAX VALIDATION BE HERE
+ */
+
+var validateReply = function(formId) {
+	var form = $("#form_" + formId);
+	form.validate("{% url reply_form_validate %}", {callback: replyCallback, ok_callback: replyCallback });
+}
+
+var replyCallback = function(data, form) {
+	if (data.valid) {
+			form.find("p").find(".errorlist").remove();
+			var content = $("#id_" + data["prefix"]  + "-content")
+			content.val("");
+			postReply(data);
+	}
+	handleErrors(form, data);
+	return false;
+}
+
+var handleErrors = function(form, data) {
+	//inputs(form).prev().prev('ul').remove();
+	//inputs(form).filter(':first').parent().prev('li').remove();
+	// Clear
+	inputs(form).next().next().text('');
+
+	$.each(data.errors, function(key, val)  {
+		alert(key + ' ' + val);
+		if (key == '__all__') {
+			inputs(form).filter(':first').parent().before('<li><ul class="errorlist"><li>' + val + '</li></ul></li>');
+		} else {
+			$('#' + key).next().next().text(val);
+		}
+	});
+	return false;
+}
+
+
 </script>
 {% endblock %}
 
@@ -68,7 +129,10 @@ var toggleReply = function(div, a) {
 				{{ msg.body_html|safe }}
 				<a style="cursor: pointer;" onClick="toggleReply('#reply_to_{{ msg.id }}', this);">Vastaa</a>
 				<div id="reply_to_{{ msg.id }}" style="display: none;">
-				nii
+				<form id="form_{{msg.id}}">
+				{{ msg.reply_form.as_prkl }}
+				<input type="submit" name="submit" value="Lähetä" onClick="validateReply('{{ msg.id }}');" />
+			</form>
 				</div>
 			</div>
 			<span class="msg_user">{{ msg.sender }}</span>
