@@ -89,17 +89,15 @@ var replyCallback = function(data, form) {
 }
 
 var handleErrors = function(form, data) {
-	//inputs(form).prev().prev('ul').remove();
-	//inputs(form).filter(':first').parent().prev('li').remove();
 	// Clear
 	inputs(form).next().next().text('');
 
 	$.each(data.errors, function(key, val)  {
-		alert(key + ' ' + val);
 		if (key == '__all__') {
 			inputs(form).filter(':first').parent().before('<li><ul class="errorlist"><li>' + val + '</li></ul></li>');
+			inputs(form).next().next().append('<b>' + val + '</b>');
 		} else {
-			$('#' + key).next().next().text(val);
+			$('#' + key).next().next().append('<b>' + val + '</b>');
 		}
 	});
 	return false;
