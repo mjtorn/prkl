@@ -1035,7 +1035,9 @@ def user_inbox(request):
         initial = {
             'in_reply_to': messages[i].id,
         }
-        messages[i].reply_form = forms.ReplyForm(initial=initial)
+        messages[i].reply_form = forms.ReplyForm(initial=initial, prefix=str(messages[i].id))
+        messages[i].reply_form.fields['in_reply_to'].initial = messages[i].id
+        messages[i].reply_form.fields['prefix'].initial = messages[i].id
 
     context = {
         'title': 'Saapuneet viestisi',
@@ -1093,6 +1095,22 @@ def post_reply(request):
         return HttpResponse(ctx, content_type='text/json')
 
     data = request.POST.copy() or None
+
+    # Deal with prefix
+    if data:
+        prefix = None
+        for key, value in data.items():
+            if key.endswith('prefix'):
+                prefix = value
+                break
+
+        if prefix:
+            for key, value in data.items():
+                if key.startswith(prefix):
+                    non_prefixed = key.rsplit('-', 1)[-1]
+                    data[non_prefixed] = value
+                    del data[key]
+
     reply_form = forms.ReplyForm(data=data)
 
     if reply_form.is_bound:

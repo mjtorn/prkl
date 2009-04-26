@@ -575,6 +575,7 @@ class ReplyForm(PrklSuperForm):
 
     in_reply_to = forms.IntegerField(widget=forms.widgets.HiddenInput())
     body = forms.CharField(label='Viestisi', error_messages=body_errors, widget=forms.widgets.Textarea(attrs=body_attrs))
+    prefix = in_reply_to
 
     def clean_in_reply_to(self):
         in_reply_to = self.data['in_reply_to']
