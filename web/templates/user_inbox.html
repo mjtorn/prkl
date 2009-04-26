@@ -11,7 +11,15 @@ $(document).ready(function() {
 
 var toggleDiv = function(div, a) {
 	if ($(div).css("display") == "none") {
-		$(div).show(300);
+		$(div).show(300, function() {
+			body_msg_id = $(this).attr("id");
+			msg_id = body_msg_id.split('_')[1];
+			subj_msg_id = "#subj_" + msg_id;
+			star_span = $(subj_msg_id).find("span.msg_is_new");
+			if (star_span.text()) {
+				star_span.text('');
+			}
+		});
 		$(a).text("Piilota");
 	} else {
 		$(div).hide(300);
@@ -30,6 +38,11 @@ var toggleDiv = function(div, a) {
 	<div id="msg_container" style="display: block;">
 	{% for msg in inbox_messages %}
 		<div id="subj_{{ msg.id }}" style="margin-top: 1em;">
+			<span class="msg_is_new">
+			{% if not msg.read_at %}
+			*
+			{% endif %}
+			</span>
 			<span class="msg_subject">{{ msg.subject }}</span> <a style="cursor: pointer;" onClick="toggleDiv('#body_{{ msg.id }}', this);">Näytä</a>
 			<br />
 			<div id="body_{{ msg.id }}" style="display: none;">
