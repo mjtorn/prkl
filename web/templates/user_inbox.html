@@ -47,6 +47,7 @@ var toggleDiv = function(div, a) {
 var toggleReply = function(div, a) {
 	if ($(div).css("display") == "none") {
 		$(div).show(300);
+		inputs($(div).find('form')).focus();
 	} else {
 		$(div).hide(300);
 		$(a).text("Vastaa");
