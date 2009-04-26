@@ -36,6 +36,15 @@ var toggleDiv = function(div, a) {
 		$(a).text("Näytä");
 	}
 }
+
+var toggleReply = function(div, a) {
+	if ($(div).css("display") == "none") {
+		$(div).show(300);
+	} else {
+		$(div).hide(300);
+		$(a).text("Vastaa");
+	}
+}
 </script>
 {% endblock %}
 
@@ -57,6 +66,10 @@ var toggleDiv = function(div, a) {
 			<br />
 			<div id="body_{{ msg.id }}" style="display: none;">
 				{{ msg.body_html|safe }}
+				<a style="cursor: pointer;" onClick="toggleReply('#reply_to_{{ msg.id }}', this);">Vastaa</a>
+				<div id="reply_to_{{ msg.id }}" style="display: none;">
+				nii
+				</div>
 			</div>
 			<span class="msg_user">{{ msg.sender }}</span>
 			<span class="msg_date">{{ msg.sent_at }}</span>
