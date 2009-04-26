@@ -1005,5 +1005,23 @@ def msg_to_user(request, rcpt):
 
     return render_to_response('msg_to_user.html', req_ctx)
 
+@dec_true_id_in
+@dec_recommend_register
+def user_inbox(request):
+    """Incoming messages
+    """
+
+    messages = models.PrivMessage.objects.inbox(request.user)
+
+    print messages
+    context = {
+        'title': 'Saapuneet viestisi',
+        'inbox_messages': messages,
+        'member': request.user,
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('user_inbox.html', req_ctx)
+
 # EOF
 

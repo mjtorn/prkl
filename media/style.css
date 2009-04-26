@@ -161,7 +161,7 @@ div.prkl_content {
 	padding-bottom: 1em;
 }
 
-div.prkl, div.comment, div.member_data, div.about_vip, div.search, div.write_msg, div.your_sent {
+div.prkl, div.comment, div.member_data, div.about_vip, div.search, div.write_msg, div.your_sent, div.messages {
 	border: solid 1px white;
 	margin-bottom: 0.5em;
 	background-color: #ffffff;
@@ -170,7 +170,7 @@ div.prkl, div.comment, div.member_data, div.about_vip, div.search, div.write_msg
 	font-size: 0.8em;
 }
 
-div.write_msg, div.your_sent {
+div.write_msg, div.your_sent, div.messages {
 	width: 540px;
 }
 
@@ -222,7 +222,7 @@ div.prkl a, div.comment a, div.register a, div.login a, div.prklform a, a.show_c
 	cursor: pointer;
 }
 
-div.your_sent a {
+div.your_sent a, div.messages a {
 	color: #0000ee;
 	font-family: gothic;
 	font-size: 1.2em;

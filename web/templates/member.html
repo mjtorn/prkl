@@ -8,6 +8,11 @@
 
 {% block content %}
 <h1>{{ member }}</h1>
+{% ifequal user.id member.user.id %}
+<div class="paginator">
+    LOREM IPSUM DOLER SIT TUKEHTUKAA VAIKKA PASKAAN
+</div>
+{% endifequal %}
 <div class="member">
 	<div id="member_data" class="member_data">
 		{% include "tags/member_pic.html" %}
