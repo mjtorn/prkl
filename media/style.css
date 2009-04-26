@@ -63,10 +63,15 @@ div.top a.active:hover, div.top a.inactive:hover {
 	text-decoration: underline;
 }
 
-span.prkl_user, span.prkl_user a, span.prkl_date, span.prkl_da, span.comment_user, span.comment_user a, span.comment_date, span.msg_user, span.msg_date, span.msg_subject {
+span.prkl_user, span.prkl_user a, span.prkl_date, span.comment_user, span.comment_user a, span.comment_date, span.msg_user, span.msg_date, span.msg_subject {
 	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
 	font-size: 8pt;
 	color: #575656;
+}
+
+span.prkl_user a, span.msg_user {
+	font-family: gothic;
+	color: #0000ee;
 }
 
 span.msg_subject {
