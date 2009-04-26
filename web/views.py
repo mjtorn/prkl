@@ -1087,7 +1087,6 @@ def post_reply(request):
     """
 
     context, true_id_ob, good = init_json_ctx(request, request.POST)
-    print context, true_id_ob, good
     if not good:
         ctx = simplejson.dumps(context)
 
@@ -1104,6 +1103,9 @@ def post_reply(request):
             context['data'] = {
                 'id': msg.id,
             }
+            context['status'] = 'OK'
+            context['message'] = 'Posted'
+            context['errors'] = None
         else:
             context['message'] = 'invalid data'
             context['errors'] = [str(e) for e in reply_form.errors]
