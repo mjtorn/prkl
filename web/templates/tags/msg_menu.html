@@ -1,0 +1,14 @@
+{% load utils %}
+<div class="msg_menu">
+{% with request.META.PATH_INFO as req_path %}
+{% url member user.username as member_url %}
+<a href="{{ member_url }}" class="{% check_active req_path member_url %}">Oma</a>
+&raquo;
+{% url user_inbox as user_inbox_url %}
+<a href="{% url user_inbox %}" class="{% check_active req_path user_inbox_url  %}">Saapuneet viestit</a>
+&raquo;
+{% url user_sent as user_sent_url %}
+<a href="{% url user_sent %}" class="{% check_active req_path user_sent_url %}">Lähettämäsi viestit</a>
+{% endwith %}
+</div>
+

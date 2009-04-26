@@ -63,6 +63,29 @@ div.top a.active:hover, div.top a.inactive:hover {
 	text-decoration: underline;
 }
 
+div.msg_menu {
+	text-align: center;
+	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+	font-size: 1em;
+	color: black;
+	font-weight: bold;
+}
+
+div.msg_menu a, div.msg_menu a.inactive {
+	color: #7c352b;
+	text-decoration: none;
+}
+
+div.msg_menu a.active {
+	color: #000000;
+	text-decoration: none;
+}
+
+div.msg_menu a:hover, div.msg_menu a.active:hover, div.msg_menu a.inactive:hover {
+	text-decoration: underline;
+}
+
+
 span.prkl_user, span.prkl_user a, span.prkl_date, span.comment_user, span.comment_user a, span.comment_date, span.msg_user, span.msg_date, span.msg_subject {
 	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
 	font-size: 8pt;

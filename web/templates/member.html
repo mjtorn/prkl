@@ -9,13 +9,11 @@
 {% block content %}
 <h1>{{ member }}</h1>
 {% ifequal user.id member.user.id %}
-<div class="paginator">
-    LOREM IPSUM DOLER SIT TUKEHTUKAA VAIKKA PASKAAN
-</div>
+{% include "tags/msg_menu.html" %}
 {% endifequal %}
 <div class="member">
 	<div id="member_data" class="member_data">
-		{% include "tags/member_pic.html" %}
+		{% include "tags/member_pic_edit.html" %}
 
 		{% ifequal user.id member.user.id %}
 		<a class="do_edit_data" href="{% url edit_profile %}">MUOKKAA TIETOJA</a>
