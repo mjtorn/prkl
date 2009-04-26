@@ -61,8 +61,7 @@ var postReply = function(data) {
 		data: data,
 		dataType: 'json',
 		success: function(retData, statusText) {
-			//getReplyMessageHtml(retData['data']['id']);
-			alert('retdata ' + retData['data']['id']);
+			inputs($('#form_' + retData['data']['in_reply_to'])).next().next().after().append('<span style="color: blue; font-size: 1.2em; font-weight: bold;">Viesti lähetetty onnistuneesti!</span>');
 		}
 	});
 }
@@ -94,7 +93,6 @@ var handleErrors = function(form, data) {
 
 	$.each(data.errors, function(key, val)  {
 		if (key == '__all__') {
-			inputs(form).filter(':first').parent().before('<li><ul class="errorlist"><li>' + val + '</li></ul></li>');
 			inputs(form).next().next().append('<b>' + val + '</b>');
 		} else {
 			$('#' + key).next().next().append('<b>' + val + '</b>');

@@ -597,6 +597,7 @@ class ReplyForm(PrklSuperForm):
         message.sender = self.data['user']
         message.subject = self.parent.subject
         message.recipient = self.parent.sender
+        message.parent = self.parent
 
         message.save()
 

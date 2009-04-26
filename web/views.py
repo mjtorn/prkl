@@ -1102,6 +1102,7 @@ def post_reply(request):
             msg = reply_form.save()
             context['data'] = {
                 'id': msg.id,
+                'in_reply_to': msg.parent_id,
             }
             context['status'] = 'OK'
             context['message'] = 'Posted'
