@@ -847,14 +847,16 @@ def edit_profile(request):
 
     return render_to_response('edit_profile.html', req_ctx)
 
-@dec_true_id_in
-def set_form_visibility(request):
-    """Semi-api view for dealing with visibilities
+def init_json_ctx(request, data):
+    """Helper for dealing with initing json and stuff
+    request is the obvious object, but data is separete because of GET or POST
     """
 
-    true_id = request.POST.get('h', '')
-    form = request.POST.get('f', '')
-    visibility = request.POST.get('v', '')
+    # By default, don't cause the view to bail out
+    good = True
+
+    # Always see if we're even slightly valid
+    true_id = data.get('h', '')
 
     context = {
         'status': 'NOK',
@@ -866,16 +868,30 @@ def set_form_visibility(request):
         context['message'] = 'Value mismatch'
         context['errors'] = ('Value mismatch',)
 
-        ctx = simplejson.dumps(context)
-
-        return HttpResponse(ctx, content_type='text/json')
+        good = False
 
     try:
         true_id_ob = models.TrueId.objects.get(hash=true_id)
     except models.TrueId.DoesNotExist, msg:
+        true_id_ob = None
         context['message'] = 'Not found'
         context['errors'] = (str(msg),)
 
+        good = False
+
+    return context, true_id_ob, good
+
+
+@dec_true_id_in
+def set_form_visibility(request):
+    """Semi-api view for dealing with visibilities
+    """
+
+    form = request.POST.get('f', '')
+    visibility = request.POST.get('v', '')
+
+    context, true_id_ob, good = init_json_ctx(request, request.POST)
+    if not good:
         ctx = simplejson.dumps(context)
 
         return HttpResponse(ctx, content_type='text/json')
