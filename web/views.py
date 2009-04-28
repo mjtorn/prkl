@@ -400,7 +400,7 @@ def about_vip(request):
     return render_to_response('about_vip.html', req_ctx)
 
 @dec_true_id_in
-def index(request, page=None, records=None):
+def index(request, page=None, records=None, tag=None):
     """Our index page
     """
 
@@ -445,6 +445,12 @@ def index(request, page=None, records=None):
     if not request.has_session or request.META['unreal_true_id']:
         prkls.disable_votes()
 
+    ### Tag affects base url too!
+    base_url = 'http://%s' % request.META['HTTP_HOST']
+    if tag:
+        prkls.tag(tag)
+        base_url = '%s/%s' % (base_url, tag)
+
     # Pagination
     if not page:
         page = 1
@@ -460,7 +466,7 @@ def index(request, page=None, records=None):
         'title': 'Etusivu',
         'submit_prkl_form': submit_prkl_form,
         'prkls': prkls,
-        'base_url': 'http://%s' % request.META['HTTP_HOST'],
+        'base_url': base_url,
     }
     context.update(pag_ctx)
     req_ctx = RequestContext(request, context)
