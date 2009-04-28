@@ -62,7 +62,13 @@ var postReply = function(data) {
 		data: data,
 		dataType: 'json',
 		success: function(retData, statusText) {
-			inputs($('#form_' + retData['data']['in_reply_to'])).next().next().after().append('<span style="color: blue; font-size: 1.2em; font-weight: bold;">Viesti lähetetty onnistuneesti!</span>');
+			subRetData = retData['data'];
+			if (subRetData) {
+				irt = subRetData['in_reply_to'];
+				inputs($('#form_' + irt)).next().next().after().append('<span style="color: blue; font-size: 1.2em; font-weight: bold;">Viesti lähetetty onnistuneesti!</span>');
+			} else {
+				alert("Viestin lähetys epäonnistui, paluutietoa ei tullut.");
+			}
 		}
 	});
 }
