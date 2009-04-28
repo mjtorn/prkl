@@ -1,4 +1,4 @@
-# vim: tabstop=4 expandtab autoindent shiwftwidth=4 fileencoding=utf-8
+# vim: tabstop=4 expandtab autoindent shiftwidth=4 fileencoding=utf-8
 
 from django.db import connection
 
