@@ -9,7 +9,7 @@
 				{% if prkl.tags %}
 
 				<div class="prkl_tags">
-                {{ prkl.tags|prkltagjoin:", " }}
+					{{ prkl.tags|prkltaglinks:request }}
 				</div>
 				{% endif %}
 
