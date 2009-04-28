@@ -21,7 +21,8 @@ FROM web_prkl p
     LEFT OUTER JOIN web_prkl_tag pt ON p.id=pt.prkl_id
     LEFT OUTER JOIN web_tag t ON pt.tag_id=t.id
 WHERE p.id IN (
-    SELECT id FROM web_prkl
+    SELECT web_prkl.id FROM web_prkl
+    %(tag)s
     ORDER BY %(order_by)s, p.id, u.id, t.id
     %(limit)s
 )
@@ -41,7 +42,14 @@ EXISTS(SELECT 1 FROM web_prkllike WHERE prkl_id=p.id AND user_id=%d)
 """
 
     COUNT_PRKL_QRY = """\
-SELECT COUNT(id) FROM web_prkl
+SELECT COUNT(web_prkl.id) FROM web_prkl
+"""
+
+    TAG_SNIPPET_QRY = """\
+, web_prkl_tag, web_tag 
+    WHERE web_tag.id=web_prkl_tag.tag_id
+    AND web_prkl_tag.prkl_id=web_prkl.id
+    AND web_tag.name= '%s'
 """
 
     def __init__(self, **kwargs):
@@ -74,10 +82,18 @@ SELECT COUNT(id) FROM web_prkl
         ## No limit by default
         self.opts['limit'] = ''
 
+        ## No specific tag to filter on
+        self.opts['tag'] = ''
+
     def __len__(self):
         if self.res is None:
             cursor = connection.cursor()
-            cursor.execute(self.COUNT_PRKL_QRY)
+            ## Check if we care about a tag
+            qry = self.COUNT_PRKL_QRY
+            if self.opts['tag']:
+                qry = '%s %s ' % (qry, self.opts['tag'])
+            print qry
+            cursor.execute(qry)
             # THERE CAN BE ONLY ONE!
             return cursor.fetchone()[0]
 
@@ -122,9 +138,13 @@ SELECT COUNT(id) FROM web_prkl
     def bottom(self):
         self.opts['order_by'] = 'score ASC, created_at DESC'
 
+    def tag(self, tag_name):
+        self.opts['tag'] = self.TAG_SNIPPET_QRY % tag_name
+
     def execute(self):
         qry = self.RAW_QRY % self.opts 
 
+        print qry
         cursor = connection.cursor()
         cursor.execute(qry)
         self.db_res = cursor.fetchall()
