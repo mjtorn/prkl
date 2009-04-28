@@ -113,6 +113,20 @@ span.msg_subject {
 	color: #5b261f;
 }
 
+div.prkl_tags a.prkl_tag {
+	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+	font-size: 8pt;
+	color: #5b261f;
+	text-decoration: none;
+}
+
+div.prkl_tags a.prkl_tag:hover {
+	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
+	font-size: 8pt;
+	color: #5b261f;
+	text-decoration: underline;
+}
+
 div.left {
 	font-size: 8pt;
 	width: 170px;
