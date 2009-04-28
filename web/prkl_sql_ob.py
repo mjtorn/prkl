@@ -143,7 +143,6 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
     def execute(self):
         qry = self.RAW_QRY % self.opts 
 
-        print qry
         cursor = connection.cursor()
         cursor.execute(qry)
         self.db_res = cursor.fetchall()
