@@ -418,9 +418,15 @@ def index(request, page=None, records=None, tag=None):
 
     submit_prkl_form = forms.SubmitPrklForm(data)
 
-    tags = models.Tag.objects.filter(is_default=True).values('id', 'name')
-    tags = [(t['id'], t['name']) for t in tags]
+    tag_obs = models.Tag.objects.filter(is_default=True).values('id', 'name')
+    tags = [(t['id'], t['name']) for t in tag_obs]
     submit_prkl_form.fields['tags'].choices = tags
+
+    if tag:
+        try:
+            tag_ob = tag_obs.get(name=tag)
+        except models.Tag.DoesNotExist, msg:
+            return notfound(request)
 
     if request.user.id:
         checkbox = django_forms.BooleanField(label='Anonyymisti?', required=False)
