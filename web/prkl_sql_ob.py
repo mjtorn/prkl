@@ -49,7 +49,7 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
 , web_prkl_tag, web_tag 
     WHERE web_tag.id=web_prkl_tag.tag_id
     AND web_prkl_tag.prkl_id=web_prkl.id
-    AND web_tag.name= '%s'
+    AND LOWER(web_tag.name)= LOWER('%s')
 """
 
     def __init__(self, **kwargs):
@@ -92,7 +92,6 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
             qry = self.COUNT_PRKL_QRY
             if self.opts['tag']:
                 qry = '%s %s ' % (qry, self.opts['tag'])
-            print qry
             cursor.execute(qry)
             # THERE CAN BE ONLY ONE!
             return cursor.fetchone()[0]
