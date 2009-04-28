@@ -19,8 +19,8 @@ urlpatterns = patterns('',
     url(r'^top/$', views.top, name='top'),
     url(r'^bottom//p/(?P<page>\d+)/(?P<records>\d+)', views.bottom, name='bottom'),
     url(r'^bottom/$', views.bottom, name='bottom'),
-    url(r'^vote/(\d+)/(up|down)/([a-zA-Z0-9/]+)?/$', views.vote, name='vote'),
-    url(r'^like/(\d+)/(yes|no)/([a-zA-Z0-9/]+)?/$', views.like, name='like'),
+    url(r'^vote/(\d+)/(up|down)/(.+)?/$', views.vote, name='vote'),
+    url(r'^like/(\d+)/(yes|no)/(.+)?/$', views.like, name='like'),
     url(r'^prkl/(\d+)/$', views.prkl, name='prkl'),
     url(r'^faq/$', views.notfound, name='faq'),
     url(r'^about_vip/$', views.about_vip, name='about_vip'),
@@ -50,7 +50,8 @@ if settings.KLUDGE_STATIC:
 
 urlpatterns += patterns('',
     url(r'^p/(?P<page>\d+)/(?P<records>\d+)', views.index, name='index'),
-    url(r'^(?P<tag>\w+)/p/(?P<page>\d+)/(?P<records>\d+)', views.index, name='index'),
+    url(r'^(?P<tag>.+)/p/(?P<page>\d+)/(?P<records>\d+)', views.index, name='index'),
+    url(r'^(?P<tag>.+)', views.index, name='index'),
     url(r'^$', views.index, name='index'),
 )
 
