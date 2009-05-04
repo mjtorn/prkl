@@ -8,6 +8,7 @@
 <div id="register_form" class="register_form" style="display: none;">
 {% endif %}
 	{% if reg_msg %}
+	<div class="reg_stat">
 	{{ reg_msg }}
 	{% else %}
 	<form action="{{ request.META.PATH_INFO }}" method="POST">
