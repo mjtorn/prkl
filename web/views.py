@@ -859,6 +859,18 @@ def edit_profile(request):
 
     return render_to_response('edit_profile.html', req_ctx)
 
+@dec_true_id_in
+def faq(request):
+    """FAQ
+    """
+
+    context = {
+        'title': 'Usein Kysytyt Kysymykset',
+    }
+    req_ctx = RequestContext(request, context)
+
+    return render_to_response('faq.html', req_ctx)
+
 def init_json_ctx(request, data):
     """Helper for dealing with initing json and stuff
     request is the obvious object, but data is separete because of GET or POST
