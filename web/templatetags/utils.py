@@ -5,6 +5,8 @@ from django.utils.safestring import SafeUnicode
 
 from django.template import Library
 
+from dateutil import parser, tz
+
 register = Library()
 
 @register.filter
@@ -37,6 +39,14 @@ def prkltaglinks(tags, request):
 
     return out
 #prkltaglinks.is_safe = True
+
+@register.filter
+def as_tz(date, tz_name):
+    ## Argh
+    # Enforce UTC because the date apparently doesn't know it's utc...
+    new_date = parser.parse(date.strftime("%Y-%m-%d %H:%M:%S UTC"))
+    dest_tz = tz.gettz(tz_name)
+    return new_date.astimezone(dest_tz).strftime("%Y-%m-%d %H:%M:%S")
 
 # EOF
 

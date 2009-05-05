@@ -22,7 +22,7 @@
 				{% endif %}
 				</span>
 				<span class="prkl_date">
-				{{ prkl.created_at|date:"Y-m-d H:i:s" }}
+				{{ prkl.created_at|as_tz:"Europe/Helsinki" }}
 				</span>
                 </div>
 
