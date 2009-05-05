@@ -49,6 +49,12 @@ class TestSms(test.TestCase):
         exp_ret = 2
         assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
 
+    def test_040_test_sms_content(self):
+        sms = mediator_models.Sms.objects.get(id=1)
+        ret = sms.content
+        exp_ret = 'Tänään haluan pillua prkl'
+        assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
+
 # EOF
 
 
