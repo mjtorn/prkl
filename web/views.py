@@ -876,7 +876,7 @@ def faq(request):
 
     return render_to_response('faq.html', req_ctx)
 
-def sms_incoming(request):
+def incoming_sms(request):
     """SMS and all
     """
 
@@ -892,7 +892,7 @@ def sms_incoming(request):
 
     return HttpResponse(res, content_type='text/xml')
 
-def receipt_incoming(request):
+def incoming_receipt(request):
     """Receipt view
     """
 

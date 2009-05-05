@@ -23,7 +23,7 @@ class TestSms(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Tänään haluan pillua prkl</message></sms>',
         }
 
-        path = reverse('sms_incoming')
+        path = reverse('incoming_sms')
         res = self.client.post(path, data=data)
         print res
 
@@ -38,7 +38,7 @@ class TestSms(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Tänään haluan pillua prkl</message></sms>',
         }
 
-        path = reverse('sms_incoming')
+        path = reverse('incoming_sms')
         res1 = self.client.post(path, data=data)
         res2 = self.client.post(path, data=data)
         print res1
@@ -61,7 +61,7 @@ class TestSms(test.TestCase):
             'status': '1',
             # transactionid missing
         }
-        path = reverse('receipt_incoming')
+        path = reverse('incoming_receipt')
         res = self.client.post(path, data=data)
         ret = res.content
         exp_ret = ''
@@ -73,7 +73,7 @@ class TestSms(test.TestCase):
             'status': '1',
             'transactionid': '0',
         }
-        path = reverse('receipt_incoming')
+        path = reverse('incoming_receipt')
         res = self.client.post(path, data=data)
         ret = res.content
         exp_ret = 'OK'
