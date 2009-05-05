@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 
 from django.test import client
 
+from mediator import models as mediator_models
+
 from noserun import test
 
 class TestSms(test.TestCase):
@@ -37,8 +39,15 @@ class TestSms(test.TestCase):
         }
 
         path = reverse('sms_incoming')
-        res = self.client.post(path, data=data)
-        print res
+        res1 = self.client.post(path, data=data)
+        res2 = self.client.post(path, data=data)
+        print res1
+        assert res1.content == res2.content, 'Two same posts should return same result'
+
+    def test_030_count_sms(self):
+        ret = mediator_models.Sms.objects.all().count()
+        exp_ret = 2
+        assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
 
 # EOF
 
