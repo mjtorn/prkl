@@ -28,6 +28,11 @@ from django import forms as django_forms
 
 from django import template
 
+from lxml import etree
+
+from mediator import views as mediator_views
+from mediator import utils as mediator_utils
+
 from web import forms, models
 from web import utils
 from web import prkl_sql_ob
@@ -870,6 +875,23 @@ def faq(request):
     req_ctx = RequestContext(request, context)
 
     return render_to_response('faq.html', req_ctx)
+
+def sms_incoming(request):
+    """SMS and all
+    """
+
+    ctx = mediator_views.incoming_sms(request)
+
+    if ctx['sms'] is None:
+        ret = mediator_utils.create_error(u'Tänään jokin meni pieleen viestisi kanssa prkl', 'system')
+    else:
+        # TODO: filter on keywords!
+        ret = mediator_utils.create_return('Placeholder return')
+
+    res = etree.tostring(ret, xml_declaration=True, encoding='utf-8', pretty_print=True)
+
+    return HttpResponse(res, content_type='text/xml')
+
 
 def init_json_ctx(request, data):
     """Helper for dealing with initing json and stuff

@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'prkl.web',
     'fad_tools.messager',
     'ajax_validation',
+    'mediator',
 )
 
 if DEBUG_TOOLBAR:
