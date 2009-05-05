@@ -203,7 +203,7 @@ div.prkl_content {
 	padding-bottom: 1em;
 }
 
-div.prkl, div.comment, div.member_data, div.about_vip, div.search, div.write_msg, div.your_sent, div.messages {
+div.prkl, div.comment, div.member_data, div.about_vip, div.search, div.write_msg, div.your_sent, div.messages, div.faq {
 	border: solid 1px white;
 	margin-bottom: 0.5em;
 	background-color: #ffffff;
@@ -214,6 +214,19 @@ div.prkl, div.comment, div.member_data, div.about_vip, div.search, div.write_msg
 
 div.write_msg, div.your_sent, div.messages {
 	width: 540px;
+}
+
+div.faqs {
+	background-color: #ffffff;
+}
+
+div.faq {
+	border: none;
+	margin-left: 1.0em;
+}
+
+div.faq h3 {
+	margin-left: -1.0em;
 }
 
 div.invite, div.member_search {
