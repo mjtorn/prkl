@@ -220,6 +220,9 @@ class SubmitPrklForm(PrklSuperForm):
         if not content.lower().endswith('prkl'):
             raise forms.ValidationError('Päätäthän Prkleesi sanalla prkl')
 
+        if len(content) > 1024:
+            raise forms.ValidationError('Tänään prkleesi on yli 1024 merkkiä prkl')
+
         return '%s%s' % ('T', content[1:])
 
     @commit_on_success
