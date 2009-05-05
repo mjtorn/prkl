@@ -128,5 +128,8 @@ TEMPLATE_TAGS = (
 # fad_tools.pagination
 PAGE_PATH = '/p/'
 
+# Proper testing
+TEST_RUNNER = 'noserun.run_tests'
+
 # EOF
 
