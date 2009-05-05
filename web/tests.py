@@ -34,7 +34,7 @@ class TestSms(test.TestCase):
             'numberfrom': '+35850666',
             'numberto': '666',
             'operator': 'Saunalahti',
-            'transactionid': '666',
+            'transactionid': '667',
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Tänään haluan pillua prkl</message></sms>',
         }
 
@@ -53,6 +53,30 @@ class TestSms(test.TestCase):
         sms = mediator_models.Sms.objects.get(id=1)
         ret = sms.content
         exp_ret = 'Tänään haluan pillua prkl'
+        assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
+
+    def test_050_fail_receipt(self):
+        data = {
+            'type': 'receipt',
+            'status': '1',
+            # transactionid missing
+        }
+        path = reverse('receipt_incoming')
+        res = self.client.post(path, data=data)
+        ret = res.content
+        exp_ret = ''
+        assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
+
+    def test_050_succeed_receipt(self):
+        data = {
+            'type': 'receipt',
+            'status': '1',
+            'transactionid': '0',
+        }
+        path = reverse('receipt_incoming')
+        res = self.client.post(path, data=data)
+        ret = res.content
+        exp_ret = 'OK'
         assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
 
 # EOF

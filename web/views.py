@@ -892,6 +892,19 @@ def sms_incoming(request):
 
     return HttpResponse(res, content_type='text/xml')
 
+def receipt_incoming(request):
+    """Receipt view
+    """
+
+    ctx = mediator_views.incoming_receipt(request)
+
+    ret = ''
+    if ctx['receipt'] is not None:
+        ret = 'OK'
+    # FIXME: Handle case when receipt failed somehow
+
+    return HttpResponse(ret, content_type='text/plain')
+
 
 def init_json_ctx(request, data):
     """Helper for dealing with initing json and stuff
