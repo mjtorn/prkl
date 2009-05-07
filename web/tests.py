@@ -79,6 +79,75 @@ class TestSms(test.TestCase):
         exp_ret = 'OK'
         assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
 
+
+class TestSmsVip(test.TestCase):
+    fixtures = ('initial_data',)
+
+    def setup(self):
+        self.client = client.Client()
+
+    def test_010_broken_command(self):
+        data = {
+            'command': 'Prkl',
+            'argument': '',
+            'numberfrom': '+35850666',
+            'numberto': '666',
+            'operator': 'Saunalahti',
+            'transactionid': '668',
+            'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Prkl</message></sms>',
+        }
+
+        path = reverse('incoming_sms')
+        res = self.client.post(path, data=data)
+        print res
+
+
+    def test_020_broken_argument(self):
+        data = {
+            'command': 'Prkl',
+            'argument': '36kk',
+            'numberfrom': '+35850666',
+            'numberto': '666',
+            'operator': 'Saunalahti',
+            'transactionid': '669',
+            'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Prkl 36kk</message></sms>',
+        }
+
+        path = reverse('incoming_sms')
+        res = self.client.post(path, data=data)
+        print res
+
+    def test_030_broken_userid_argument(self):
+        data = {
+            'command': 'Prkl',
+            'argument': '12kk 666',
+            'numberfrom': '+35850666',
+            'numberto': '666',
+            'operator': 'Saunalahti',
+            'transactionid': '670',
+            'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Prkl 36kk 666</message></sms>',
+        }
+
+        path = reverse('incoming_sms')
+        res = self.client.post(path, data=data)
+        print res
+
+    def test_040_ok_vip_order(self):
+        data = {
+            'command': 'Prkl',
+            'argument': '12kk 1',
+            'numberfrom': '+35850666',
+            'numberto': '666',
+            'operator': 'Saunalahti',
+            'transactionid': '671',
+            'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Prkl 36kk 1</message></sms>',
+        }
+
+        path = reverse('incoming_sms')
+        res = self.client.post(path, data=data)
+        print res
+
+
 # EOF
 
 
