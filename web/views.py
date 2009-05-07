@@ -919,6 +919,34 @@ def incoming_sms(request):
             else:
                 ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', 'user')
 
+        elif command == u'tänään':
+            sms = ctx['sms']
+            # Consider anonymous
+            user = auth_models.AnonymousUser()
+            # Mandatory tag(s)
+            tag_obs = models.Tag.objects.filter(is_default=True).values('id', 'name')
+            tag = tag_obs.get(name='Satunnainen')
+            tags = [(t['id'], t['name']) for t in tag_obs]
+
+            # Conclusion
+            data = {
+                'content': sms.content,
+                'user': user,
+                'tags': (tag['id'],),
+            }
+            submit_prkl_form = forms.SubmitPrklForm(data)
+            # ..sigh
+            submit_prkl_form.fields['tags'].choices = tags
+            if submit_prkl_form.is_valid():
+                submit_prkl_form.save()
+                ret = mediator_utils.create_return(u'Prkl lisätty', price='013')
+            else:
+                err = submit_prkl_form.errors.get('content', None)
+                if err:
+                    ret = mediator_utils.create_error(u'%s (viestistä ei veloitettu)' % err, 'system')
+                else:
+                    ret = mediator_utils.create_error(u'Prkleen lisäämisessä ongelma', 'system')
+
         else:
             ret = mediator_utils.create_return('Placeholder return')
 
