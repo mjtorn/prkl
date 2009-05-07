@@ -891,7 +891,6 @@ def incoming_sms(request):
     if ctx['sms'] is None:
         ret = mediator_utils.create_error(u'Tänään jokin meni pieleen viestisi kanssa prkl', 'system')
         sms_form = ctx['sms_form']
-        print sms_form.errors
     else:
         # If we have sms, we have clean data
         data = ctx['sms_form'].cleaned_data

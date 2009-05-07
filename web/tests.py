@@ -89,8 +89,6 @@ class TestSms(test.TestCase):
 
 
 class TestSmsVip(test.TestCase):
-    fixtures = ('initial_data',)
-
     def setup(self):
         self.client = client.Client()
 
