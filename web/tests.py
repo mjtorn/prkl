@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 
 from django.test import client
 
+from prkl.web import models
+
 from mediator import models as mediator_models
 
 from noserun import test
@@ -46,6 +48,12 @@ class TestSms(test.TestCase):
 
     def test_030_count_sms(self):
         ret = mediator_models.Sms.objects.all().count()
+        exp_ret = 2
+        assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
+
+    def test_035_count_prkl(self):
+        ret = models.Prkl.objects.all().count()
+        # Where the hell did this duplication come from?
         exp_ret = 2
         assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
 
