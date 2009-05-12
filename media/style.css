@@ -17,6 +17,11 @@ div#prkl-logo img {
 	border: none;
 }
 
+div#prkl-logo .text {
+	font-family: Kootenay, verdana;
+	font-size: 14pt;
+}
+
 div.notfound h1 {
 	font-size: 20pt;
 }
