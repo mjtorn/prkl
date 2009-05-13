@@ -22,7 +22,6 @@
         "model": "web.user", 
         "fields": {
             "description": "lorem ipsum f\u00f6f\u00f6 666", 
-            "vip_expire_at": "", 
             "is_male": true, 
             "pic": "", 
             "phone": "+358504607816", 
