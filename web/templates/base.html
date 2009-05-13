@@ -51,15 +51,6 @@
 </head>
 
 <body>
-<div id="prkl-logo">
-	<a href="{% url index %}">
-		<img src="/media/prkl-logo.png" alt="prkl-logo"/>
-	</a>
-	<span class="text">
-	Avautuminen alkaa "Tänään"
-	</span>
-</div>
-
 
 <div class="top">
 {% block menu %}
@@ -89,6 +80,15 @@
 {% endif %}
 {% endwith %}
 {% endblock %}
+</div>
+
+<div id="prkl-logo">
+	<a href="{% url index %}">
+		<img src="/media/prkl-logo.png" alt="prkl-logo"/>
+	</a>
+	<span class="text">
+	Avautuminen alkaa "Tänään"
+	</span>
 </div>
 
 <div class="right">
