@@ -1,0 +1,101 @@
+[
+    {
+        "pk": 1, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "mjt", 
+            "first_name": "", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": true, 
+            "is_staff": true, 
+            "last_login": "2009-05-05 12:02:22", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$86128$24dd2dcf54c135f4ea8e09807b3eca3e359ea911", 
+            "email": "mjt@prkl.es", 
+            "date_joined": "2009-03-02 17:01:31"
+        }
+    },
+    {
+        "pk": 1, 
+        "model": "web.user", 
+        "fields": {
+            "description": "lorem ipsum f\u00f6f\u00f6 666", 
+            "vip_expire_at": "", 
+            "is_male": true, 
+            "pic": "", 
+            "phone": "+358504607816", 
+            "birthday": "1982-01-21", 
+            "location": "Helsinki", 
+            "groups": [], 
+            "user_permissions": []
+        }
+    },
+    {
+        "pk": 1, 
+        "model": "web.tag", 
+        "fields": {
+            "is_default": true, 
+            "name": "Ty\u00f6"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "web.tag", 
+        "fields": {
+            "is_default": true, 
+            "name": "Rakkaus"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "web.tag", 
+        "fields": {
+            "is_default": true, 
+            "name": "Seksi"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "web.tag", 
+        "fields": {
+            "is_default": true, 
+            "name": "Lapset"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "web.tag", 
+        "fields": {
+            "is_default": true, 
+            "name": "El\u00e4imet"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "web.tag", 
+        "fields": {
+            "is_default": true, 
+            "name": "Terveys"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "web.tag", 
+        "fields": {
+            "is_default": true, 
+            "name": "Prkl"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "web.tag", 
+        "fields": {
+            "is_default": true, 
+            "name": "Satunnainen"
+        }
+    }
+]
+
+
