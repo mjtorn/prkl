@@ -247,7 +247,7 @@ div.member_data {
 	width: 540px;
 }
 
-div.member_data a {
+div.member_data a, div.member a {
 	color: #0000ee;
 	text-decoration: none;
 }

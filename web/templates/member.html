@@ -12,6 +12,7 @@
 {% include "tags/msg_menu.html" %}
 {% endifequal %}
 <div class="member">
+	<a href="{% url msg_to_user member.username %}">Lähetä viesti</a>
 	<div id="member_data" class="member_data">
 		{% include "tags/member_pic_edit.html" %}
 
