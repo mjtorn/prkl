@@ -284,13 +284,13 @@ class User(auth_models.User):
 
         expiry = self.vip_expire_at
         if not expiry:
-            raise AttributeError('Can not has vip fuck you')
+            expiry = datetime.datetime.now()
 
         VipExpiry.objects.create(
             user = self,
-            expire_at = self.vip_expire_at + time
+            expire_at = expiry + time
         )
-        self.vip_expire_at = self.vip_expire_at + time
+        self.vip_expire_at = expiry + time
 
         self.save()
 
