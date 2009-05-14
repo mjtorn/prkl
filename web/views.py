@@ -429,8 +429,8 @@ def index(request, page=None, records=None, tag=None):
 
     if tag:
         try:
-            tag_ob = tag_obs.get(name=tag)
-        except models.Tag.DoesNotExist, msg:
+            tag_ob = tag_obs.filter(name__iexact=tag)[0]
+        except IndexError:
             return notfound(request)
 
     if request.user.id:
