@@ -71,6 +71,16 @@ class PrklQuerySet(models.query.QuerySet):
 
         return self
 
+    def disable_likes(self):
+        """If we don't have a true_id cookie, disable all!
+        """
+
+        self = self.extra({
+            'can_like': 'SELECT false',
+        })
+
+        return self
+
 
 class PrklVoteQuerySet(models.query.QuerySet):
     def your_votes(self, request):
