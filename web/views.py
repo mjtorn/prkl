@@ -889,9 +889,10 @@ def incoming_sms(request):
     ctx = mediator_views.incoming_sms(request)
 
     if ctx['sms'] is None:
-        ret = mediator_utils.create_error(u'Tänään jokin meni pieleen viestisi kanssa prkl', 'system')
+        ret = mediator_utils.create_error(u'Tänään jokin meni pieleen viestisi kanssa prkl', None, 'system')
         sms_form = ctx['sms_form']
     else:
+        sms = ctx['sms']
         # If we have sms, we have clean data
         data = ctx['sms_form'].cleaned_data
         command = data['command']
@@ -903,7 +904,7 @@ def incoming_sms(request):
                 vip_word = argument_list[0]
                 user_id = argument_list[1]
                 if vip_word != '1kk':
-                    ret = mediator_utils.create_error(u'Tänään ei tunnettu sanaa %s prkl' % vip_word, 'user')
+                    ret = mediator_utils.create_error(u'Tänään ei tunnettu sanaa %s prkl' % vip_word, sms, 'user')
                     period = None
                 else:
                     period, price = vip_dict.get(vip_word, None)
@@ -912,13 +913,13 @@ def incoming_sms(request):
                     user = models.User.objects.get(id=user_id)
                 except models.User.DoesNotExist:
                     user = None
-                    ret = mediator_utils.create_error(u'Tarkistathan viestisi viimeisen numeron, %s ei toimi' % user_id, 'user')
+                    ret = mediator_utils.create_error(u'Tarkistathan viestisi viimeisen numeron, %s ei toimi' % user_id, sms,  'user')
 
                 if period is not None and user is not None:
                     user.extend_vip(period)
-                    ret = mediator_utils.create_return(u'Tänään sait %s vippiä prkl' % vip_word, price=price)
+                    ret = mediator_utils.create_return(u'Tänään sait %s vippiä prkl' % vip_word, sms,  price=price)
             else:
-                ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', 'user')
+                ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', sms,  'user')
 
         elif command == 'prkl':
             if len(argument_list) == 2:
@@ -927,21 +928,20 @@ def incoming_sms(request):
 
                 period, price = vip_dict.get(vip_word, None)
                 if period is None:
-                    ret = mediator_utils.create_error(u'Tänään ei tunnettu sanaa %s prkl' % vip_word, 'user')
+                    ret = mediator_utils.create_error(u'Tänään ei tunnettu sanaa %s prkl' % vip_word, sms,  'user')
                 try:
                     user = models.User.objects.get(id=user_id)
                 except models.User.DoesNotExist:
                     user = None
-                    ret = mediator_utils.create_error(u'Tarkistathan viestisi viimeisen numeron, %s ei toimi' % user_id, 'user')
+                    ret = mediator_utils.create_error(u'Tarkistathan viestisi viimeisen numeron, %s ei toimi' % user_id, sms,  'user')
 
                 if period is not None and user is not None:
                     user.extend_vip(period)
-                    ret = mediator_utils.create_return(u'Tänään sait %s vippiä prkl' % vip_word, price=price)
+                    ret = mediator_utils.create_return(u'Tänään sait %s vippiä prkl' % vip_word, sms,  price=price)
             else:
-                ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', 'user')
+                ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', sms,  'user')
 
         elif command == u'tänään':
-            sms = ctx['sms']
             # Consider anonymous
             user = auth_models.AnonymousUser()
             # Mandatory tag(s)
@@ -965,16 +965,16 @@ def incoming_sms(request):
             submit_prkl_form.fields['tags'].choices = tags
             if submit_prkl_form.is_valid():
                 submit_prkl_form.save()
-                ret = mediator_utils.create_return(u'Prkl lisätty', price='025')
+                ret = mediator_utils.create_return(u'Prkl lisätty', sms, price='025')
             else:
                 err = submit_prkl_form.errors.get('content', None)
                 if err:
-                    ret = mediator_utils.create_error(u'%s (viestistä ei veloitettu)' % err, 'system')
+                    ret = mediator_utils.create_error(u'%s (viestistä ei veloitettu)' % err, sms, 'system')
                 else:
-                    ret = mediator_utils.create_error(u'Prkleen lisäämisessä ongelma', 'system')
+                    ret = mediator_utils.create_error(u'Prkleen lisäämisessä ongelma', sms, 'system')
 
         else:
-            ret = mediator_utils.create_return('Placeholder return')
+            ret = mediator_utils.create_return('Placeholder return', sms)
 
     res = etree.tostring(ret, xml_declaration=True, encoding='utf-8', pretty_print=True)
 
