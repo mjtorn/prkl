@@ -1,5 +1,7 @@
 # vim: tabstop=4 expandtab autoindent shiftwidth=4 fileencoding=utf-8
 
+from django.core.urlresolvers import reverse
+
 from django.utils.html import escape
 from django.utils.safestring import SafeUnicode
 
@@ -28,9 +30,14 @@ def prkltagjoin(tags, joiner):
 
 @register.filter
 def prkltaglinks(tags, request):
-    bare_href = '<a href="http://%s/%s" class="prkl_tag">%s</a>' % (request.META['HTTP_HOST'], '%s', '%s')
+    bare_href = '<a href="http://%s%s" class="prkl_tag">%s</a>' % (request.META['HTTP_HOST'], '%s', '%s')
 
-    tag_links = [bare_href % (escape(t['name'].lower()), escape(t['name'])) for t in tags]
+    tag_links = []
+    for t in tags:
+        rev_tag = reverse('tag', args=(t['name'].lower(),))
+        link = bare_href % (rev_tag, escape(t['name']))
+        tag_links.append(link)
+
     out_links = ', '.join(tag_links)
 
     # Somehow setting prkltaglinks.is_safe = True does not help
