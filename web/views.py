@@ -898,7 +898,29 @@ def incoming_sms(request):
         command = command.lower()
         argument = data['argument']
         argument_list = argument.split()
-        if command == 'prkl':
+        if command == 'jrprkl':
+            if len(argument_list) == 2:
+                vip_word = argument_list[0]
+                user_id = argument_list[1]
+                if vip_word != '1kk':
+                    ret = mediator_utils.create_error(u'Tänään ei tunnettu sanaa %s prkl' % vip_word, 'user')
+                    period = None
+                else:
+                    period, price = vip_dict.get(vip_word, None)
+
+                try:
+                    user = models.User.objects.get(id=user_id)
+                except models.User.DoesNotExist:
+                    user = None
+                    ret = mediator_utils.create_error(u'Tarkistathan viestisi viimeisen numeron, %s ei toimi' % user_id, 'user')
+
+                if period is not None and user is not None:
+                    user.extend_vip(period)
+                    ret = mediator_utils.create_return(u'Tänään sait %s vippiä prkl' % vip_word, price=price)
+            else:
+                ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', 'user')
+
+        elif command == 'prkl':
             if len(argument_list) == 2:
                 vip_word = argument_list[0]
                 user_id = argument_list[1]
