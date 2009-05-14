@@ -927,9 +927,14 @@ def incoming_sms(request):
             tag = tag_obs.get(name='Satunnainen')
             tags = [(t['id'], t['name']) for t in tag_obs]
 
+            # Don't bounce texts because they're badly formed
+            content = sms.content
+            if not content.lower().endswith('prkl'):
+                content = '%s prkl' % content
+
             # Conclusion
             data = {
-                'content': sms.content,
+                'content': content,
                 'user': user,
                 'tags': (tag['id'],),
             }
