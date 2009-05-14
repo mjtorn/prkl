@@ -280,6 +280,7 @@ render_to_response = dec_true_id_out(render_to_response)
 
 # Create your views here.
 
+@dec_true_id_in
 def forgot_password(request):
     """I forgot my password
     """
@@ -316,6 +317,7 @@ def forgot_password(request):
 
     return render_to_response('forgot_password.html', req_ctx)
 
+@dec_true_id_in
 def reset_password(request, token):
     """I want to reset my password
     """
@@ -357,6 +359,7 @@ def reset_password(request, token):
 
     return render_to_response('reset_password.html', req_ctx)
 
+@dec_true_id_in
 def register(request, token):
     if not request.user.id:
         user = authenticate(token=token)
