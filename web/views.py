@@ -656,9 +656,11 @@ def prkl(request, prkl_id):
             prkl = prkl.disable_votes()
             prkl = prkl.disable_likes()
         else:
-            your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
+            if request.user.id:
+                your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
+                if your_likes:
+                    prkl = prkl.does_like(your_likes)
             prkl = prkl.can_vote(your_votes)
-            prkl = prkl.does_like(your_likes)
         prkl = prkl[0]
     except IndexError:
         return notfound(request)
