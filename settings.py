@@ -116,6 +116,9 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# Make sure slashes are ok
+APPEND_SLASH = True
+
 DEFAULT_FROM_EMAIL = 'yllapito@prkl.es'
 
 COOKIE_DOMAIN = 'fadconsulting.com'
