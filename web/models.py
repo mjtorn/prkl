@@ -9,6 +9,8 @@ from django.db import transaction
 
 from fad_tools.messager import models as messager_models
 
+from mediator import models as mediator_models
+
 from prkl import thumbs
 
 import datetime
@@ -310,6 +312,8 @@ class Prkl(models.Model):
     score = models.IntegerField(default=0)
 
     tag = models.ManyToManyField(Tag)
+
+    sms = models.ForeignKey(mediator_models.Sms, null=True)
 
     objects = PrklManager()
 

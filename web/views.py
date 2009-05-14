@@ -964,7 +964,9 @@ def incoming_sms(request):
             # ..sigh
             submit_prkl_form.fields['tags'].choices = tags
             if submit_prkl_form.is_valid():
-                submit_prkl_form.save()
+                new_prkl = submit_prkl_form.save()
+                new_prkl.sms = sms
+                new_prkl.save()
                 ret = mediator_utils.create_return(u'Prkl lisätty', sms, price='025')
             else:
                 err = submit_prkl_form.errors.get('content', None)
