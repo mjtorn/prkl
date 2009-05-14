@@ -29,6 +29,21 @@ class TestSms(test.TestCase):
         res = self.client.post(path, data=data)
         print res
 
+    def test_015_broken_fixed_sms(self):
+        data = {
+            'command': 'Tänään',
+            'argument': 'haluan pillua', # This should be autofixed
+            'numberfrom': '+35850666',
+            'numberto': '666',
+            'operator': 'Saunalahti',
+            'transactionid': '665',
+            'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Tänään haluan pillua</message></sms>',
+        }
+
+        path = reverse('incoming_sms')
+        res = self.client.post(path, data=data)
+        print res
+
     def test_020_ok_sms(self):
         data = {
             'command': 'Tänään',
@@ -48,17 +63,24 @@ class TestSms(test.TestCase):
 
     def test_030_count_sms(self):
         ret = mediator_models.Sms.objects.all().count()
-        exp_ret = 2
+        exp_ret = 3
         assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
 
     def test_035_count_prkl(self):
         ret = models.Prkl.objects.all().count()
         # Where the hell did this duplication come from?
-        exp_ret = 2
+        exp_ret = 3
         assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
 
     def test_040_test_sms_content(self):
         sms = mediator_models.Sms.objects.get(id=1)
+        ret = sms.content
+        # The sms contains "broken" data
+        exp_ret = 'Tänään haluan pillua'
+        assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
+
+    def test_045_test_sms_content(self):
+        sms = mediator_models.Sms.objects.get(id=2)
         ret = sms.content
         exp_ret = 'Tänään haluan pillua prkl'
         assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
