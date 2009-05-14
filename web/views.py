@@ -649,11 +649,16 @@ def prkl(request, prkl_id):
 
     your_votes = models.PrklVote.objects.your_votes(request)
     try:
+        # Get prkls
         prkl = models.Prkl.objects.filter(id= prkl_id)
+        # Your likes too
         if not request.has_session or request.META['unreal_true_id']:
             prkl = prkl.disable_votes()
+            prkl = prkl.disable_likes()
         else:
+            your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
             prkl = prkl.can_vote(your_votes)
+            prkl = prkl.does_like(your_likes)
         prkl = prkl[0]
     except IndexError:
         return notfound(request)
