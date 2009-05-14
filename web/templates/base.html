@@ -74,10 +74,8 @@
 <a href="{% url faq %}" class="{% check_active req_path faq_url %}">Usein Kysytyt Kysymykset</a>
 {% url members as members_url %}
 <a href="{% url members %}" class="{% check_active req_path members_url %}">Jäsenet</a>
-{% if user.id and user.is_vip %}
 {% url search as search_url %}
 <a href="{% url search %}" class="{% check_active req_path search_url %}">Haku</a>
-{% endif %}
 {% endwith %}
 {% endblock %}
 </div>
