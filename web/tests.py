@@ -153,7 +153,7 @@ class TestSmsVip(test.TestCase):
             'numberto': '666',
             'operator': 'Saunalahti',
             'transactionid': '670',
-            'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Prkl 36kk 666</message></sms>',
+            'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Prkl 12kk 666</message></sms>',
         }
 
         path = reverse('incoming_sms')
