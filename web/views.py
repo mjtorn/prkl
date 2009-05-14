@@ -426,7 +426,7 @@ def index(request, page=None, records=None, tag=None):
 
     submit_prkl_form = forms.SubmitPrklForm(data)
 
-    tag_obs = models.Tag.objects.filter(is_default=True).values('id', 'name')
+    tag_obs = models.Tag.objects.filter(is_default=True).values('id', 'name').order_by('id')
     tags = [(t['id'], t['name']) for t in tag_obs]
     submit_prkl_form.fields['tags'].choices = tags
 
