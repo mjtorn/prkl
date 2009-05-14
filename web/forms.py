@@ -237,6 +237,7 @@ class SubmitPrklForm(PrklSuperForm):
         new_prkl.save()
         new_prkl.tag.add(*self.cleaned_data['tags'])
 
+        return new_prkl
 
 class CommentPrklForm(PrklSuperForm):
     error_messages = {
