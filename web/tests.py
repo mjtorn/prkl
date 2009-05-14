@@ -145,6 +145,21 @@ class TestSmsVip(test.TestCase):
         res = self.client.post(path, data=data)
         print res
 
+    def test_025_broken_jrprkl_argument(self):
+        data = {
+            'command': 'jrprkl',
+            'argument': '36kk 1',
+            'numberfrom': '+35850666',
+            'numberto': '666',
+            'operator': 'Saunalahti',
+            'transactionid': '669',
+            'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>jrprkl 36kk 1</message></sms>',
+        }
+
+        path = reverse('incoming_sms')
+        res = self.client.post(path, data=data)
+        print res
+
     def test_030_broken_userid_argument(self):
         data = {
             'command': 'Prkl',
@@ -169,6 +184,21 @@ class TestSmsVip(test.TestCase):
             'operator': 'Saunalahti',
             'transactionid': '671',
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Prkl 36kk 1</message></sms>',
+        }
+
+        path = reverse('incoming_sms')
+        res = self.client.post(path, data=data)
+        print res
+
+    def test_050_ok_jr_vip_order(self):
+        data = {
+            'command': 'Jrprkl',
+            'argument': '1kk 1',
+            'numberfrom': '+35850666',
+            'numberto': '666',
+            'operator': 'Saunalahti',
+            'transactionid': '672',
+            'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Jrprkl 1kk 1</message></sms>',
         }
 
         path = reverse('incoming_sms')
