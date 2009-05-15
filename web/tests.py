@@ -61,15 +61,45 @@ class TestSms(test.TestCase):
         print res1
         assert res1.content == res2.content, 'Two same posts should return same result'
 
+    def test_021_ok_sms(self):
+        data = {
+            'command': 'Tänään',
+            'argument': 'haluan pillua prkl.',
+            'numberfrom': '+35850666',
+            'numberto': '666',
+            'operator': 'Saunalahti',
+            'transactionid': '667',
+            'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Tänään haluan pillua prkl.</message></sms>',
+        }
+
+        path = reverse('incoming_sms')
+        res = self.client.post(path, data=data)
+        print res
+
+    def test_022_ok_sms(self):
+        data = {
+            'command': 'Tänään',
+            'argument': 'haluan pillua prkl!',
+            'numberfrom': '+35850666',
+            'numberto': '666',
+            'operator': 'Saunalahti',
+            'transactionid': '667',
+            'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Tänään haluan pillua prkl!</message></sms>',
+        }
+
+        path = reverse('incoming_sms')
+        res = self.client.post(path, data=data)
+        print res
+
     def test_030_count_sms(self):
         ret = mediator_models.Sms.objects.all().count()
-        exp_ret = 3
+        exp_ret = 5
         assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
 
     def test_035_count_prkl(self):
         ret = models.Prkl.objects.all().count()
         # Where the hell did this duplication come from?
-        exp_ret = 3
+        exp_ret = 5
         assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
 
     def test_040_test_sms_content(self):
@@ -83,6 +113,18 @@ class TestSms(test.TestCase):
         sms = mediator_models.Sms.objects.get(id=2)
         ret = sms.content
         exp_ret = 'Tänään haluan pillua prkl'
+        assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
+
+    def test_046_test_sms_content(self):
+        sms = mediator_models.Sms.objects.get(id=4)
+        ret = sms.content
+        exp_ret = 'Tänään haluan pillua prkl.'
+        assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
+
+    def test_047_test_sms_content(self):
+        sms = mediator_models.Sms.objects.get(id=5)
+        ret = sms.content
+        exp_ret = 'Tänään haluan pillua prkl!'
         assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
 
     def test_050_fail_receipt(self):
