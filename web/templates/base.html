@@ -44,6 +44,47 @@
 			$("#toggle_prklform").text("Kirjoita prkl");
 		}
 	}
+	var voteClick = function(prkl_id, direction) {
+		$.ajax({
+			type: "POST",
+			data: "prkl_id=" + prkl_id + "&direction=" + direction + "&csrfmiddlewaretoken=" + "{% do_csrf request %}&h=" + "{{ request.true_id.hash }}",
+			url: "{% url vote %}",
+			dataType: "json",
+			success: function(retData) {
+				// Update score
+				scoreElem = $("#" + prkl_id + "_score");
+				val = parseInt(scoreElem.text());
+				val += parseInt(retData['message']);
+				scoreElem.text(val);
+
+				// Update menu
+				elem = $("#" + prkl_id + "_plus");
+				elem.fadeOut();
+
+				elem = $("#" + prkl_id + "_minus");
+				elem.fadeOut();
+
+				scoreElem.animate({"margin-left": "0px"});
+			}
+		});
+	}
+	var likeClick = function(prkl_id) {
+		$.ajax({
+			type: "POST",
+			data: "prkl_id=" + prkl_id + "&csrfmiddlewaretoken=" + "{% do_csrf request %}&h=" + "{{ request.true_id.hash }}",
+			url: "{% url like %}",
+			dataType: "json",
+			success: function(retData) {
+				// Update menu
+				elem = $("#" + prkl_id + "_like");
+				if (retData["message"] == "yes") {
+					elem.text("Älä tykkääkään");
+				} else if (retData["message"] == "no") {
+					elem.text("Tykkää");
+				}
+			}
+		});
+	}
 	</script>
 	{% block scripture %}
 	{% endblock %}
