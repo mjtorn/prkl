@@ -563,35 +563,6 @@ def bottom(request, page=None, records=None):
 
     return render_to_response('index.html', req_ctx)
 
-@commit_on_success
-@dec_true_id_in
-@dec_recommend_register
-def like(request, prkl_id, action, back_to):
-    """Do you like this prkl?
-    """
-
-    if not back_to:
-        back_to = '/'
-    else:
-        back_to = '/%s' % back_to
-
-    if action == 'yes':
-        try:
-            prkl_like = models.PrklLike.objects.get(prkl__id=prkl_id, user=request.user)
-        except models.PrklLike.DoesNotExist:
-            try:
-                prkl = models.Prkl.objects.get(id=prkl_id)
-                prkl_like = models.PrklLike()
-                prkl_like.prkl = prkl
-                prkl_like.user = request.user
-                prkl_like.save()
-            except models.Prkl.DoesNotExist:
-                pass
-    else:
-        your_likes = models.PrklLike.objects.filter(prkl__id=prkl_id, user=request.user).delete()
-
-    return HttpResponseRedirect(back_to)
-
 @dec_true_id_in
 def prkl(request, prkl_id):
     """Single-prkl view
@@ -1114,6 +1085,70 @@ def vote(request):
     context['status'] = 'OK'
     context['message'] = vote.vote
     context['errors'] = None
+    ctx = simplejson.dumps(context)
+
+    return HttpResponse(ctx, content_type='text/json')
+
+@commit_on_success
+@dec_true_id_in
+def like(request):
+    """Do you like this prkl?
+    """
+
+    # First off, context
+    context, true_id_ob, good = init_json_ctx(request, request.POST)
+    print context, true_id_ob, good
+    if not good:
+        ctx = simplejson.dumps(context)
+
+        return HttpResponse(ctx, content_type='text/json')
+
+    # Data
+    prkl_id = request.POST.get('prkl_id', None)
+
+    if prkl_id is None:
+        context['message'] = 'Bad form'
+        context['errors'] = ('Bad form',)
+        ctx = simplejson.dumps(context)
+
+        return HttpResponse(ctx, content_type='text/json')
+
+    # And if we don't have a cookie, bail out
+    print request.COOKIES['true_id']
+    if not request.COOKIES.has_key('true_id'):
+        context['message'] = 'Bad form'
+        context['errors'] = ('Bad form',)
+        ctx = simplejson.dumps(context)
+
+        return HttpResponse(ctx, content_type='text/json')
+
+    try:
+        prkl_like = models.PrklLike.objects.get(prkl__id=prkl_id, user=request.user)
+        #your_likes = models.PrklLike.objects.filter(prkl__id=prkl_id, user=request.user).delete()
+        prkl_like.delete()
+
+        context['status'] = 'OK'
+        context['message'] = 'no'
+        context['errors'] = None
+    except models.PrklLike.DoesNotExist:
+        try:
+            prkl = models.Prkl.objects.get(id=prkl_id)
+            prkl_like = models.PrklLike()
+            prkl_like.prkl = prkl
+            prkl_like.user = request.user
+            prkl_like.save()
+
+            context['status'] = 'OK'
+            context['message'] = 'yes'
+            context['errors'] = None
+        except models.Prkl.DoesNotExist, msg:
+            context['message'] = None
+            context['errors'] = (str(msg),)
+
+            ctx = simplejson.dumps(context)
+
+            return HttpResponse(ctx, content_type='text/json')
+
     ctx = simplejson.dumps(context)
 
     return HttpResponse(ctx, content_type='text/json')
