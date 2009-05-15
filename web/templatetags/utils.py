@@ -1,6 +1,10 @@
 # vim: tabstop=4 expandtab autoindent shiftwidth=4 fileencoding=utf-8
 
+from django.contrib.csrf.middleware import _make_token
+
 from django.core.urlresolvers import reverse
+
+from django.conf import settings
 
 from django.utils.html import escape
 from django.utils.safestring import SafeUnicode
@@ -11,10 +15,13 @@ from dateutil import parser, tz
 
 register = Library()
 
+@register.simple_tag
+def do_csrf(request):
+    return _make_token(request.COOKIES[settings.SESSION_COOKIE_NAME])
+
 @register.filter
 def getitem(ob, key):
     return ob.get(key, None)
-        
 
 @register.simple_tag
 def check_active(req_path, path):
