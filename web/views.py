@@ -565,56 +565,6 @@ def bottom(request, page=None, records=None):
 
 @commit_on_success
 @dec_true_id_in
-def vote(request, prkl_id, direction, back_to):
-    """And I found direction...
-    """
-
-    # First off, see where we're returned
-    if back_to is None:
-        back_to = '/'
-    else:
-        back_to = '/%s' % back_to
-
-    # And if we don't have a cookie, bail out
-    if not request.COOKIES.has_key('true_id'):
-        return HttpResponseRedirect(back_to)
-
-    your_votes = models.PrklVote.objects.your_votes(request)
-    prkls = models.Prkl.objects.all()
-    prkls = prkls.can_vote(your_votes)
-
-    good = False
-    try:
-        prkl = prkls.get(id=prkl_id)
-        if prkl.can_vote:
-            good = True
-    except models.Prkl.DoesNotExist:
-        pass
-
-    if not good:
-        return HttpResponseRedirect(back_to)
-
-    vote = models.PrklVote()
-    if request.user.id:
-        vote.user = request.user
-    else:
-        vote.trueid = request.true_id
-
-    # Pre-validated in urls.py
-    if direction == 'up':
-        prkl.incr()
-        vote.vote = 1
-    else:
-        prkl.decr()
-        vote.vote = -1
-
-    vote.prkl = prkl
-    vote.save()
-
-    return HttpResponseRedirect(back_to)
-
-@commit_on_success
-@dec_true_id_in
 @dec_recommend_register
 def like(request, prkl_id, action, back_to):
     """Do you like this prkl?
@@ -1092,6 +1042,82 @@ def set_form_visibility(request):
 
     return HttpResponse(ctx, content_type='text/json')
     
+@commit_on_success
+@dec_true_id_in
+def vote(request):
+    """And I found direction...
+    """
+
+    # First off, context
+    context, true_id_ob, good = init_json_ctx(request, request.POST)
+    if not good:
+        ctx = simplejson.dumps(context)
+
+        return HttpResponse(ctx, content_type='text/json')
+
+    # Data
+    prkl_id = request.POST.get('prkl_id', None)
+    direction = request.POST.get('direction', None)
+
+    good = (prkl_id is not None) and (direction is not None)
+    if not good:
+        context['message'] = 'Bad form'
+        context['errors'] = ('Bad form',)
+        ctx = simplejson.dumps(context)
+
+        return HttpResponse(ctx, content_type='text/json')
+
+    # And if we don't have a cookie, bail out
+    if not request.COOKIES.has_key('true_id'):
+        context['message'] = 'Bad form'
+        context['errors'] = ('Bad form',)
+        ctx = simplejson.dumps(context)
+
+        return HttpResponse(ctx, content_type='text/json')
+
+    your_votes = models.PrklVote.objects.your_votes(request)
+    prkls = models.Prkl.objects.all()
+    prkls = prkls.can_vote(your_votes)
+
+    good = False
+    try:
+        prkl = prkls.get(id=prkl_id)
+        if prkl.can_vote:
+            good = True
+    except models.Prkl.DoesNotExist:
+        pass
+
+    if not good:
+        context['message'] = 'Bad form'
+        context['errors'] = ('Bad form',)
+        ctx = simplejson.dumps(context)
+
+        return HttpResponse(ctx, content_type='text/json')
+
+    vote = models.PrklVote()
+    if request.user.id:
+        vote.user = request.user
+    else:
+        vote.trueid = request.true_id
+
+    # Pre-validated in urls.py
+    if direction == 'up':
+        prkl.incr()
+        vote.vote = 1
+    else:
+        prkl.decr()
+        vote.vote = -1
+
+    vote.prkl = prkl
+    vote.save()
+
+    context['status'] = 'OK'
+    context['message'] = vote.vote
+    context['errors'] = None
+    ctx = simplejson.dumps(context)
+
+    return HttpResponse(ctx, content_type='text/json')
+
 @dec_true_id_in
 @dec_recommend_vip
 def search(request, page=None, records=None):
