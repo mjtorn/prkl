@@ -962,7 +962,11 @@ def incoming_sms(request):
             # Don't bounce texts because they're badly formed
             content = sms.content
             if not content.lower().endswith('prkl'):
-                content = '%s prkl' % content
+                if content[-1] == '.' or content[-1] == '!':
+                    if not content[-5:-1].lower() == 'prkl':
+                        content = '%s prkl' % content
+                else:
+                    content = '%s prkl' % content
 
             # Conclusion
             data = {
