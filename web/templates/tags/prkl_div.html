@@ -30,11 +30,11 @@
 
 				<span class="prkl_score">
 				{% if prkl.can_vote %}
-					<a id="{{ prkl.id }}_minus" name="{{ prkl.id }}_anchor" href="{% url vote prkl.id "down" strip_path %}">Hajoa siihen</a>
-					[ {{ prkl.score }} ]
-					<a id="{{ prkl.id }}_plus" name="{{ prkl.id }}_anchor" href="{% url vote prkl.id "up" strip_path %}">Awww</a>
+					<a id="{{ prkl.id }}_minus" name="{{ prkl.id }}_anchor" onClick='voteClick({{ prkl.id }}, "down");'>Hajoa siihen</a>
+					[ <span id="{{ prkl.id }}_score">{{ prkl.score }}</span> ]
+					<a id="{{ prkl.id }}_plus" name="{{ prkl.id }}_anchor" onClick='voteClick({{ prkl.id }}, "up");'>Awww</a>
 				{% else %}
-					{{ prkl.score }}
+					[ <span id="{{ prkl.id }}_score">{{ prkl.score }}</span> ]
 				{% endif %}
 				</span>
 
