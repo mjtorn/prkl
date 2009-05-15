@@ -216,9 +216,12 @@ class SubmitPrklForm(PrklSuperForm):
         if not content.lower().startswith('tänään'):
             raise forms.ValidationError('Aloitathan Prkleesi sanalla tänään')
 
-        # FIXME: Allow some amount of . and ! and maybe ? at the end
         if not content.lower().endswith('prkl'):
-            raise forms.ValidationError('Päätäthän Prkleesi sanalla prkl')
+            if content[-1] == '.' or content[-1] == '!':
+                if not content[-5:-1].lower() == 'prkl':
+                    raise forms.ValidationError('Päätäthän Prkleesi sanalla prkl')
+            else:
+                raise forms.ValidationError('Päätäthän Prkleesi sanalla prkl')
 
         if len(content) > 1024:
             raise forms.ValidationError('Tänään prkleesi on yli 1024 merkkiä prkl')
