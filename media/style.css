@@ -193,6 +193,10 @@ div.login, div.register, div.message, div.invite, div.member_search, div.recomme
 	margin-top: 5px;
 }
 
+div.invite span.result {
+	font-size: 14pt;
+}
+
 div.login {
 	background-color: #c3d3d6;
 }
