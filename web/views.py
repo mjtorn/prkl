@@ -608,6 +608,7 @@ def prkl(request, prkl_id):
     else:
         comment_prkl_form = forms.CommentPrklForm()
 
+    prkl.tags = prkl.tag.values('id', 'name')
     context = {
         'title': 'Yksittäinen prkl',
         'prkl': prkl,
