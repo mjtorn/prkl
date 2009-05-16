@@ -15,7 +15,7 @@
 		$.ajax({
 			type: "POST",
 			url: "{% url set_form_visibility %}",
-			data: "h=" + h  + "&f=" + f + "&v=" + v,
+			data: "h=" + h  + "&f=" + f + "&v=" + v + "&csrfmiddlewaretoken=" + "{% do_csrf request %}",
 		});
 	}
 	var toggleRegister = function() {
