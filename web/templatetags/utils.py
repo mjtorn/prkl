@@ -17,7 +17,8 @@ register = Library()
 
 @register.simple_tag
 def do_csrf(request):
-    return _make_token(request.COOKIES[settings.SESSION_COOKIE_NAME])
+    if request.COOKIES.has_key(settings.SESSION_COOKIE_NAME):
+        return _make_token(request.COOKIES[settings.SESSION_COOKIE_NAME])
 
 @register.filter
 def getitem(ob, key):
