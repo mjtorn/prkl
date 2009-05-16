@@ -230,6 +230,8 @@ def dec_true_id_out(func):
             else:
                 true_id_ob = request.true_id
 
+            if request.META.get('unreal_true_id', False):
+                return HttpResponseRedirect(request.META['PATH_INFO'])
             response.set_cookie('true_id', true_id_ob.hash, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
 
         return response
