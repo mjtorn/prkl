@@ -1,0 +1,49 @@
+{% load utils %}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/ DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>.: Prkl :: {{ title }} :.</title>
+	<link rel="index" title="Index" href="http://www.prkl.es/" />
+	<link rel="shortcut icon" href="/media/pic/icon.png" />
+	<link rel="stylesheet" href="/media/style.css" type="text/css" />
+</head>
+
+<body>
+<div class="top">
+<a class="inactive" href="/">Pääsivu</a>
+</div>
+
+<div id="prkl-logo">
+	<a href="{% url index %}">
+		<img src="/media/prkl-logo.png" alt="prkl-logo"/>
+	</a>
+	<span class="text">
+	Avautuminen alkaa "Tänään"
+	</span>
+</div>
+
+<div class="prklbuffer">
+</div>
+
+{% block content %}
+<div class="prkls">
+<h1>Tänään jokin on rikki</h1>
+<p>
+Valitettavasti sivulla on toimintahäiriö, pyydämme teitä laittamaan
+viestiä osoitteeseen <a href="mailto:yllapito@prkl.es">yllapito@prkl.es</a>
+että prkl.
+</p>
+<p>
+Pahoittelut!
+</p>
+
+<hr />
+<small>
+Sähköposti <a href="mailto:yllapito@prkl.es">yllapito@prkl.es</a>
+</small>
+</div>
+{% endblock %}
+
+</body>
+
