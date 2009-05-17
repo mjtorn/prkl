@@ -11,16 +11,10 @@ div#prkl-logo {
 	position: absolute;
 	left: 20px;
 	top:  0px;
-	z-index: -1;
 }
 
 div#prkl-logo img {
 	border: none;
-}
-
-div#prkl-logo .text {
-	font-family: Kootenay, verdana;
-	font-size: 14pt;
 }
 
 div.notfound h1 {
@@ -32,7 +26,7 @@ div.top {
 }
 
 div.top:before {
-	content: url(red-arrow.png);
+   content: url(red-arrow.png);
 }
 
 div.top a.inactive {
@@ -41,8 +35,8 @@ div.top a.inactive {
 	color: #7c352b;
 	text-decoration: none;
 	cursor: pointer;
-	font-weight: bold;
-	margin-right: 7px;
+   font-weight: bold;
+   margin-right: 7px;
 }
 
 div.top a.inactive:visited {
@@ -51,8 +45,7 @@ div.top a.inactive:visited {
 	color: #7c352b;
 	text-decoration: none;
 	cursor: pointer;
-	font-weight: bold;
-	margin-right: 7px;
+   font-weight: bold;
 }
 
 div.top a.active {
@@ -61,50 +54,18 @@ div.top a.active {
 	color: #000000;
 	text-decoration: none;
 	cursor: pointer;
-	font-weight: bold;
-	margin-right: 7px;
+   font-weight: bold;
+   margin-right: 7px;
 }
 
-div.top a.active:hover, div.top a.inactive:hover {
+div.top a:hover {
 	text-decoration: underline;
 }
 
-div.msg_menu {
-	text-align: center;
-	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
-	font-size: 1em;
-	color: black;
-	font-weight: bold;
-}
-
-div.msg_menu a, div.msg_menu a.inactive {
-	color: #7c352b;
-	text-decoration: none;
-}
-
-div.msg_menu a.active {
-	color: #000000;
-	text-decoration: none;
-}
-
-div.msg_menu a:hover, div.msg_menu a.active:hover, div.msg_menu a.inactive:hover {
-	text-decoration: underline;
-}
-
-
-span.prkl_user, span.prkl_user a, span.prkl_date, span.comment_user, span.comment_user a, span.comment_date, span.msg_user, span.msg_date, span.msg_subject {
+span.prkl_user, span.prkl_user a,span.prkl_date, span.prkl_da {
 	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
 	font-size: 8pt;
 	color: #575656;
-}
-
-span.prkl_user a, span.msg_user {
-	font-family: gothic;
-	color: #0000ee;
-}
-
-span.msg_subject {
-	font-size: 10pt;
 }
 
 .prkl_score, .prkl_score a {
@@ -117,20 +78,6 @@ span.msg_subject {
 	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
 	font-size: 8pt;
 	color: #5b261f;
-}
-
-div.prkl_tags a.prkl_tag {
-	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
-	font-size: 8pt;
-	color: #5b261f;
-	text-decoration: none;
-}
-
-div.prkl_tags a.prkl_tag:hover {
-	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
-	font-size: 8pt;
-	color: #5b261f;
-	text-decoration: underline;
 }
 
 div.left {
@@ -193,10 +140,6 @@ div.login, div.register, div.message, div.invite, div.member_search, div.recomme
 	margin-top: 5px;
 }
 
-div.invite span.result {
-	font-size: 14pt;
-}
-
 div.login {
 	background-color: #c3d3d6;
 }
@@ -205,38 +148,17 @@ span.required {
 	color: red;
 }
 
-span.error {
-	color: red;
-}
-
 div.prkl_content {
 	padding-bottom: 1em;
 }
 
-div.prkl, div.comment, div.member_data, div.about_vip, div.search, div.write_msg, div.your_sent, div.messages, div.faq {
+div.prkl, div.comment, div.member_data, div.about_vip {
 	border: solid 1px white;
 	margin-bottom: 0.5em;
 	background-color: #ffffff;
 	padding: 5px;
 	width: 500px;
 	font-size: 0.8em;
-}
-
-div.write_msg, div.your_sent, div.messages {
-	width: 540px;
-}
-
-div.faqs {
-	background-color: #ffffff;
-}
-
-div.faq {
-	border: none;
-	margin-left: 1.0em;
-}
-
-div.faq h3 {
-	margin-left: -1.0em;
 }
 
 div.invite, div.member_search {
@@ -252,21 +174,12 @@ div.member_data {
 	width: 540px;
 }
 
-div.member_data a, div.member a {
+div.member_data a {
 	color: #0000ee;
 	text-decoration: none;
 }
 
 div.member_data a:hover {
-	text-decoration: underline;
-}
-
-div.member_data a.msg_member {
-	color: #7c352b;
-	text-decoration: none;
-}
-
-div.member_data a.msg_member:hover {
 	text-decoration: underline;
 }
 
@@ -287,27 +200,9 @@ div.prkl a, div.comment a, div.register a, div.login a, div.prklform a, a.show_c
 	cursor: pointer;
 }
 
-div.your_sent a, div.messages a {
-	color: #0000ee;
-	font-family: gothic;
-	font-size: 1.2em;
-	text-decoration: none;
-	cursor: pointer;
-}
-
 div.prklform a {
 	font-weight: bold;
 	color: black;
-}
-
-div.register a {
-	font-weight: bold;
-	color: #7c352b;
-}
-
-div.register a:before {
-	content: url(red-arrow-white.png);
-	margin-right: 3px;
 }
 
 div.login a {
@@ -366,7 +261,7 @@ div.paginator, div.members_paginator {
 	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
 	font-size: 1em;
 	color: black;
-	font-weight: bold;
+   font-weight: bold;
 }
 
 div.members_paginator {
@@ -383,8 +278,13 @@ div.paginator a:hover, div.members_paginator a:hover {
 }
 
 
-div.prklform a:before {
-	content: url(black-arrow.png);
-	margin-right: 3px;
+div.prklform a::before{
+   content: url(black-arrow.png);
+   margin-right: 3px;
 }
 
+#avautuminen {
+ position: absolute;
+ left: 170px;
+ top: 82px;
+}
