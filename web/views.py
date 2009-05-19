@@ -620,7 +620,6 @@ def prkl(request, prkl_id):
     return render_to_response('prkl.html', req_ctx)
 
 @dec_true_id_in
-@dec_recommend_register
 def member(request, username):
     try:
         member = models.User.objects.get(username__iexact=username)
@@ -673,7 +672,6 @@ def member(request, username):
     return render_to_response('member.html', req_ctx)
 
 @dec_true_id_in
-@dec_recommend_register
 def members(request, page=None, records=None):
     data = request.GET.copy() or None
 
