@@ -440,6 +440,8 @@ def index(request, page=None, records=None, tag=None):
 
     if request.user.id:
         checkbox = django_forms.BooleanField(label='Anonyymisti?', required=False)
+        checkbox.widget.attrs['style'] = 'margin-bottom: 10px'
+
         submit_prkl_form.fields['anonymous'] = checkbox
 
     if submit_prkl_form.is_bound:
