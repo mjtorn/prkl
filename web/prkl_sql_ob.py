@@ -14,6 +14,8 @@ SELECT p.id, p.content, p.score, p.created_at,
         %(vote_snippet_qry)s,
         %(like_snippet_qry)s
         u.id, u.username,
+        wu.vip_expire_at >= NOW() AS is_vip,
+        wu.pic,
         t.id, t.name
 FROM web_prkl p
     LEFT OUTER JOIN web_user wu ON p.user_id=wu.user_ptr_id
@@ -155,7 +157,7 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
         IDX_V_ID = 4
         IDX_L_ID = 5
         IDX_U_ID = 6
-        IDX_T_ID = 8
+        IDX_T_ID = 10
         g = itertools.groupby(self.db_res, lambda x: x[IDX_P_ID])
         prkl_list = []
         while True:
@@ -180,6 +182,17 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
                         # Simple for user
                         prkl_dict['user']['id']= group[IDX_U_ID]
                         prkl_dict['user']['username'] = group[IDX_U_ID + 1]
+                        prkl_dict['user']['is_vip'] = group[IDX_U_ID + 2]
+                        # Hax
+                        pic = group[IDX_U_ID + 3]
+                        if pic:
+                            pic_name, ext = pic.rsplit('.', 1)
+                            pic_25 = '%s.25x25.%s' % (pic_name, ext)
+                            prkl_dict['user']['pic'] = pic
+                            prkl_dict['user']['pic_url_25x25'] = pic_25
+                        else:
+                            prkl_dict['user']['pic'] = ''
+                            prkl_dict['user']['pic_url_25x25'] = ''
                         done_user = True
 
                     if not done_prkl:
