@@ -10,7 +10,7 @@ import itertools
 
 class PrklQuery(object):
     RAW_QRY = """\
-SELECT p.id, p.content, p.score, p.created_at,
+SELECT p.id, p.content, p.score, p.created_at, p.comment_count,
         %(vote_snippet_qry)s,
         %(like_snippet_qry)s
         u.id, u.username,
@@ -154,10 +154,10 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
             self.execute()
 
         IDX_P_ID = 0
-        IDX_V_ID = 4
-        IDX_L_ID = 5
-        IDX_U_ID = 6
-        IDX_T_ID = 10
+        IDX_V_ID = 5
+        IDX_L_ID = 6
+        IDX_U_ID = 7
+        IDX_T_ID = 11
         g = itertools.groupby(self.db_res, lambda x: x[IDX_P_ID])
         prkl_list = []
         while True:
@@ -199,6 +199,7 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
                         prkl_dict['content'] = group[IDX_P_ID + 1]
                         prkl_dict['score'] = group[IDX_P_ID + 2]
                         prkl_dict['created_at'] = group[IDX_P_ID + 3]
+                        prkl_dict['comment_count'] = group[IDX_P_ID + 4]
                         prkl_dict['can_vote'] = group[IDX_V_ID]
                         prkl_dict['does_like'] = group[IDX_L_ID]
 
