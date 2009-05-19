@@ -149,17 +149,26 @@ div.left {
 
 div.right {
 	font-size: 8pt;
+	/*
 	position: absolute;
 	left: 600px;
+	*/
+	margin-right: 20px;
+	float: right;
 	width: 150px;
 	color: black;
 }
 
 div.content {
 	margin-top: 1em;
+	/*
 	float: left;
+	*/
 	margin-left: 20px;
+	/*
 	width: 550px;
+	*/
+	margin-right: 180px;
 }
 
 div.intro {
