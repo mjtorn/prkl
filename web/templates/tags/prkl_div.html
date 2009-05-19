@@ -15,6 +15,11 @@
 
                 <div>
 				<span class="prkl_user">
+				{% if prkl.user.is_vip and prkl.user.pic %}
+				<img src="/media/{{ prkl.user.pic_url_25x25 }}" />
+				{% else %}
+				<img src="/media/default_prkl.25x25.png" />
+				{% endif %}
 				{% if prkl.user.id %}
 				<a href="{% url member prkl.user.username %}">{{ prkl.user.username }}</a>
 				{% else %}
