@@ -33,7 +33,8 @@ div.notfound h1 {
 }
 
 div.top {
-	margin-left: 180px;
+	margin-left: 18px;
+	margin-top: 110px;
 }
 
 div.top:before {
@@ -175,7 +176,7 @@ div.intro {
 div.prklform, div.prklbuffer {
 	/* 550 - 2*5px padding */
 	width: 540px;
-	margin-top: 90px;
+	margin-top: 10px;
 	margin-left: 20px;
 	padding: 5px 5px 5px 5px;
 }
