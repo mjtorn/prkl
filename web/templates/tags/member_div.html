@@ -1,20 +1,23 @@
 {% load utils %}
 	<div class="member">
-		<div class="member_pic">
+		<div class="member_data">
+			<div style="position: absolute;">
 			{% if member.is_vip and member.pic %}
 			<img src="/media/{{ member.pic.url_50x50 }}" />
 			{% else %}
 			<img src="/media/default_prkl.50x50.png" />
 			{% endif %}
-		</div>
+			</div>
 
-		<div class="member_data">
+
+			<div style="margin-left: 60px;">
 			<div>
 			<a href="{% url member member.username %}">{{ member.username }}</a>
 			{% if user.id %}
 			(<a class="msg_member" href="{% url msg_to_user member.username %}">Lähetä viesi</a>)
 			{% endif %}
 			</div>
+
 			<div>
 			Liittynyt: {{ member.date_joined|date:"d. m. Y" }}
 			</div>
@@ -50,6 +53,7 @@
 			0
 			{% endif %}
 			{% endwith %}
+			</div>
 			</div>
 		</div>
 	</div>
