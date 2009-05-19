@@ -274,6 +274,8 @@ class CommentPrklForm(PrklSuperForm):
             prkl_comment.commenting_user = self.data['user']
         prkl_comment.content = self.cleaned_data['content']
 
+        prkl_comment.prkl.incr_comment()
+
         prkl_comment.save()
 
 
