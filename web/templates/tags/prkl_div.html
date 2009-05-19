@@ -6,14 +6,16 @@
 				<div class="prkl_content">
 				{{ prkl.content }}
 				</div>
-				{% if prkl.tags %}
 
+		<div>
+				{% if prkl.tags %}
 				<div class="prkl_tags">
 					{{ prkl.tags|prkltaglinks:request }}
 				</div>
 				{% endif %}
+		</div>
 
-                <div>
+		<div>
 				<span class="prkl_user">
 				{% if prkl.user.is_vip and prkl.user.pic %}
 				<img src="/media/{{ prkl.user.pic_url_25x25 }}" />
@@ -29,9 +31,9 @@
 				<span class="prkl_date">
 				{{ prkl.created_at|as_tz:"Europe/Helsinki" }}
 				</span>
-                </div>
+		</div>
 
-                <div>
+		<div>
 
 				<span class="prkl_score">
 				{% if prkl.can_vote %}
@@ -59,9 +61,10 @@
 				</span>
 				{% endif %}
 
-                </div>
+		</div>
 			</div>
 		</div>
+
 	<div class="rbbot"><div></div></div>
 	</div>
 
