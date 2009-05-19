@@ -194,6 +194,12 @@ div.prklform {
 	background-color: white;
 }
 
+div.prklform ul {
+	list-style-type: none;
+	margin-left: -30px;
+	margin-top: -10px;
+}
+
 div.commentform {
 	width: 514px;
 	background-color: white;
