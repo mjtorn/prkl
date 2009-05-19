@@ -47,7 +47,7 @@
 
 				<span class="prkl_score">
                 &raquo;
-				<a href="{% url prkl prkl.id %}">Keskustele.</a>
+				<a href="{% url prkl prkl.id %}">Keskustele.</a> ({{ prkl.comment_count }})
 				</span>
 
 				{% if user.id %}
