@@ -37,7 +37,7 @@ class PrklSuperForm(forms.Form):
 
     def as_prkl(self):
         # normal_row, error_row, row_ender, help_text_html, errors_on_separate_row
-        normal_row = '<p><div>%(label)s</div> <br />%(field)s <br /><span class="error">%(errors)s</span> %(help_text)s '
+        normal_row = '<p><div><b>%(label)s</b></div> <br />%(field)s <br /><span class="error">%(errors)s</span> %(help_text)s '
         error_row = '<span style="color: red;">%s</span>'
         row_ender = '</p>'
         help_text_html = ' %s'
