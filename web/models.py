@@ -320,6 +320,7 @@ class Prkl(models.Model):
     content = models.CharField(max_length=1024)
     user = models.ForeignKey(User, null=True)
     score = models.IntegerField(default=0)
+    comment_count = models.IntegerField(default=0)
 
     tag = models.ManyToManyField(Tag)
 
@@ -348,6 +349,26 @@ class Prkl(models.Model):
         cursor = connection.cursor()
         cursor.execute(QRY_DECR)
         self.score = cursor.fetchone()[0]
+        transaction.commit_unless_managed()
+
+    def incr_comment(self):
+        assert self.id, 'Can not increment unsaved prkl comment count'
+        QRY_INCR_COMMENT = 'UPDATE %s SET comment_count = comment_count + 1 WHERE id=%d RETURNING comment_count' % (self._meta.db_table, self.id)
+ 
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute(QRY_INCR_COMMENT)
+        self.comment_count = cursor.fetchone()[0]
+        transaction.commit_unless_managed()
+
+    def decr_comment(self):
+        assert self.id, 'Can not decrement unsaved prkl comment count'
+        QRY_DECR_COMMENT = 'UPDATE %s SET comment_count = comment_count - 1 WHERE id=%d RETURNING comment_count' % (self._meta.db_table, self.id)
+ 
+        from django.db import connection
+        cursor = connection.cursor()
+        cursor.execute(QRY_DECR_COMMENT)
+        self.comment_count = cursor.fetchone()[0]
         transaction.commit_unless_managed()
 
 
