@@ -594,21 +594,29 @@ def prkl(request, prkl_id):
 
     data = request.POST.copy() or None
 
+    comment_prkl_form = forms.CommentPrklForm(data)
+    if request.user.id:
+        checkbox = django_forms.BooleanField(label='Anonyymisti?', required=False)
+        checkbox.widget.attrs['style'] = 'margin-bottom: 10px'
+
+        comment_prkl_form.fields['anonymous'] = checkbox
+                
     if data:
         button = data.get('submit', '')
         if button == 'Kommentoi':
-            comment_prkl_form = forms.CommentPrklForm(data)
             if comment_prkl_form.is_bound:
                 if comment_prkl_form.is_valid():
                     comment_prkl_form.data['prkl'] = prkl
-                    comment_prkl_form.data['user'] = request.user
+                    print comment_prkl_form.cleaned_data.has_key('anonymous')
+                    anon = comment_prkl_form.cleaned_data.has_key('anonymous') and comment_prkl_form.cleaned_data['anonymous']
+                    if anon:
+                        comment_prkl_form.data['user'] = auth_models.AnonymousUser()
+                    else:
+                        comment_prkl_form.data['user'] = request.user
+
                     comment_prkl_form.save()
 
                     return HttpResponseRedirect(request.META['PATH_INFO'])
-        else:
-            comment_prkl_form = forms.CommentPrklForm()
-    else:
-        comment_prkl_form = forms.CommentPrklForm()
 
     prkl.tags = prkl.tag.values('id', 'name')
     context = {
