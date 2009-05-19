@@ -1,10 +1,12 @@
 {% load utils %}
 	<div class="member">
-		{% if member.is_vip %}
 		<div class="member_pic">
+			{% if member.is_vip and member.pic %}
 			<img src="/media/{{ member.pic.url_50x50 }}" />
+			{% else %}
+			<img src="/media/default_prkl.50x50.png" />
+			{% endif %}
 		</div>
-		{% endif %}
 
 		<div class="member_data">
 			<div>
