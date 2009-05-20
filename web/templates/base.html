@@ -112,6 +112,8 @@
 <a href="{{ top_url }}" class="{% check_active req_path top_url %}">Parhaat</a>
 {% url bottom as bottom_url %}
 <a href="{% url bottom %}" class="{% check_active req_path bottom_url %}">Huonoimmat</a>
+{% url random as random_url %}
+<a href="{% url random %}" class="{% check_active req_path random_url %}">Satunnainen</a>
 {% url faq as faq_url %}
 <a href="{% url faq %}" class="{% check_active req_path faq_url %}">Usein Kysytyt Kysymykset</a>
 {% url members as members_url %}

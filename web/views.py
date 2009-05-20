@@ -630,6 +630,15 @@ def prkl(request, prkl_id):
     return render_to_response('prkl.html', req_ctx)
 
 @dec_true_id_in
+def random(request):
+    """Random view
+    """
+
+    prkl_id = models.Prkl.objects.filter().order_by('?').values('id')[0]['id']
+
+    return HttpResponseRedirect(reverse('prkl', args=(prkl_id,)))
+
+@dec_true_id_in
 def member(request, username):
     try:
         member = models.User.objects.get(username__iexact=username)
