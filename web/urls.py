@@ -57,6 +57,7 @@ if settings.KLUDGE_STATIC:
 
 urlpatterns += patterns('',
     url(r'^p/(?P<page>\d+)/(?P<records>\d+)', views.index, name='index'),
+    url(r'^t/(?P<tag>.+)//p/(?P<page>\d+)/(?P<records>\d+)', views.index, name='tag'),
     url(r'^t/(?P<tag>.+)/p/(?P<page>\d+)/(?P<records>\d+)', views.index, name='tag'),
     url(r'^t/(?P<tag>.+)/', views.index, name='tag'),
     url(r'^$', views.index, name='index'),

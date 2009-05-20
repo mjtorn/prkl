@@ -467,7 +467,7 @@ def index(request, page=None, records=None, tag=None):
     base_url = 'http://%s' % request.META['HTTP_HOST']
     if tag:
         prkls.tag(tag)
-        base_url = '%s/%s' % (base_url, tag)
+        base_url = '%s%s' % (base_url, reverse('tag', args=(tag,)))
 
     # Pagination
     if not page:
