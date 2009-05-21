@@ -141,7 +141,7 @@ div.prkl_tags a.prkl_tag:hover {
 	text-decoration: underline;
 }
 
-div.left {
+div.right {
 	font-size: 8pt;
 	width: 170px;
 	color: black;
@@ -149,7 +149,7 @@ div.left {
 	margin-right: 20px;
 }
 
-div.right {
+div.left {
 	font-size: 8pt;
 	/*
 	position: absolute;
