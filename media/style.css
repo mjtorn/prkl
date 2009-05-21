@@ -154,7 +154,10 @@ div.right {
 	left: 600px;
 	*/
 	margin-right: 20px;
+	/*
 	float: right;
+	*/
+	float: left;
 	width: 150px;
 	color: black;
 }
@@ -164,7 +167,7 @@ div.content {
 	/*
 	float: left;
 	*/
-	margin-left: 20px;
+	margin-left: 180px;
 	/*
 	width: 550px;
 	*/
@@ -186,7 +189,7 @@ div.prklform, div.prklbuffer {
 	/* 550 - 2*5px padding */
 	width: 540px;
 	margin-top: 10px;
-	margin-left: 20px;
+	margin-left: 180px;
 	padding: 5px 5px 5px 5px;
 }
 
