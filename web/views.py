@@ -587,6 +587,9 @@ def prkl(request, prkl_id):
                     prkl = prkl.does_like(your_likes)
             prkl = prkl.can_vote(your_votes)
         prkl = prkl[0]
+
+        # Compat hax!
+        prkl.user.pic_url_50x50 = prkl.user.pic.url_50x50
     except IndexError:
         return notfound(request)
 
