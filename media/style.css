@@ -9,7 +9,7 @@ h1 {
 
 div#prkl-logo {
 	position: absolute;
-	left: 20px;
+	left: 0px;
 	top:  0px;
 }
 
@@ -33,7 +33,7 @@ div.notfound h1 {
 }
 
 div.top {
-	margin-left: 18px;
+	margin-left: 165px;
 	margin-top: 110px;
 }
 
@@ -167,8 +167,8 @@ div.content {
 	/*
 	float: left;
 	*/
-	margin-left: 180px;
-	width: 550px;
+	margin-left: 165px;
+	width: 565px;
 	margin-right: 180px;
 }
 
@@ -185,9 +185,9 @@ div.intro {
 
 div.prklform, div.prklbuffer {
 	/* 550 - 2*5px padding */
-	width: 540px;
+	width: 555px;
 	margin-top: 10px;
-	margin-left: 180px;
+	margin-left: 165px;
 	padding: 5px 5px 5px 5px;
 }
 
