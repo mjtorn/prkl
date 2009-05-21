@@ -188,11 +188,17 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
                         if pic:
                             pic_name, ext = pic.rsplit('.', 1)
                             pic_25 = '%s.25x25.%s' % (pic_name, ext)
+                            pic_50 = '%s.50x50.%s' % (pic_name, ext)
+                            pic_250 = '%s.250x250.%s' % (pic_name, ext)
                             prkl_dict['user']['pic'] = pic
                             prkl_dict['user']['pic_url_25x25'] = pic_25
+                            prkl_dict['user']['pic_url_50x50'] = pic_50
+                            prkl_dict['user']['pic_url_250x250'] = pic_25
                         else:
                             prkl_dict['user']['pic'] = ''
                             prkl_dict['user']['pic_url_25x25'] = ''
+                            prkl_dict['user']['pic_url_50x50'] = ''
+                            prkl_dict['user']['pic_url_250x250'] = ''
                         done_user = True
 
                     if not done_prkl:
