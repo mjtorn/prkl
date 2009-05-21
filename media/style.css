@@ -183,12 +183,18 @@ div.intro {
 	margin-top: -17px;
 }
 
-div.prklform, div.prklbuffer {
+div.prklform {
 	/* 550 - 2*5px padding */
 	width: 555px;
 	margin-top: 10px;
 	margin-left: 165px;
 	padding: 5px 5px 5px 5px;
+}
+
+div.prklbuffer {
+	/* 550 - 2*5px padding */
+	width: 555px;
+	margin-left: 165px;
 }
 
 div.prklform {
