@@ -37,9 +37,11 @@ div.top {
 	margin-top: 110px;
 }
 
+/*
 div.top:before {
 	content: url(red-arrow.png);
 }
+*/
 
 div.top a.inactive {
 	font-family: "Trebuchet MS", Helvetica, Jamrul, sans-serif;
