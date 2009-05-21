@@ -1,7 +1,7 @@
-{% if members_page %}
+{% if members_page and request.user.id %}
 <div class="member_search">
 <form action="{{ request.META.PATH_INFO }}" method="GET">
-	ETSI KAVERI!
+	<span class="member_search_heading">ETSI KAVERI!</a>
 	{{ find_friend_form.as_prkl }}
 	<br />
 	{% if user.is_vip %}
