@@ -1,0 +1,15 @@
+{% if request.user.id %}
+<div class="invite">
+	<span class="invite_heading">KUTSU KAVERI!</a>
+	{{ invite_friend_form.as_prkl }}
+	<br />
+	<input type="submit" name="submit" value="Kutsu" />
+	{% if invite_result %}
+	<br />
+	<span class="result">
+	{{ invite_result }}
+	</span>
+	{% endif %}
+</div>
+{% endif %}
+

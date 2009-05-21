@@ -13,19 +13,6 @@
 		Kirjautunut: <a href="{% url member user.username %}">{{ user }}</a>
 		<br />
 		<a href="{% url logout %}?prev_path={{ request.META.PATH_INFO}}">Ulos</a>
-		<br />
-		<div class="invite">
-			<span class="invite_heading">KUTSU KAVERI!</a>
-			{{ invite_friend_form.as_prkl }}
-			<br />
-			<input type="submit" name="submit" value="Kutsu" />
-			{% if invite_result %}
-			<br />
-			<span class="result">
-			{{ invite_result }}
-			</span>
-			{% endif %}
-		</div>
 	{% endif %}
 
 </form>
