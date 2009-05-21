@@ -589,7 +589,7 @@ def prkl(request, prkl_id):
         prkl = prkl[0]
 
         # Compat hax!
-        if prkl.user.pic:
+        if hasattr(prkl.user, 'pic'):
             prkl.user.pic_url_50x50 = prkl.user.pic.url_50x50
     except IndexError:
         return notfound(request)
