@@ -7,7 +7,17 @@
 				{{ prkl.content }}
 				</div>
 
-		<div>
+		<div style="position: absolute;">
+				<span class="prkl_user">
+				{% if prkl.user.is_vip and prkl.user.pic %}
+				<img src="/media/{{ prkl.user.pic_url_50x50 }}" />
+				{% else %}
+				<img src="/media/default_prkl.50x50.png" />
+				{% endif %}
+				</span>
+		</div>
+
+		<div style="margin-left: 60px;">
 				{% if prkl.tags %}
 				<div class="prkl_tags">
 					{{ prkl.tags|prkltaglinks:request }}
@@ -15,13 +25,8 @@
 				{% endif %}
 		</div>
 
-		<div>
+		<div style="margin-left: 60px;">
 				<span class="prkl_user">
-				{% if prkl.user.is_vip and prkl.user.pic %}
-				<img src="/media/{{ prkl.user.pic_url_25x25 }}" />
-				{% else %}
-				<img src="/media/default_prkl.25x25.png" />
-				{% endif %}
 				{% if prkl.user.id %}
 				<a href="{% url member prkl.user.username %}">{{ prkl.user.username }}</a>
 				{% else %}
@@ -33,8 +38,7 @@
 				</span>
 		</div>
 
-		<div>
-
+		<div style="margin-left: 60px;">
 				<span class="prkl_score">
 				{% if prkl.can_vote %}
 					<a id="{{ prkl.id }}_minus" name="{{ prkl.id }}_anchor" onClick='voteClick({{ prkl.id }}, "down");'>Hajoa siihen</a>
