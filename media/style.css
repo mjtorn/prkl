@@ -208,13 +208,37 @@ div.commentform {
 	float: block;
 }
 
-div.login, div.register, div.message, div.invite, div.member_search, div.recommend_vip {
+div.login, div.register, div.message, div.member_search, div.recommend_vip {
 	background-color: white;
 	padding: 5px 5px 5px 5px;
 	margin-top: 5px;
 }
 
+div.invite {
+	background-color: white;
+	margin-top: 10px;
+}
+
+div.invite span.invite_heading {
+	font-weight: bold;
+	font-size: 10pt;
+}
+
 div.invite span.result {
+	font-size: 14pt;
+}
+
+div.member_search {
+	background-color: white;
+	margin-top: 10px;
+}
+
+div.member_search span.member_search_heading {
+	font-weight: bold;
+	font-size: 10pt;
+}
+
+div.member_search span.result {
 	font-size: 14pt;
 }
 
