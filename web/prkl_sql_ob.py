@@ -22,6 +22,7 @@ FROM web_prkl p
     LEFT OUTER JOIN auth_user u ON wu.user_ptr_id=u.id
     LEFT OUTER JOIN web_prkl_tag pt ON p.id=pt.prkl_id
     LEFT OUTER JOIN web_tag t ON pt.tag_id=t.id
+    %(join_like_snippet)s
 WHERE p.id IN (
     SELECT web_prkl.id FROM web_prkl
     %(tag)s
@@ -29,6 +30,7 @@ WHERE p.id IN (
     %(limit)s
 )
 %(specific_prkl_snippet_qry)s
+%(filter_like_user_qry)s
 ORDER BY %(order_by)s %(default_extra_order)s
 """
 
@@ -57,6 +59,14 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
 
     SPECIFIC_PRKL_SNIPPET_QRY = """\
 AND p.id= %d
+"""
+
+    JOIN_LIKE_SNIPPET = """\
+LEFT OUTER JOIN web_prkllike pl ON p.id=pl.prkl_id
+"""
+
+    FILTER_LIKE_USER_QRY = """
+AND pl.user_id= %d
 """
 
     def __init__(self, **kwargs):
@@ -98,6 +108,14 @@ AND p.id= %d
             self.opts['specific_prkl_snippet_qry'] = self.SPECIFIC_PRKL_SNIPPET_QRY % kwargs['prkl_id']
         else:
             self.opts['specific_prkl_snippet_qry'] = ''
+
+        ## Liked by a user?
+        if kwargs.has_key('liked_by'):
+            self.opts['join_like_snippet'] = self.JOIN_LIKE_SNIPPET
+            self.opts['filter_like_user_qry'] = self.FILTER_LIKE_USER_QRY % kwargs['liked_by']
+        else:
+            self.opts['join_like_snippet'] = ''
+            self.opts['filter_like_user_qry'] = ''
 
     def __len__(self):
         if self.res is None:
