@@ -28,6 +28,7 @@ WHERE p.id IN (
     ORDER BY %(order_by)s, p.id, u.id, t.id
     %(limit)s
 )
+%(specific_prkl_snippet_qry)s
 ORDER BY %(order_by)s, p.id, u.id, t.id
 """
 
@@ -52,6 +53,10 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
     WHERE web_tag.id=web_prkl_tag.tag_id
     AND web_prkl_tag.prkl_id=web_prkl.id
     AND LOWER(web_tag.name)= LOWER('%s')
+"""
+
+    SPECIFIC_PRKL_SNIPPET_QRY = """\
+AND p.id= %d
 """
 
     def __init__(self, **kwargs):
@@ -86,6 +91,12 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
 
         ## No specific tag to filter on
         self.opts['tag'] = ''
+
+        ## Filtering on one?
+        if kwargs.has_key('prkl_id'):
+            self.opts['specific_prkl_snippet_qry'] = self.SPECIFIC_PRKL_SNIPPET_QRY % kwargs['prkl_id']
+        else:
+            self.opts['specific_prkl_snippet_qry'] = ''
 
     def __len__(self):
         if self.res is None:
