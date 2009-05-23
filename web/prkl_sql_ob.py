@@ -133,6 +133,9 @@ SELECT COUNT(web_prkl.id) FROM web_prkl
     def disable_votes(self):
         self.opts['vote_snippet_qry'] = 'false'
 
+    def disable_likes(self):
+        self.opts['like_snippet_qry'] = 'false, '
+
     def top(self):
         self.opts['order_by'] = 'score DESC, created_at DESC'
 
