@@ -667,6 +667,9 @@ def member(request, username):
     else:
         member_likes = prkl_sql_ob.PrklQuery(liked_by=member.id, vote_trueid=request.true_id, liked_by=member.id)
 
+    # Randomize order
+    member_likes.random()
+
     member_likes = member_likes.get_res()
 
     # Which of your prkls are liked - as prkl objects
