@@ -25,11 +25,11 @@ FROM web_prkl p
 WHERE p.id IN (
     SELECT web_prkl.id FROM web_prkl
     %(tag)s
-    ORDER BY %(order_by)s, p.id, u.id, t.id
+    ORDER BY %(order_by)s %(default_extra_order)s
     %(limit)s
 )
 %(specific_prkl_snippet_qry)s
-ORDER BY %(order_by)s, p.id, u.id, t.id
+ORDER BY %(order_by)s %(default_extra_order)s
 """
 
     VOTE_SNIPPET_USERID_QRY = """\
@@ -85,6 +85,7 @@ AND p.id= %d
 
         ## Default order
         self.opts['order_by'] = 'created_at DESC'
+        self.opts['default_extra_order'] = ', p.id, u.id, t.id'
 
         ## No limit by default
         self.opts['limit'] = ''
@@ -149,9 +150,15 @@ AND p.id= %d
 
     def top(self):
         self.opts['order_by'] = 'score DESC, created_at DESC'
+        self.opts['default_extra_order'] = ', p.id, u.id, t.id'
 
     def bottom(self):
         self.opts['order_by'] = 'score ASC, created_at DESC'
+        self.opts['default_extra_order'] = ', p.id, u.id, t.id'
+
+    def random(self):
+        self.opts['order_by'] = 'random()'
+        self.opts['default_extra_order'] = ''
 
     def tag(self, tag_name):
         self.opts['tag'] = self.TAG_SNIPPET_QRY % tag_name
