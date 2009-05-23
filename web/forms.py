@@ -269,7 +269,7 @@ class CommentPrklForm(PrklSuperForm):
     def save(self):
         prkl_comment = models.PrklComment()
 
-        prkl_comment.prkl = self.data['prkl']
+        prkl_comment.prkl_id = self.data['prkl_id']
         if self.data['user'].id:
             prkl_comment.commenting_user = self.data['user']
         prkl_comment.content = self.cleaned_data['content']
