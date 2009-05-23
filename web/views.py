@@ -605,7 +605,7 @@ def prkl(request, prkl_id):
             if comment_prkl_form.is_bound:
                 if comment_prkl_form.is_valid():
                     comment_prkl_form.data['prkl_id'] = prkl['id']
-                    print comment_prkl_form.cleaned_data.has_key('anonymous')
+
                     anon = comment_prkl_form.cleaned_data.has_key('anonymous') and comment_prkl_form.cleaned_data['anonymous']
                     if anon:
                         comment_prkl_form.data['user'] = auth_models.AnonymousUser()
