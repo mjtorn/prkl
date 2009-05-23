@@ -661,10 +661,13 @@ def member(request, username):
     else:
         change_pic_form = None
 
-    member_likes = models.Prkl.objects.filter(prkllike__user=member).order_by('?')
+    # Filter what the user likes as prkl objects
     if request.user.id:
-        your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
-        member_likes = member_likes.does_like(your_likes)
+        member_likes = prkl_sql_ob.PrklQuery(vote_userid=request.user.id, like_userid=request.user.id, liked_by=member.id)
+    else:
+        member_likes = prkl_sql_ob.PrklQuery(liked_by=member.id, vote_trueid=request.true_id)
+
+    member_likes = member_likes.get_res()
 
     if member.is_vip and request.user == member:
         liked_prkls = models.Prkl.objects.filter(prkllike__prkl__user=member)
