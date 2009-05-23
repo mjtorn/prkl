@@ -65,8 +65,17 @@ AND p.id= %d
 LEFT OUTER JOIN web_prkllike pl ON p.id=pl.prkl_id
 """
 
+    JOIN_LIKED_OF_SNIPPET = """\
+LEFT OUTER JOIN web_prkllike pl ON p.id=pl.prkl_id
+LEFT OUTER JOIN web_prkl likeprkl ON pl.prkl_id= likeprkl.id
+"""
+
     FILTER_LIKE_USER_QRY = """
 AND pl.user_id= %d
+"""
+
+    FILTER_LIKED_OF_USER_QRY = """
+AND likeprkl.user_id= %d
 """
 
     def __init__(self, **kwargs):
@@ -116,6 +125,14 @@ AND pl.user_id= %d
         else:
             self.opts['join_like_snippet'] = ''
             self.opts['filter_like_user_qry'] = ''
+
+        ## Liked by anyone for a user?
+        if kwargs.has_key('liked_of'):
+            self.opts['join_like_snippet'] = self.JOIN_LIKED_OF_SNIPPET
+            self.opts['filter_like_user_qry'] = self.FILTER_LIKED_OF_USER_QRY % kwargs['liked_of']
+        else:
+            self.opts['join_like_snippet'] = self.opts['join_like_snippet']
+            self.opts['filter_like_user_qry'] = self.opts['filter_like_user_qry']
 
     def __len__(self):
         if self.res is None:
