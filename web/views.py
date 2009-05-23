@@ -665,17 +665,14 @@ def member(request, username):
     if request.user.id:
         member_likes = prkl_sql_ob.PrklQuery(vote_userid=request.user.id, like_userid=request.user.id, liked_by=member.id)
     else:
-        member_likes = prkl_sql_ob.PrklQuery(liked_by=member.id, vote_trueid=request.true_id)
+        member_likes = prkl_sql_ob.PrklQuery(liked_by=member.id, vote_trueid=request.true_id, liked_by=member.id)
 
     member_likes = member_likes.get_res()
 
+    # Which of your prkls are liked - as prkl objects
     if member.is_vip and request.user == member:
-        liked_prkls = models.Prkl.objects.filter(prkllike__prkl__user=member)
-        # And liking statuses
-        if request.user.id:
-            your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
-            liked_prkls = liked_prkls.does_like(your_likes)
-            liked_prkls = liked_prkls.distinct()
+        liked_prkls = prkl_sql_ob.PrklQuery(vote_userid=request.user.id, like_userid=request.user.id, liked_of=member.id)
+        liked_prkls = liked_prkls.get_res()
     else:
         liked_prkls = None
 
