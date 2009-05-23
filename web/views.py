@@ -575,26 +575,20 @@ def prkl(request, prkl_id):
     your_votes = models.PrklVote.objects.your_votes(request)
     try:
         # Get prkls
-        prkl = models.Prkl.objects.filter(id= prkl_id)
-        # Your likes too
         if not request.has_session or request.META['unreal_true_id']:
+            prkl = prkl_sql_ob.PrklQuery()
             prkl = prkl.disable_votes()
             prkl = prkl.disable_likes()
         else:
+            # Your likes too
             if request.user.id:
-                your_likes = models.Prkl.objects.filter(prkllike__user=request.user)
-                if your_likes:
-                    prkl = prkl.does_like(your_likes)
-            prkl = prkl.can_vote(your_votes)
-        prkl = prkl[0]
+                prkl = prkl_sql_ob.PrklQuery(vote_userid=request.user.id, like_userid=request.user.id, prkl_id=int(prkl_id))
+        prkl = prkl.get_res()[0]
 
-        # Compat hax!
-        if hasattr(prkl.user, 'pic'):
-            prkl.user.pic_url_50x50 = prkl.user.pic.url_50x50
     except IndexError:
         return notfound(request)
 
-    comments = prkl.prklcomment_set.all().order_by('tstamp')
+    comments = models.PrklComment.objects.filter(prkl__id=prkl['id']).order_by('tstamp')
 
     data = request.POST.copy() or None
 
@@ -622,7 +616,6 @@ def prkl(request, prkl_id):
 
                     return HttpResponseRedirect(request.META['PATH_INFO'])
 
-    prkl.tags = prkl.tag.values('id', 'name')
     context = {
         'title': 'Yksittäinen prkl',
         'prkl': prkl,
