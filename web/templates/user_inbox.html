@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load jquery_validation %}
+{% load utils %}
 
 {% block scripture %}
 {% include_validation %}
@@ -27,7 +28,7 @@ var toggleDiv = function(div, a) {
 				$.ajax({
 					type: 'POST',
 					url: '{% url mark_msg_read %}',
-					data: "h={{ request.true_id }}&m=" + msg_id,
+					data: "h={{ request.true_id }}&m=" + msg_id + "&csrfmiddlewaretoken={% do_csrf request %}",
 					dataType: 'json',
 					success: function(retData) {
 						if (retData['status'] == 'OK') {
