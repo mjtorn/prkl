@@ -578,7 +578,7 @@ def prkl(request, prkl_id):
     try:
         # Get prkls
         if not request.has_session or request.META['unreal_true_id']:
-            prkl = prkl_sql_ob.PrklQuery()
+            prkl = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id)
             prkl.disable_votes()
             prkl.disable_likes()
         else:
