@@ -19,14 +19,15 @@ function inputs(form) {
 }
 
 function scrollForDiv(div) {
-			divHeight = $(div).height();
-			divOffset = $(div).offset().top;
-			windowHeight = $(window).height();
-			windowScroll = $(window).scrollTop();
-			if (divHeight + divOffset > windowHeight) {
-				//alert('flow: ' + divHeight + "+" + divOffset + " >= " + windowHeight);
+			divHeight = parseInt($(div).height());
+			divOffset = parseInt($(div).offset().top);
+			windowHeight = parseInt($(window).height());
+			windowScroll = parseInt($(window).scrollTop());
+			divEnd = divHeight + divOffset;
+			if (divEnd > windowHeight + windowScroll) {
 				$('html, body').animate({
-					scrollTop: windowScroll + divHeight
+					// 25 should cover the next line of #subj_{{ message }}
+					scrollTop: windowScroll + divHeight + 25
 				}, 500, 'easeOutSine');
 			}
 }
