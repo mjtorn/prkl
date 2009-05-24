@@ -4,7 +4,7 @@
 {% if user.id %}
 <script type="text/javascript">
 $(document).ready(function() {
-	var targetOffset = $("#member_data").offset().top;
+	var targetOffset = $(".write_msg").offset().top;
 	$("html").animate({scrollTop: targetOffset}, 500);
 
 	$("#id_subject").focus();
