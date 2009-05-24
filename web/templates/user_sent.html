@@ -1,10 +1,16 @@
 {% extends "base.html" %}
 
 {% block scripture %}
+<script type="text/javascript" src="/media/jquery.easing.1.3.js">
+</script>
+<script type="text/javascript" src="/media/prkl.js">
+</script>
 <script type="text/javascript">
 var toggleDiv = function(div, a) {
 	if ($(div).css("display") == "none") {
-		$(div).show(300);
+		$(div).show(300, function() {
+			scrollForDiv(div, 25);
+		});
 		$(a).text("Piilota");
 	} else {
 		$(div).hide(300);
