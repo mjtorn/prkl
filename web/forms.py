@@ -16,6 +16,19 @@ from web import models
 
 import datetime
 
+## Widget land
+from django.forms.util import flatatt
+from django.utils.encoding import force_unicode
+from django.utils.html import conditional_escape
+
+class PrklTextarea(forms.widgets.Textarea):
+    def render(self, name, value, attrs=None):
+        if value is None:
+            value = ''
+        value = force_unicode(value)
+        final_attrs = self.build_attrs(attrs, name=name)
+        return mark_safe(u'<br /><textarea%s>%s</textarea>' % (flatatt(final_attrs), conditional_escape(force_unicode(value))))
+
 ## SuperClass Me (harder)
 
 class PrklErrorField(forms.util.ErrorList):
