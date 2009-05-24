@@ -228,7 +228,7 @@ class SubmitPrklForm(PrklSuperForm):
         'cols': 55,
         'rows': 3,
     }
-    content = forms.CharField(label='Sinun prkleesi', error_messages=content_error_messages, widget=forms.widgets.Textarea(attrs=attrs))
+    content = forms.CharField(label='Sinun prkleesi', error_messages=content_error_messages, widget=PrklTextarea(attrs=attrs))
     tags = forms.MultipleChoiceField(label='Tagit', error_messages=tag_error_messages, choices=(), widget=forms.widgets.CheckboxSelectMultiple())
 
     def clean_content(self):
@@ -273,7 +273,7 @@ class CommentPrklForm(PrklSuperForm):
         'cols': 55,
     }
 
-    content = forms.CharField(label='Kommentti', error_messages=error_messages, widget=forms.widgets.Textarea(attrs=attrs))
+    content = forms.CharField(label='Kommentti', error_messages=error_messages, widget=PrklTextarea(attrs=attrs))
 
     def clean_content(self):
         return self.data.get('content', '').strip()
