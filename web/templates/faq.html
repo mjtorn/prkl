@@ -7,7 +7,7 @@
 <h1>Usein Kysytyt Kysymykset</h1>
 <div class="faqs">
 	<div class="faq">
-		<h3>Mistä on kyse?</h3>
+		{% faq_link "mista_kyse" "Mistä on kyse?" %}
 		<p>
 		<a class="prkl_score" href="http://prkl.es/">http://prkl.es/</a> on päivittäiseen avautumiseen suunnattu sivusto, johon kuka
 		tahansa pystyy kertomaan mikä tänään ärsytti. Tämän voi tehdä joko sivulta
@@ -19,9 +19,10 @@
 		<p>
 		Konsepti perustuu <a class="prkl_score" href="http://fmylife.com/">http://fmylife.com/</a> -palveluun.
 		</p>
+		{% faq_back "Ylös" %}
 	</div>
 	<div class="faq">
-		<h3>Millasia sääntöjä on, jos mitään?</h3>
+		{% faq_link "millaisia_saantoja" "Millasia sääntöjä on, jos mitään?" %}
 		<p>
 		Säännöt ovat hyvin yksinkertaiset:
 		<ul>
@@ -34,18 +35,20 @@
 		Sivulla on myös äänestys, voit osoittaa sympatiaa äänestämällä <em>Aww</em>,
 		tai vaihtoehtoisesti <em>Hajoa siihen</em>
 		</p>
+		{% faq_back "Ylös" %}
 	</div>
 	<div class="faq">
-		<h3>Miten osallistun?</h3>
+		{% faq_link "miten_osallistu" "Miten osallistun?" %}
 		<p>
 		Etusivulla on lomake, jolla voi kirjoittaa <em>prkleitä</em>.
 		</p>
 		<p>
 		Voit myös lähettää moisen tekstiviestillä numeroon <em>17123</em> hintaan <em>0.25e</em>.
 		</p>
+		{% faq_back "Ylös" %}
 	</div>
 	<div class="faq">
-		<h3>Miksi rekisteröityisin?</h3>
+		{% faq_link "miksi_rekisteroityisin" "Miksi rekisteröityisin?" %}
 		<p>
 		Rekisteröityneenä käyttäjänä saat mm. kirjanpidon omista <em>prkleistäsi</em>
 		suosionmittauksineen sekä mahdollisuuden viestittää muille käyttäjille.
@@ -57,9 +60,10 @@
 		Kun kutsut kavereitasi rekisteröitymään, saat VIPiä, 5 päivää käyttäjältä,
 		30 päivään asti!
 		</p>
+		{% faq_back "Ylös" %}
 	</div>
 	<div class="faq">
-		<h3>Miten VIP toimii?</h3>
+		{% faq_link "miten_vip_toimii" "Miten VIP toimii?" %}
 		<p>
 		Tilaat VIPiä lähettämällä viestin numeroon <em>17123</em>
 		</p>
@@ -82,9 +86,10 @@
 		Tämän lisäksi, koska saitin ylläpito ei ole valitettavasti ilmaista, saat
 		hyvän mielen suomalaisen laatutuotteen tukemisesta!
 		</p>
+		{% faq_back "Ylös" %}
 	</div>
 	<div class="faq">
-		<h3>Mitä muita hintajuttuja tekstiviesteissä on?</h3>
+		{% faq_link "tekstiviestien_hintatietoa" "Mitä muita hintajuttuja tekstiviesteissä on?" %}
 		<p>
 		Huonosti muodostetusta viestistä veloitetaan Soneralla 13c ja DNA:lla,
 		Saunalahdella ja Elisalla 25c.
@@ -97,9 +102,10 @@
 		Lisäksi kalliimmista viesteistä tarvitaan vahvistus, tämän takia kuukauden
 		vip on <em>jrprkl</em>-avainsanan takana.
 		</p>
+		{% faq_back "Ylös" %}
 	</div>
 	<div class="faq">
-		<h3>Onko anonyymi oikeasti anonyymi?</h3>
+		{% faq_link "anonyymi" "Onko anonyymi oikeasti anonyymi?" %}
 		<p>
 		Ehdottomasti!
 		<p>
@@ -107,6 +113,7 @@
 		Jos kirjautunut käyttäjä asettaa Anonyymi-täpän päälle,
 		emme pidä kirjaa <em>prkleen</em> kirjoittajasta.
 		</p>
+		{% faq_back "Ylös" %}
 	</div>
 </div>
 {% endblock %}
