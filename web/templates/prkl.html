@@ -4,6 +4,11 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$("#id_content").focus();
+	var logo = $('#prkl-logo');
+	var offset = logo.offset().top;
+	$('html, body').animate({
+		scrollTop: offset
+	}, 1000)
 });
 </script>
 {% endblock %}
