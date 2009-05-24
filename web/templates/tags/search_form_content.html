@@ -1,0 +1,32 @@
+{% load utils %}
+
+	<table>
+	<tr>
+		<th>{% render_label user_search_form "username" %}</th>
+		<th>Ikä</th>
+	</tr>
+	<tr>
+		<td>{% render_field user_search_form "username"  %}</td>
+
+		<td>{% render_field user_search_form "age_low"  %} - 
+		{% render_field user_search_form "age_high"  %}
+		<br />
+		{% render_error user_search_form "age_low" "prkl_error_span.html" %}
+		</td>
+	</tr>
+	<tr>
+		<th>{% render_label user_search_form "location" %}</th>
+		<th>{% render_label user_search_form "sex" %}</th>
+	</tr>
+	<tr>
+		<td>{% render_field user_search_form "location"  %}</td>
+
+		<td>{% render_field user_search_form "sex"  %}
+		<br />
+		{% render_error user_search_form "sex" "prkl_error_span.html" %}
+		</td>
+	</tr>
+
+	</table>
+	<br />
+

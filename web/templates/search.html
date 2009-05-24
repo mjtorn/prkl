@@ -1,7 +1,5 @@
 {% extends "base.html" %}
 
-{% load utils %}
-
 {% block scripture %}
 <!--
 <script type="text/javascript">
@@ -16,35 +14,7 @@ $(document).ready(function() {
 <h1>Tänään haen kunnolla prkl</h1>
 <div class="search">
 	<form method="GET" action="{{ request.META.PATH_INFO }}">
-	<table>
-	<tr>
-		<th>{% render_label user_search_form "username" %}</th>
-		<th>Ikä</th>
-	</tr>
-	<tr>
-		<td>{% render_field user_search_form "username"  %}</td>
-
-		<td>{% render_field user_search_form "age_low"  %} - 
-		{% render_field user_search_form "age_high"  %}
-		<br />
-		{% render_error user_search_form "age_low" "prkl_error_span.html" %}
-		</td>
-	</tr>
-	<tr>
-		<th>{% render_label user_search_form "location" %}</th>
-		<th>{% render_label user_search_form "sex" %}</th>
-	</tr>
-	<tr>
-		<td>{% render_field user_search_form "location"  %}</td>
-
-		<td>{% render_field user_search_form "sex"  %}
-		<br />
-		{% render_error user_search_form "sex" "prkl_error_span.html" %}
-		</td>
-	</tr>
-
-	</table>
-	<br />
+	{% include "tags/search_form_content.html" %}
 	<input type="submit" name="submit" value="Etsi" />
 	</form>
 </div>
