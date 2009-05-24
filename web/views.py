@@ -671,7 +671,7 @@ def member(request, username):
     if request.user.id:
         member_likes = prkl_sql_ob.PrklQuery(vote_userid=request.user.id, like_userid=request.user.id, liked_by=member.id)
     else:
-        member_likes = prkl_sql_ob.PrklQuery(liked_by=member.id, vote_trueid=request.true_id, liked_by=member.id)
+        member_likes = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id, liked_by=member.id)
 
     # Randomize order
     member_likes.random()
