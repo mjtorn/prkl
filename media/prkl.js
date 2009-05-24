@@ -4,7 +4,7 @@ function scrollForDiv(div, magicBuffer) {
 	windowHeight = parseInt($(window).height());
 	windowScroll = parseInt($(window).scrollTop());
 	divEnd = divHeight + divOffset;
-	if (divEnd > windowHeight + windowScroll) {
+	if (divEnd + magicBuffer > windowHeight + windowScroll) {
 		$('html, body').animate({
 			// 25 should cover the next line of #subj_{{ message }}
 			scrollTop: windowScroll + divHeight + magicBuffer
