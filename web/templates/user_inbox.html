@@ -40,7 +40,7 @@ var toggleDiv = function(div, a) {
 					}
 				});
 			}
-			scrollForDiv(div);
+			scrollForDiv(div, 25);
 		});
 		$(a).text("Piilota");
 	} else {
@@ -52,7 +52,7 @@ var toggleDiv = function(div, a) {
 var toggleReply = function(div, a) {
 	if ($(div).css("display") == "none") {
 		$(div).show(300, function() {
-			scrollForDiv(div);
+			scrollForDiv(div, 25);
 		});
 		inputs($(div).find('form')).focus();
 	} else {
