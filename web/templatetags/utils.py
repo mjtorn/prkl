@@ -63,5 +63,25 @@ def as_tz(date, tz_name):
     dest_tz = tz.gettz(tz_name)
     return new_date.astimezone(dest_tz).strftime("%Y-%m-%d %H:%M:%S")
 
+@register.simple_tag
+def faq_link(anchor_id, descr):
+    base = """<h3><a name="%(anchor_id)s" href="#%(anchor_id)s" onClick="scrollTo('%(anchor_id)s');">%(descr)s</a></h3>"""
+
+    subs = {
+        'anchor_id': anchor_id,
+        'descr': descr,
+    }
+    out = SafeUnicode(base % subs)
+
+    return out
+
+@register.simple_tag
+def faq_back(link_text):
+    base = """<br /><small><a class="prkl_score" href="#" onClick="scrollTo('');">%s</a></small>"""
+
+    out = SafeUnicode(base % link_text)
+
+    return out
+
 # EOF
 
