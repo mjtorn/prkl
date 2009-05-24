@@ -209,7 +209,6 @@ div.prklform ul {
 }
 
 div.commentform {
-	width: 514px;
 	background-color: white;
 	padding: 5px;
 	border: solid 1px white;
@@ -271,7 +270,6 @@ div.prkl, div.comment, div.member_data, div.about_vip, div.search, div.write_msg
 	margin-bottom: 0.5em;
 	background-color: #ffffff;
 	padding: 5px;
-	width: 500px;
 	font-size: 0.8em;
 }
 
@@ -296,10 +294,7 @@ div.invite, div.member_search {
 	background-color: #c3d3d6;
 }
 
-div.comment {
-	/* 500 + 2*7 margins */
-	width: 514px;
-}
+/* div.comment was here */
 
 div.member_data {
 	width: 540px;
