@@ -273,6 +273,10 @@ div.prkl, div.comment, div.member_data, div.about_vip, div.search, div.write_msg
 	font-size: 0.8em;
 }
 
+div.search table {
+	width: 100%;
+}
+
 div.write_msg, div.your_sent, div.messages {
 	width: 550px;
 }
