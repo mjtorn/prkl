@@ -10,8 +10,11 @@ from django.utils.html import escape
 from django.utils.safestring import SafeUnicode
 
 from django.template import Library
+from django.template import Context, loader
 
 from dateutil import parser, tz
+
+from django import forms as django_forms
 
 register = Library()
 
@@ -82,6 +85,56 @@ def faq_back(link_text):
     out = SafeUnicode(base % link_text)
 
     return out
+
+@register.simple_tag
+def render_widget(form, field):
+    """Fuck django
+    """
+
+    if hasattr(form, 'cleaned_data'):
+        value = form['cleaned_data'][field]
+    else:
+        value = form.data.get(field, form.initial.get(field, ''))
+
+    widget = form.fields[field].widget
+
+    return widget.render(field, value, attrs=widget.attrs)
+
+@register.simple_tag
+def render_field(form, field):
+    """Fuck django harder
+    """
+
+    bf = django_forms.forms.BoundField(form, form.fields[field], field)
+
+    return bf
+
+@register.simple_tag
+def render_label(form, field):
+    """Fuck django with a riding crop
+    """
+
+    bf = django_forms.forms.BoundField(form, form.fields[field], field)
+
+    return SafeUnicode(bf.label_tag(bf.label))
+
+@register.simple_tag
+def render_error(form, field, partial):
+    """Fuck django with a chainsaw gently
+    """
+
+    bf = django_forms.forms.BoundField(form, form.fields[field], field)
+
+    print bf.errors
+    if bf.errors:
+        template = loader.get_template('partials/%s' % partial)
+        out = template.render(Context({'error': ', '.join(bf.errors)}))
+
+        return SafeUnicode(out)
+
+    return ''
+
+
 
 # EOF
 
