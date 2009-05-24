@@ -1,5 +1,33 @@
 {% extends "base.html" %}
 
+{% load utils %}
+
+{% block scripture %}
+<script type="text/javascript" src="/media/jquery.easing.1.3.js">
+</script>
+<script type="text/javascript">
+var scrollTo = function(anchor) {
+	/*
+	alert($(document).height());
+	alert($(window).height() + $(window).scrollTop());
+	*/
+	var offset = $("[name=" + anchor + "]").offset().top;
+	if ($(window).scrollTop() != offset) {
+		$('html, body').animate({
+			scrollTop: offset
+		}, 500);
+	} else {
+		$('html, body').animate({
+			scrollTop: offset-10
+		}, 500);
+		$('html, body').animate({
+			scrollTop: offset
+		}, 500, 'easeOutBounce');
+	}
+}
+</script>
+{% endblock %}
+
 <div class="prklbuffer">
 </div>
 
