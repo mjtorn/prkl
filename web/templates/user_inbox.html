@@ -4,6 +4,8 @@
 
 {% block scripture %}
 {% include_validation %}
+<script type="text/javascript" src="/media/jquery.easing.1.3.js">
+</script>
 <script type="text/javascript">
 $(document).ready(function() {
 	var targetOffset = $("#member_data").offset().top;
@@ -16,6 +18,18 @@ function inputs(form) {
 	return form.find("input, select, textarea")
 }
 
+function scrollForDiv(div) {
+			divHeight = $(div).height();
+			divOffset = $(div).offset().top;
+			windowHeight = $(window).height();
+			windowScroll = $(window).scrollTop();
+			if (divHeight + divOffset > windowHeight) {
+				//alert('flow: ' + divHeight + "+" + divOffset + " >= " + windowHeight);
+				$('html, body').animate({
+					scrollTop: windowScroll + divHeight
+				}, 500, 'easeOutSine');
+			}
+}
 
 var toggleDiv = function(div, a) {
 	if ($(div).css("display") == "none") {
@@ -37,6 +51,7 @@ var toggleDiv = function(div, a) {
 					}
 				});
 			}
+			scrollForDiv(div);
 		});
 		$(a).text("Piilota");
 	} else {
@@ -47,7 +62,9 @@ var toggleDiv = function(div, a) {
 
 var toggleReply = function(div, a) {
 	if ($(div).css("display") == "none") {
-		$(div).show(300);
+		$(div).show(300, function() {
+			scrollForDiv(div);
+		});
 		inputs($(div).find('form')).focus();
 	} else {
 		$(div).hide(300);
