@@ -572,17 +572,23 @@ def prkl(request, prkl_id):
     """Single-prkl view
     """
 
+    prkl_id = int(prkl_id)
+
     your_votes = models.PrklVote.objects.your_votes(request)
     try:
         # Get prkls
         if not request.has_session or request.META['unreal_true_id']:
             prkl = prkl_sql_ob.PrklQuery()
-            prkl = prkl.disable_votes()
-            prkl = prkl.disable_likes()
+            prkl.disable_votes()
+            prkl.disable_likes()
         else:
             # Your likes too
             if request.user.id:
-                prkl = prkl_sql_ob.PrklQuery(vote_userid=request.user.id, like_userid=request.user.id, prkl_id=int(prkl_id))
+                prkl = prkl_sql_ob.PrklQuery(vote_userid=request.user.id, like_userid=request.user.id, prkl_id=prkl_id)
+            else:
+                prkl = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id, prkl_id=prkl_id)
+                prkl.disable_votes()
+                prkl.disable_likes()
         prkl = prkl.get_res()[0]
 
     except IndexError:
