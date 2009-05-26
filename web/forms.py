@@ -13,6 +13,7 @@ from django.utils.safestring import mark_safe
 from django import forms
 
 from web import models
+from web import utils
 
 import datetime
 
@@ -260,6 +261,17 @@ class SubmitPrklForm(PrklSuperForm):
                 new_prkl.user = user
         new_prkl.save()
         new_prkl.tag.add(*self.cleaned_data['tags'])
+
+        # TWEET
+        from qs.queue import models as queue_models
+        # Maybe F() objects would help but we don't have them
+        twit_queue = queue_models.Queue.objects.get(name= 'twitter')
+
+        tweet = utils.make_tweet(new_prkl)
+        tweet_message = queue_models.Message.objects.create(message=tweet, queue=twit_queue)
+
+        new_prkl.queue_message.add(tweet_message)
+        new_prkl.save()
 
         return new_prkl
 

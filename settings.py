@@ -101,6 +101,7 @@ INSTALLED_APPS = (
     'fad_tools.messager',
     'ajax_validation',
     'mediator',
+    'qs.queue',
 )
 
 if DEBUG_TOOLBAR:

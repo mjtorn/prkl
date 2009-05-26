@@ -9,6 +9,8 @@ from django.db import transaction
 
 from fad_tools.messager import models as messager_models
 
+from qs.queue import models as queue_models
+
 from mediator import models as mediator_models
 
 from prkl import thumbs
@@ -325,6 +327,8 @@ class Prkl(models.Model):
     tag = models.ManyToManyField(Tag)
 
     sms = models.ForeignKey(mediator_models.Sms, null=True)
+
+    queue_message = models.ManyToManyField(queue_models.Message, null=True)
 
     objects = PrklManager()
 
