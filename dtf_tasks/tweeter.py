@@ -4,6 +4,8 @@ from django.utils import simplejson
 
 from taskforce.base import BaseTask
 
+from taskforce.exceptions import TaskFailed
+
 from prkl import dqs_settings
 
 import datetime
@@ -17,7 +19,10 @@ class Tweeter(BaseTask):
 
         dqs_connstring = 'http://%s:%s' % (dqs_settings.DQS_HOST, dqs_settings.DQS_PORT)
         dqs_connstring = '%s/q/%s/json/' % (dqs_connstring, queue_name)
-        conn = urllib2.urlopen(dqs_connstring)
+        try:
+            conn = urllib2.urlopen(dqs_connstring)
+        except IOError, msg:
+            raise TaskFailed(msg)
 
         res = conn.read()
 
@@ -34,10 +39,14 @@ class Tweeter(BaseTask):
         #max_run = datetime.timedelta(minutes=3)
         max_run = datetime.timedelta(seconds=10)
 
-        tweet = self.get_tweet('twitter')
-
         self.progress = 'Started'
-        self.resutls = {}
+        self.results = {}
+
+        try:
+            tweet = self.get_tweet('twitter')
+        except TaskFailed, msg:
+            self.progress = 'TaskFailed: %s' % msg
+            raise
 
         import time
 
@@ -55,10 +64,8 @@ class Tweeter(BaseTask):
                 break
 
         if not success:
-            self.progress = 'Failed'
-            self.results = {
-                'status': 'TASKTIMEOUT',
-            }
+            self.progress = 'TASKTIMEOUT'
+            raise TaskFailed('Task timed out')
 
         return self.results
 
