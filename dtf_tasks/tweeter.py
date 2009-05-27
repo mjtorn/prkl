@@ -53,15 +53,12 @@ class Tweeter(BaseTask):
 
         try:
             res = t.status_update(tweet)
-        except twitter.TwitterException:
-            return False
+        except twitter.TwitterException, msg:
+            raise TaskFailed('TaskFailed: %s' % msg)
 
         stat = data.Status()
 
         stat.load_json(res)
-
-        # Hate returning booleans
-        return True
 
     def run(self, *args, **kwargs):
         # Canary bailout
@@ -104,7 +101,11 @@ class Tweeter(BaseTask):
 
             time.sleep(1)
 
-            success = self.do_tweet(tweet['message'])
+            try:
+                self.do_tweet(tweet['message'])
+            except TaskFailed, msg:
+                self.progress = 'TWITFAIL: %s' % msg
+                raise
 
         if not success:
             self.progress = 'TASKTIMEOUT'
