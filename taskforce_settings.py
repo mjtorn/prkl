@@ -3,7 +3,7 @@
 TASKFORCE_SERVER = '83.150.88.181:8016'
 
 INSTALLED_APPS = (
-    'prkl.dtf_apps',
+    'prkl.dtf_tasks',
 )
 
 # EOF
