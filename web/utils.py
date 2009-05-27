@@ -15,8 +15,8 @@ def gen_reg_token(true_id, username):
 def make_tweet(prkl):
     twit_length = 140
     # FIXME: Not dynamic enough
-    #base_url = 'http://prkl.es/prkl/%d'
-    base_url = 'http://fadconsulting.com:8020/prkl/%d'
+    base_url = 'http://prkl.es/prkl/%d'
+    #base_url = 'http://fadconsulting.com:8020/prkl/%d'
 
     url = base_url % prkl.id
     kw = '#prkl'
