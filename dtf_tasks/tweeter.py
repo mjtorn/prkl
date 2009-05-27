@@ -12,8 +12,12 @@ from twyt import twitter, data
 
 import datetime
 
+import time
+
 import urllib
 import urllib2
+
+SLEEP_INTERVAL = 10
 
 class Tweeter(BaseTask):
     def get_tweet(self, queue_name):
@@ -63,8 +67,7 @@ class Tweeter(BaseTask):
     def run(self, *args, **kwargs):
         # Canary bailout
         started_at = datetime.datetime.now()
-        #max_run = datetime.timedelta(minutes=3)
-        max_run = datetime.timedelta(seconds=5)
+        max_run = datetime.timedelta(minutes=3)
 
         self.progress = 'Started'
         self.results = {}
@@ -85,11 +88,12 @@ class Tweeter(BaseTask):
             self.progress = 'TaskFailed: %s' % msg
             raise
 
-        import time
-
         success = False
+        i = 0
         while not success:
-            self.progress = 'Tweeting id %s' % tweet['id']
+            base_progress = 'Tweeting id %s (%%d)' % tweet['id']
+            self.progress = base_progress % i
+
             self.results = {
                 'status': 'RUNNING',
                 'tweet': tweet,
@@ -99,19 +103,25 @@ class Tweeter(BaseTask):
             if datetime.datetime.now() >= started_at + max_run:
                 break
 
-            time.sleep(1)
-
             try:
                 self.do_tweet(tweet['message'])
+                success = True
+                break
             except TaskFailed, msg:
                 self.progress = 'TWITFAIL: %s' % msg
                 raise
+
+            self.progress = '%s (sleep)' % self.progress
+            time.sleep(SLEEP_INTERVAL)
+            i += 1
 
         if not success:
             self.progress = 'TASKTIMEOUT'
             raise TaskFailed('Task timed out')
         else:
             self.soft_delete('twitter', tweet['id'])
+            self.progress = 'Done'
+            self.results['status'] = 'COMPLETED'
 
         return self.results
 
