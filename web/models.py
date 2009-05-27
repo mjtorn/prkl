@@ -253,6 +253,7 @@ class User(auth_models.User):
     phone = models.CharField(max_length=16, null=True, blank=True, unique=True)
     location = models.CharField(max_length=24, null=True, blank=True)
     birthday = models.DateField(null=True)
+    only_year = models.BooleanField(default=False)
     is_male = models.BooleanField(null=True)
     # Denormalize here, partially because django and outer joins suck shit
     vip_expire_at = models.DateTimeField(null=True)

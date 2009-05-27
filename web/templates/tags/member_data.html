@@ -28,7 +28,11 @@
 					Syntymäpäivä:
 				</span>
 				{% if member.birthday %}
+                {% if member.only_year %}
+				{{ member.birthday|date:"Y" }}
+                {% else %}
 				{{ member.birthday|date:"d. m. Y" }}
+				{% endif %}
 				{% else %}
 				Ei kerro
 				{% endif %}

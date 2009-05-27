@@ -383,6 +383,7 @@ class EditProfileForm(PrklSuperForm):
         '%d.%m. %Y',
         '%d.%m.%Y',
         '%d %m %Y',
+        '%Y',
     )
 
     location = forms.CharField(label='Sijainti', max_length=24, required=False, error_messages=loc_errors)
@@ -392,12 +393,29 @@ class EditProfileForm(PrklSuperForm):
     def clean_location(self):
         return self.data.get('location', '').strip()
 
+    def clean_birthday(self):
+        bday = self.fields['birthday'].clean(self.data['birthday'])
+
+        # Explicitly reset the user attribute
+        if bday and self.data['birthday'] == bday.strftime('%Y'):
+            self.only_year = True
+        else:
+            self.only_year = False
+
+        return bday
+
     @commit_on_success
     def save(self):
         user = self.data['user']
 
         user.location = self.cleaned_data['location'] or None
         user.birthday = self.cleaned_data['birthday'] or None
+
+        if user.birthday and self.only_year:
+            user.only_year = True
+        else:
+            user.only_year = False
+
         if self.cleaned_data['sex'] == '1':
             user.is_male = None
         elif self.cleaned_data['sex'] == '2':

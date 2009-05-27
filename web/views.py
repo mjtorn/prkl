@@ -762,7 +762,7 @@ def edit_profile(request):
     # But also user info edit
     initial_profile = {
         'location': request.user.location,
-        'birthday': request.user.birthday,
+        'birthday': request.user.birthday if not request.user.only_year else request.user.birthday.strftime('%Y'),
     }
     initial_desc = {
         'description': request.user.description
