@@ -6,7 +6,9 @@ INSTALLED_APPS = (
     'prkl.dtf_tasks',
 )
 
-ALLOW_TASK_OVERRIDE = False
+## Until we have a cleanup method, just don't care
+#ALLOW_TASK_OVERRIDE = False
+ALLOW_TASK_OVERRIDE = True
 
 # EOF
 
