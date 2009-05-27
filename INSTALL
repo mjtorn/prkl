@@ -1,0 +1,17 @@
+python-psycopg2
+python-dateutil
+python-lxml (2+)
+
+fad_tools
+django-ajax-validation (branch fadgames)
+django-mediator
+
+jquery (1.2.6+)
+
+python-twyt (0.9.2)
+python-simplejson (required)
+
+taskforce (taskforce-django branch)
+dqs (fad_master branch)
+
+
