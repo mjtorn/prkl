@@ -185,14 +185,12 @@ def dec_true_id_in(func):
         request = args[0]
 
         # Did we just fake an entry in cookies?
-        request.META['unreal_true_id'] = False
         request.has_session = (request.session.session_key == request.COOKIES.get('sessionid', ''))
         if not request.COOKIES.has_key('true_id'):
             true_id = _gen_true_id()
             true_id_ob = models.TrueId.objects.create(hash=true_id)
             # Cookies are denied, label this fake true_id as fake
             if not request.has_session:
-                request.META['unreal_true_id'] = True
                 request.COOKIES['true_id'] = true_id
             else:
                 response = HttpResponseRedirect(request.META['PATH_INFO'])
@@ -206,7 +204,6 @@ def dec_true_id_in(func):
             except models.TrueId.DoesNotExist:
                 # Just to be sure we didn't get tampered, recreate the id
                 true_id = _gen_true_id()
-                request.META['unreal_true_id'] = True
                 true_id_ob = models.TrueId.objects.create(hash=true_id)
 
         request.true_id = true_id_ob
@@ -223,15 +220,13 @@ def dec_true_id_out(func):
         req_ctx = args[1]
         request = req_ctx['request']
         response = func(*args, **kwargs)
-        if not request.COOKIES.has_key('true_id') or (request.COOKIES.has_key('true_id') and request.META.get('unreal_true_id', False)):
+        if not request.COOKIES.has_key('true_id'):
             if not hasattr(request, 'true_id'):
                 true_id = sha.sha('%s|%s|%s' % (datetime.datetime.now().isoformat(), datetime.datetime.now().microsecond, datetime.datetime.now().microsecond)).hexdigest()
                 true_id_ob, created = models.TrueId.objects.get_or_create(hash=true_id)
             else:
                 true_id_ob = request.true_id
 
-            if request.META.get('unreal_true_id', False):
-                return HttpResponseRedirect(request.META['PATH_INFO'])
             response.set_cookie('true_id', true_id_ob.hash, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
 
         return response
@@ -460,9 +455,6 @@ def index(request, page=None, records=None, tag=None):
     else:
         prkls = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id)
 
-    if not request.has_session or request.META['unreal_true_id']:
-        prkls.disable_votes()
-
     ### Tag affects base url too!
     base_url = 'http://%s' % request.META['HTTP_HOST']
     if tag:
@@ -503,9 +495,6 @@ def top(request, page=None, records=None):
     else:
         prkls = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id)
 
-    if not request.has_session or request.META['unreal_true_id']:
-        prkls.disable_votes()
-
     # order
     prkls.top()
 
@@ -541,9 +530,6 @@ def bottom(request, page=None, records=None):
     else:
         prkls = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id)
 
-    if not request.has_session or request.META['unreal_true_id']:
-        prkls.disable_votes()
-
     # order
     prkls.bottom()
 
@@ -577,18 +563,14 @@ def prkl(request, prkl_id):
     your_votes = models.PrklVote.objects.your_votes(request)
     try:
         # Get prkls
-        if not request.has_session or request.META['unreal_true_id']:
+        if not request.has_session:
             prkl = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id)
-            prkl.disable_votes()
-            prkl.disable_likes()
         else:
             # Your likes too
             if request.user.id:
                 prkl = prkl_sql_ob.PrklQuery(vote_userid=request.user.id, like_userid=request.user.id, prkl_id=prkl_id)
             else:
                 prkl = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id, prkl_id=prkl_id)
-                prkl.disable_votes()
-                prkl.disable_likes()
         prkl = prkl.get_res()[0]
 
     except IndexError:
@@ -1048,6 +1030,8 @@ def vote(request):
     # First off, context
     context, true_id_ob, good = init_json_ctx(request, request.POST)
     if not good:
+        # Set JSONP-kind of action to enforce cookies where not available
+        context['action'] = 'reload'
         ctx = simplejson.dumps(context)
 
         return HttpResponse(ctx, content_type='text/json')
@@ -1123,7 +1107,6 @@ def like(request):
 
     # First off, context
     context, true_id_ob, good = init_json_ctx(request, request.POST)
-    print context, true_id_ob, good
     if not good:
         ctx = simplejson.dumps(context)
 
@@ -1140,7 +1123,6 @@ def like(request):
         return HttpResponse(ctx, content_type='text/json')
 
     # And if we don't have a cookie, bail out
-    print request.COOKIES['true_id']
     if not request.COOKIES.has_key('true_id'):
         context['message'] = 'Bad form'
         context['errors'] = ('Bad form',)
