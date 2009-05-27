@@ -52,20 +52,27 @@
 			url: "{% url vote %}",
 			dataType: "json",
 			success: function(retData) {
-				// Update score
-				scoreElem = $("#" + prkl_id + "_score");
-				val = parseInt(scoreElem.text());
-				val += parseInt(retData['message']);
-				scoreElem.text(val);
+				if (retData['status'] == 'NOK') {
+					if (retData['action'] == 'reload') {
+						alert("Jos näet tämän, olet todennäköisesti kieltänyt cookiet");
+						location.reload();
+					}
+				} else {
+					// Update score
+					scoreElem = $("#" + prkl_id + "_score");
+					val = parseInt(scoreElem.text());
+					val += parseInt(retData['message']);
+					scoreElem.text(val);
 
-				// Update menu
-				elem = $("#" + prkl_id + "_plus");
-				elem.fadeOut();
+					// Update menu
+					elem = $("#" + prkl_id + "_plus");
+					elem.fadeOut();
 
-				elem = $("#" + prkl_id + "_minus");
-				elem.fadeOut();
+					elem = $("#" + prkl_id + "_minus");
+					elem.fadeOut();
 
-				scoreElem.animate({"margin-left": "0px"});
+					scoreElem.animate({"margin-left": "0px"});
+				}
 			}
 		});
 	}
