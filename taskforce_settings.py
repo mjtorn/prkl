@@ -6,5 +6,7 @@ INSTALLED_APPS = (
     'prkl.dtf_tasks',
 )
 
+ALLOW_TASK_OVERRIDE = False
+
 # EOF
 
