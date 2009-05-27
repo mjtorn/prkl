@@ -6,7 +6,9 @@ from taskforce.base import BaseTask
 
 from taskforce.exceptions import TaskFailed
 
-from prkl import dqs_settings
+from prkl import dqs_settings, taskforce_settings
+
+from twyt import twitter, data
 
 import datetime
 
@@ -44,9 +46,20 @@ class Tweeter(BaseTask):
             raise TaskFailed(msg)
 
         res = conn.read()
-        print 'res', res
 
     def do_tweet(self, tweet):
+        t = twitter.Twitter()
+        t.set_auth(taskforce_settings.TWITTER_USERNAME, taskforce_settings.TWITTER_PASSWORD)
+
+        try:
+            res = t.status_update(tweet)
+        except twitter.TwitterException:
+            return False
+
+        stat = data.Status()
+
+        stat.load_json(res)
+
         # Hate returning booleans
         return True
 
