@@ -44,9 +44,10 @@ class Tweeter(BaseTask):
         success = False
         while not success:
             time.sleep(1)
-            self.progress = 'Tweeting'
+            self.progress = 'Tweeting id %s' % tweet['id']
             self.results = {
                 'status': 'RUNNING',
+                'tweet': tweet,
             }
 
             # Don't run too long
