@@ -169,48 +169,6 @@ def dec_login(func):
         return func(*args, **kwargs)
     return wrap
 
-def dec_true_id_in(func):
-    """Check before calling view function if we have a true id
-    """
-
-    def _gen_true_id():
-        """Something more random would be nice
-        """
-
-        true_id = sha.sha('%s|%s|%s' % (datetime.datetime.now().isoformat(), datetime.datetime.now().microsecond, datetime.datetime.now().microsecond)).hexdigest()
-
-        return true_id
-
-    def wrap(*args, **kwargs):
-        request = args[0]
-
-        # Did we just fake an entry in cookies?
-        request.has_session = (request.session.session_key == request.COOKIES.get('sessionid', ''))
-        if not request.COOKIES.has_key('true_id'):
-            true_id = _gen_true_id()
-            true_id_ob = models.TrueId.objects.create(hash=true_id)
-            # Cookies are denied, label this fake true_id as fake
-            if not request.has_session:
-                request.COOKIES['true_id'] = true_id
-            else:
-                response = HttpResponseRedirect(request.META['PATH_INFO'])
-                response.set_cookie('true_id', true_id_ob.hash, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
-                return response
-        else:
-            true_id = request.COOKIES['true_id']
-
-            try:
-                true_id_ob = models.TrueId.objects.get(hash=true_id)
-            except models.TrueId.DoesNotExist:
-                # Just to be sure we didn't get tampered, recreate the id
-                true_id = _gen_true_id()
-                true_id_ob = models.TrueId.objects.create(hash=true_id)
-
-        request.true_id = true_id_ob
-
-        return func(*args, **kwargs)
-
-    return wrap
 
 def dec_true_id_out(func):
     """true_id is our better-than-session cookie
@@ -277,7 +235,6 @@ render_to_response = dec_true_id_out(render_to_response)
 
 # Create your views here.
 
-@dec_true_id_in
 def forgot_password(request):
     """I forgot my password
     """
@@ -314,7 +271,6 @@ def forgot_password(request):
 
     return render_to_response('forgot_password.html', req_ctx)
 
-@dec_true_id_in
 def reset_password(request, token):
     """I want to reset my password
     """
@@ -356,7 +312,6 @@ def reset_password(request, token):
 
     return render_to_response('reset_password.html', req_ctx)
 
-@dec_true_id_in
 def register(request, token):
     if not request.user.id:
         user = authenticate(token=token)
@@ -365,7 +320,6 @@ def register(request, token):
 
     return HttpResponseRedirect(reverse('index'))
 
-@dec_true_id_in
 def logout_view(request):
     """Logout
     """
@@ -378,7 +332,6 @@ def logout_view(request):
 
     return HttpResponseRedirect(prev_path)
 
-@dec_true_id_in
 def notfound(request):
     """Not found view
     """
@@ -392,7 +345,6 @@ def notfound(request):
     res.status_code = 404
     return res
 
-@dec_true_id_in
 def about_vip(request):
     """VIP information
     """
@@ -404,7 +356,6 @@ def about_vip(request):
 
     return render_to_response('about_vip.html', req_ctx)
 
-@dec_true_id_in
 def index(request, page=None, records=None, tag=None):
     """Our index page
     """
@@ -484,7 +435,6 @@ def index(request, page=None, records=None, tag=None):
     return render_to_response('index.html', req_ctx)
 
 
-@dec_true_id_in
 def top(request, page=None, records=None):
     """The best
     """
@@ -519,7 +469,6 @@ def top(request, page=None, records=None):
 
     return render_to_response('index.html', req_ctx)
 
-@dec_true_id_in
 def bottom(request, page=None, records=None):
     """The worst
     """
@@ -553,7 +502,6 @@ def bottom(request, page=None, records=None):
 
     return render_to_response('index.html', req_ctx)
 
-@dec_true_id_in
 def prkl(request, prkl_id):
     """Single-prkl view
     """
@@ -614,7 +562,6 @@ def prkl(request, prkl_id):
 
     return render_to_response('prkl.html', req_ctx)
 
-@dec_true_id_in
 def random(request):
     """Random view
     """
@@ -623,7 +570,6 @@ def random(request):
 
     return HttpResponseRedirect(reverse('prkl', args=(prkl_id,)))
 
-@dec_true_id_in
 def member(request, username):
     try:
         member = models.User.objects.get(username__iexact=username)
@@ -678,7 +624,6 @@ def member(request, username):
 
     return render_to_response('member.html', req_ctx)
 
-@dec_true_id_in
 def members(request, page=None, records=None):
     data = request.GET.copy() or None
 
@@ -735,7 +680,6 @@ def members(request, page=None, records=None):
 
 
 
-@dec_true_id_in
 @dec_recommend_register
 def edit_profile(request):
     # ADAPT FROM MEMBER VIEW
@@ -803,7 +747,6 @@ def edit_profile(request):
 
     return render_to_response('edit_profile.html', req_ctx)
 
-@dec_true_id_in
 def faq(request):
     """FAQ
     """
@@ -976,7 +919,6 @@ def init_json_ctx(request, data):
     return context, true_id_ob, good
 
 
-@dec_true_id_in
 def set_form_visibility(request):
     """Semi-api view for dealing with visibilities
     """
@@ -1022,7 +964,6 @@ def set_form_visibility(request):
     return HttpResponse(ctx, content_type='text/json')
     
 @commit_on_success
-@dec_true_id_in
 def vote(request):
     """And I found direction...
     """
@@ -1100,7 +1041,6 @@ def vote(request):
     return HttpResponse(ctx, content_type='text/json')
 
 @commit_on_success
-@dec_true_id_in
 def like(request):
     """Do you like this prkl?
     """
@@ -1161,7 +1101,6 @@ def like(request):
 
     return HttpResponse(ctx, content_type='text/json')
 
-@dec_true_id_in
 @dec_recommend_vip
 def search(request, page=None, records=None):
     """Detailed search
@@ -1219,7 +1158,6 @@ def search(request, page=None, records=None):
 
     return render_to_response('search.html', req_ctx)
 
-@dec_true_id_in
 @dec_recommend_register
 def msg_to_user(request, rcpt):
     """Send a message to user
@@ -1255,7 +1193,6 @@ def msg_to_user(request, rcpt):
 
     return render_to_response('msg_to_user.html', req_ctx)
 
-@dec_true_id_in
 @dec_recommend_register
 def user_inbox(request):
     """Incoming messages
@@ -1280,7 +1217,6 @@ def user_inbox(request):
 
     return render_to_response('user_inbox.html', req_ctx)
 
-@dec_true_id_in
 @dec_recommend_register
 def user_sent(request):
     """Sent messages
@@ -1308,7 +1244,6 @@ def user_sent(request):
     return render_to_response('user_sent.html', req_ctx)
 
 
-@dec_true_id_in
 def mark_msg_read(request):
     """Mark a message you received read
     """
@@ -1342,7 +1277,6 @@ def mark_msg_read(request):
     return HttpResponse(ctx, content_type='text/json')
 
 
-@dec_true_id_in
 def post_reply(request):
     """Reply to a message
     """
