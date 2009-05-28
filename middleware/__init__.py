@@ -45,7 +45,10 @@ class TrueIdMiddleware(object):
 
         ## If we didn't have a true id cookie in process_request, set it here
         if not request.COOKIES.has_key('true_id'):
-            response.set_cookie('true_id', request.true_id.hash, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
+            # If it's something "real"
+            content_type = response['Content-type']
+            if 'text/' in content_type:
+                response.set_cookie('true_id', request.true_id.hash, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
 
         return response
 
