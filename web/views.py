@@ -512,7 +512,7 @@ def prkl(request, prkl_id):
     try:
         # Get prkls
         if not request.has_session:
-            prkl = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id)
+            prkl = prkl_sql_ob.PrklQuery(vote_trueid=request.true_id, prkl_id=prkl_id)
         else:
             # Your likes too
             if request.user.id:
