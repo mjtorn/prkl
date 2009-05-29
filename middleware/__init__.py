@@ -1,14 +1,53 @@
 # vim: tabstop=4 expandtab autoindent shiftwidth=4 fileencoding=utf-8
 
+from django.contrib.csrf import middleware as csrf_middleware
+from django.contrib.sessions import middleware as sessions_middleware
+
 from django.conf import settings
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseForbidden
 
 from prkl.web import models
 
 import datetime
 
 import sha
+
+class SessionMiddleware(sessions_middleware.SessionMiddleware):
+    """Accept '' as session key
+    """
+
+    def process_request(self, request):
+        retval = super(SessionMiddleware, self).process_request(request)
+
+        if not request.COOKIES.has_key(settings.SESSION_COOKIE_NAME):
+            request.COOKIES[settings.SESSION_COOKIE_NAME] = ''
+        elif request.COOKIES[settings.SESSION_COOKIE_NAME] is None:
+            request.COOKIES[settings.SESSION_COOKIE_NAME] = ''
+
+        return retval
+
+
+class CsrfMiddleware(csrf_middleware.CsrfMiddleware):
+    """Hack csrf to work with empty session
+    THIS MAKES THE SITE VULNERABLE - EVERY COOKIELESS "SESSION" HAS THE SAME
+    CSRF KEY, BASED ON THE DJANGO INSTALLATION'S SECRET_KEY!!!
+    """
+
+    def process_request(self, request):
+        if request.method == 'POST' and request.POST.get('csrfmiddlewaretoken', None):
+            retval = super(CsrfMiddleware, self).process_request(request)
+
+            ## Forbidden can come from not having the key in POST and also
+            ## from a bad value.
+            if isinstance(retval, HttpResponseForbidden):
+                # See if we compare to the horrible default value
+                insecure_crap_token = csrf_middleware._make_token('')
+                if request.POST['csrfmiddlewaretoken'] == insecure_crap_token:
+                    return None
+
+            return retval
+
 
 class TrueIdMiddleware(object):
     def gen_true_id(self):
