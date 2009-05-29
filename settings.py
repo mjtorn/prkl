@@ -73,10 +73,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'prkl.middleware.TrueIdMiddleware',
+    #'django.contrib.sessions.middleware.SessionMiddleware',
+    'prkl.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.csrf.middleware.CsrfMiddleware',
+    #'django.contrib.csrf.middleware.CsrfMiddleware',
+    'prkl.middleware.CsrfMiddleware',
+    'prkl.middleware.TrueIdMiddleware',
 )
 
 if DEBUG_TOOLBAR:
