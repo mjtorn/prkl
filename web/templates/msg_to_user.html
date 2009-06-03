@@ -41,8 +41,10 @@ var toggleDivStatic = function(div, a) {
 
 {% block content %}
 	<h1>{{ member.username }}</h1>
+	<div class="msg_menu">
+		<a href="{% url member member.username %}">Takaisin</a>
+	</div>
 	<div class="member">
-	<a href="{% url member member.username %}">Takaisin</a>
 	<div id="member_data" class="member_data">
 	{% include "tags/member_pic.html" %}
 	{% include "tags/member_data.html" %}
