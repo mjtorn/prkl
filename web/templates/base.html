@@ -116,9 +116,9 @@
 <a href="{{ member_url }}" class="{% check_active req_path member_url %}">Oma</a>
 {% endif %}
 {% url top as top_url %}
-<a href="{{ top_url }}" class="{% check_active req_path top_url %}">Parhaat</a>
+<a href="{{ top_url }}" class="{% check_active req_path top_url %}">Symppikset</a>
 {% url bottom as bottom_url %}
-<a href="{% url bottom %}" class="{% check_active req_path bottom_url %}">Huonoimmat</a>
+<a href="{% url bottom %}" class="{% check_active req_path bottom_url %}">Hajottavat</a>
 {% url random as random_url %}
 <a href="{% url random %}" class="{% check_active req_path random_url %}">Satunnainen</a>
 {% url faq as faq_url %}
