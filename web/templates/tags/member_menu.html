@@ -4,11 +4,18 @@
 {% url member user.username as member_url %}
 <a href="{{ member_url }}" class="{% check_active req_path member_url %}">Oma</a>
 &raquo;
+
+{% ifnotequal member.id user.id %}
+<a href="{% url msg_to_user member.username %}">Lähetä viesti</a>
+{% else %}
+
 {% url user_inbox as user_inbox_url %}
 <a href="{% url user_inbox %}" class="{% check_active req_path user_inbox_url  %}">Saapuneet viestit</a>
 &raquo;
 {% url user_sent as user_sent_url %}
 <a href="{% url user_sent %}" class="{% check_active req_path user_sent_url %}">Lähettämäsi viestit</a>
+{% endifnotequal %}
+
 {% endwith %}
 </div>
 

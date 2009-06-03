@@ -8,11 +8,8 @@
 
 {% block content %}
 <h1>{{ member }}</h1>
-{% ifequal user.id member.user.id %}
 {% include "tags/member_menu.html" %}
-{% endifequal %}
 <div class="member">
-	<a href="{% url msg_to_user member.username %}">Lähetä viesti</a>
 	<div id="member_data" class="member_data">
 		{% include "tags/member_pic_edit.html" %}
 
