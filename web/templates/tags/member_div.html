@@ -13,9 +13,9 @@
 			<div style="margin-left: 60px;">
 			<div>
 			<a href="{% url member member.username %}">{{ member.username }}</a>
-			{% if user.id %}
+			{% if user.id %} {% ifnotequal user.id member.id %}
 			(<a class="msg_member" href="{% url msg_to_user member.username %}">Lähetä viesti</a>)
-			{% endif %}
+			{% endifnotequal %}{% endif %}
 			</div>
 
 			<div>
