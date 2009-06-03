@@ -318,6 +318,8 @@ def register(request, token):
         if user:
             login(request, user)
 
+            return HttpResponseRedirect(reverse('member', args=(user.username,)))
+
     return HttpResponseRedirect(reverse('index'))
 
 def logout_view(request):
