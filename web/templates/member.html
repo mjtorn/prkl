@@ -9,7 +9,7 @@
 {% block content %}
 <h1>{{ member }}</h1>
 {% ifequal user.id member.user.id %}
-{% include "tags/msg_menu.html" %}
+{% include "tags/member_menu.html" %}
 {% endifequal %}
 <div class="member">
 	<a href="{% url msg_to_user member.username %}">Lähetä viesti</a>
