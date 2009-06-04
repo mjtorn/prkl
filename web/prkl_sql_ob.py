@@ -216,6 +216,7 @@ AND likeprkl.user_id= %d
         IDX_T_ID = 11
         g = itertools.groupby(self.db_res, lambda x: x[IDX_P_ID])
         prkl_list = []
+        prkl_ptr_dict = {}
         while True:
             try:
                 prkl_dict = {}
@@ -272,7 +273,16 @@ AND likeprkl.user_id= %d
                         }
                         prkl_dict['tags'].append(tag)
 
-                prkl_list.append(prkl_dict)
+                ## Rows come out in random order, so we have
+                ## an accounting dictionary of prkls in case
+                ## we need to "return to them"
+                if not prkl_ptr_dict.has_key(prkl_id):
+                    prkl_list.append(prkl_dict)
+                    prkl_ptr_dict[prkl_id] = prkl_list[-1]
+                else:
+                    # All of these are identical except for tags!
+                    prkl_ptr_dict[prkl_id]['tags'].append(tag)
+
             except StopIteration:
                 break
 
