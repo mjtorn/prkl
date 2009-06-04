@@ -185,7 +185,8 @@ def dec_true_id_out(func):
             else:
                 true_id_ob = request.true_id
 
-            response.set_cookie('true_id', true_id_ob.hash, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
+            cookie_domain = request.META['HTTP_HOST'].split(':')[0]
+            response.set_cookie('true_id', true_id_ob.hash, max_age=(2**32)-1, domain=cookie_domain)
 
         return response
 

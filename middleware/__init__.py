@@ -87,7 +87,8 @@ class TrueIdMiddleware(object):
             # If it's something "real"
             content_type = response['Content-type']
             if 'text/' in content_type:
-                response.set_cookie('true_id', request.true_id.hash, max_age=(2**32)-1, domain=settings.COOKIE_DOMAIN)
+                cookie_domain = request.META['HTTP_HOST'].split(':')[0]
+                response.set_cookie('true_id', request.true_id.hash, max_age=(2**32)-1, domain=cookie_domain)
 
         return response
 

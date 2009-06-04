@@ -128,8 +128,6 @@ APPEND_SLASH = True
 
 DEFAULT_FROM_EMAIL = 'yllapito@prkl.es'
 
-COOKIE_DOMAIN = 'prkl.es'
-
 # http://www.djangosnippets.org/snippets/342/
 TEMPLATE_TAGS = (
     'fad_tools.pagination.templatetags.pagination',
