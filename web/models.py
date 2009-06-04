@@ -321,6 +321,7 @@ class Tag(models.Model):
 class Prkl(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     content = models.CharField(max_length=1024)
+    content_html = models.TextField()
     user = models.ForeignKey(User, null=True)
     score = models.IntegerField(default=0)
     comment_count = models.IntegerField(default=0)
@@ -375,6 +376,36 @@ class Prkl(models.Model):
         cursor.execute(QRY_DECR_COMMENT)
         self.comment_count = cursor.fetchone()[0]
         transaction.commit_unless_managed()
+
+    def to_html(self):
+        """Contents as html
+        """
+
+        from django.utils.html import escape
+        content = escape(self.content)
+
+        #self.content_html = '<p>' + '</p><p>'.join(content.splitlines()) + '</p>'
+        lines = content.splitlines()
+
+        # Tear out empty lines
+        out_lines = []
+        prev_line = None
+        done_empty = False
+        for line in lines:
+            if prev_line is not None and not prev_line and not line and not done_empty:
+                out_lines.append(line)
+                done_empty = True
+            elif line:
+                out_lines.append(line)
+                done_empty = False
+
+            prev_line = line
+
+        self.content_html = '<p>' + '<br />'.join(out_lines) + '</p>'
+
+    def save(self, *args, **kwargs):
+        self.to_html()
+        super(Prkl, self).save(*args, **kwargs) 
 
 
 class VipExpiry(models.Model):
