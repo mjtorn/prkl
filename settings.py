@@ -69,6 +69,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
     'django.core.context_processors.request',
     'web.ctx_proc.strip_path',
+    'web.ctx_proc.settings',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -138,6 +139,14 @@ PAGE_PATH = '/p/'
 
 # Proper testing
 TEST_RUNNER = 'noserun.run_tests'
+
+# For GA etc
+PRODUCTION = False
+
+try:
+    from custom_settings import *
+except ImportError:
+    pass
 
 # EOF
 
