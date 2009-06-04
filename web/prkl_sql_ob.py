@@ -10,7 +10,7 @@ import itertools
 
 class PrklQuery(object):
     RAW_QRY = """\
-SELECT p.id, p.content, p.score, p.created_at, p.comment_count,
+SELECT p.id, p.content, p.content_html, p.score, p.created_at, p.comment_count,
         %(vote_snippet_qry)s,
         %(like_snippet_qry)s
         u.id, u.username,
@@ -210,10 +210,10 @@ AND likeprkl.user_id= %d
             self.execute()
 
         IDX_P_ID = 0
-        IDX_V_ID = 5
-        IDX_L_ID = 6
-        IDX_U_ID = 7
-        IDX_T_ID = 11
+        IDX_V_ID = 6
+        IDX_L_ID = 7
+        IDX_U_ID = 8
+        IDX_T_ID = 12
         g = itertools.groupby(self.db_res, lambda x: x[IDX_P_ID])
         prkl_list = []
         prkl_ptr_dict = {}
@@ -260,9 +260,10 @@ AND likeprkl.user_id= %d
 
                     if not done_prkl:
                         prkl_dict['content'] = group[IDX_P_ID + 1]
-                        prkl_dict['score'] = group[IDX_P_ID + 2]
-                        prkl_dict['created_at'] = group[IDX_P_ID + 3]
-                        prkl_dict['comment_count'] = group[IDX_P_ID + 4]
+                        prkl_dict['content_html'] = group[IDX_P_ID + 2]
+                        prkl_dict['score'] = group[IDX_P_ID + 3]
+                        prkl_dict['created_at'] = group[IDX_P_ID + 4]
+                        prkl_dict['comment_count'] = group[IDX_P_ID + 5]
                         prkl_dict['can_vote'] = group[IDX_V_ID]
                         prkl_dict['does_like'] = group[IDX_L_ID]
 
