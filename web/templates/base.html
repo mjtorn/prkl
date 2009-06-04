@@ -169,6 +169,19 @@ Sähköposti <a href="mailto:yllapito@prkl.es">yllapito@prkl.es</a>
 </small>
 </div>
 
+{% if production %}
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascrip
+</script>
+<script type="text/javascript">
+try {
+	var pageTracker = _gat._getTracker("UA-8888476-1");
+	pageTracker._trackPageview();
+} catch(err) {}
+</script>
+{% endif %}
+
 </body>
 
 
