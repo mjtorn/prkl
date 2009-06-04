@@ -33,6 +33,8 @@ class Tweeter(BaseTask):
 
         res = conn.read()
 
+        ## This is always a dictionary!
+        ## DQS defines json as id and message
         tweet = simplejson.loads(res)
 
         return tweet
@@ -52,8 +54,23 @@ class Tweeter(BaseTask):
         res = conn.read()
 
     def do_tweet(self, tweet):
+        """tweet is either text or json-dict-string with message, username, password
+        """
+
         t = twitter.Twitter()
-        t.set_auth(taskforce_settings.TWITTER_USERNAME, taskforce_settings.TWITTER_PASSWORD)
+
+        ## get_tweet does simplejson.loads which makes
+        ## the return value to unicode, we need to do
+        ## another pass to see if it's unicode or dict
+        try:
+            tweet = simplejson.loads(tweet)
+
+            username = tweet['username']
+            password = tweet['password']
+            tweet = tweet['message']
+            t.set_auth(username, password)
+        except ValueError:
+            t.set_auth(taskforce_settings.TWITTER_USERNAME, taskforce_settings.TWITTER_PASSWORD)
 
         try:
             res = t.status_update(tweet)
