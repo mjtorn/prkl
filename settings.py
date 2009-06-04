@@ -1,15 +1,16 @@
 # vim: tabstop=4 expandtab autoindent shiftwidth=4 fileencoding=utf-8
 # Django settings for prkl project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-KLUDGE_STATIC = True
+KLUDGE_STATIC = False
 
 DEBUG_TOOLBAR = False
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
+    ('Markus Törnqvist', 'mjt@fadconsulting.com'),
 )
 
 MANAGERS = ADMINS
@@ -127,7 +128,7 @@ APPEND_SLASH = True
 
 DEFAULT_FROM_EMAIL = 'yllapito@prkl.es'
 
-COOKIE_DOMAIN = 'fadconsulting.com'
+COOKIE_DOMAIN = 'prkl.es'
 
 # http://www.djangosnippets.org/snippets/342/
 TEMPLATE_TAGS = (
