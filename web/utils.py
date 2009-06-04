@@ -2,6 +2,8 @@
 
 from django.utils.http import int_to_base36
 
+from django.conf import settings
+
 import datetime
 
 def gen_reg_token(true_id, username):
@@ -14,11 +16,15 @@ def gen_reg_token(true_id, username):
 
 def make_tweet(prkl):
     twit_length = 140
-    # FIXME: Not dynamic enough
-    base_url = 'http://prkl.es/prkl/%d'
-    #base_url = 'http://fadconsulting.com:8020/prkl/%d'
 
-    url = base_url % prkl.id
+    # Forge twitter tag as url in dev
+    if settings.PRODUCTION:
+        # FIXME: Not dynamic enough
+        base_url = 'http://prkl.es/prkl/%d'
+        url = base_url % prkl.id
+    else:
+        url = '#prkldev'
+
     kw = '#prkl'
 
     trail = ' %s %s' % (kw, url)
