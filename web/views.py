@@ -761,7 +761,7 @@ def faq(request):
 
     return render_to_response('faq.html', req_ctx)
 
-def incoming_sms(request):
+def incoming_message(request):
     """SMS and all
     """
 

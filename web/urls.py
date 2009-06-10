@@ -41,7 +41,7 @@ urlpatterns = patterns('',
     url(r'^set_form_visibility/', views.set_form_visibility, name='set_form_visibility'),
     url(r'^mark_msg_read/', views.mark_msg_read, name='mark_msg_read'),
     url(r'^post_reply/', views.post_reply, name='post_reply'),
-    url(r'^incoming/sms/', views.incoming_sms, name='incoming_sms'),
+    url(r'^incoming/sms/', views.incoming_message, name='incoming_message'),
     url(r'^incoming/receipt/', views.incoming_receipt, name='incoming_receipt'),
     url(r'^validate_reply/$', 'ajax_validation.views.validate', {'form_class': forms.ReplyForm}, 'reply_form_validate'),
 

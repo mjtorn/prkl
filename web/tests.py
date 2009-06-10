@@ -28,7 +28,7 @@ class TestSms(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Tänään haluan pillua prkl</message></sms>',
         }
 
-        path = reverse('incoming_sms')
+        path = reverse('incoming_message')
         res = self.client.post(path, data=data)
         print res
 
@@ -43,7 +43,7 @@ class TestSms(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Tänään haluan pillua</message></sms>',
         }
 
-        path = reverse('incoming_sms')
+        path = reverse('incoming_message')
         res = self.client.post(path, data=data)
         print res
 
@@ -58,7 +58,7 @@ class TestSms(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Tänään haluan pillua prkl</message></sms>',
         }
 
-        path = reverse('incoming_sms')
+        path = reverse('incoming_message')
         res1 = self.client.post(path, data=data)
         res2 = self.client.post(path, data=data)
         print res1
@@ -75,7 +75,7 @@ class TestSms(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Tänään haluan pillua prkl.</message></sms>',
         }
 
-        path = reverse('incoming_sms')
+        path = reverse('incoming_message')
         res = self.client.post(path, data=data)
         print res
 
@@ -90,7 +90,7 @@ class TestSms(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Tänään haluan pillua prkl!</message></sms>',
         }
 
-        path = reverse('incoming_sms')
+        path = reverse('incoming_message')
         res = self.client.post(path, data=data)
         print res
 
@@ -170,7 +170,7 @@ class TestSmsVip(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Prkl</message></sms>',
         }
 
-        path = reverse('incoming_sms')
+        path = reverse('incoming_message')
         res = self.client.post(path, data=data)
         print res
 
@@ -186,7 +186,7 @@ class TestSmsVip(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Prkl 36kk</message></sms>',
         }
 
-        path = reverse('incoming_sms')
+        path = reverse('incoming_message')
         res = self.client.post(path, data=data)
         print res
 
@@ -201,7 +201,7 @@ class TestSmsVip(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>jrprkl 36kk 1</message></sms>',
         }
 
-        path = reverse('incoming_sms')
+        path = reverse('incoming_message')
         res = self.client.post(path, data=data)
         print res
 
@@ -216,7 +216,7 @@ class TestSmsVip(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Prkl 12kk 666</message></sms>',
         }
 
-        path = reverse('incoming_sms')
+        path = reverse('incoming_message')
         res = self.client.post(path, data=data)
         print res
 
@@ -231,7 +231,7 @@ class TestSmsVip(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Prkl 36kk 1</message></sms>',
         }
 
-        path = reverse('incoming_sms')
+        path = reverse('incoming_message')
         res = self.client.post(path, data=data)
         print res
 
@@ -246,7 +246,7 @@ class TestSmsVip(test.TestCase):
             'sms': '<?xml version="1.0" encoding="utf-8"?><sms><message>Jrprkl 1kk 1</message></sms>',
         }
 
-        path = reverse('incoming_sms')
+        path = reverse('incoming_message')
         res = self.client.post(path, data=data)
         print res
 
