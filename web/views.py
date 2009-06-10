@@ -771,7 +771,7 @@ def incoming_sms(request):
         '12kk': (datetime.timedelta(days=12*30), '1500'),
     }
 
-    ctx = mediator_views.incoming_sms(request)
+    ctx = mediator_views.incoming_message(request)
 
     if ctx['sms'] is None:
         ret = mediator_utils.create_error(u'Tänään jokin meni pieleen viestisi kanssa prkl', None, 'system')
