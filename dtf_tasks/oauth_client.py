@@ -82,7 +82,9 @@ if __name__ == '__main__':
 
     token = client.get_unauthorised_request_token()
 
-    print token
+    access_token = client.exchange_request_token_for_access_token(token)
+
+    print access_token
 
 
 # EOF
