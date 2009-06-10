@@ -60,6 +60,18 @@ class TwitterOAuthClient(oauth.OAuthClient):
 
         return oauth.OAuthToken.from_string(resp)
 
+    def exchange_request_token_for_access_token(self, request_token):
+        """Send unauthorized token to oauth for access token
+        """
+
+        oauth_request = oauth.OAuthRequest.from_consumer_and_token(
+            consumer, token=request_token, http_url=ACCESS_TOKEN_URL
+        )
+        oauth_request.sign_request(self.signature_method, consumer, request_token)
+        resp = self.fetch_response(oauth_request)
+
+        return oauth.OAuthToken.from_string(resp) 
+
 
 if __name__ == '__main__':
     # Only HMAC-SHA1 for twitter
