@@ -251,6 +251,63 @@ class Test020SmsVip(test.TestCase):
         print res
 
 
+class Test030Mms(test.TestCase):
+    def setup(self):
+        self.client = client.Client(HTTP_HOST='should.i.use.server_name.prkl.es')
+        twit_queue, created = queue_models.Queue.objects.get_or_create(name= 'twitter')
+
+    def test_010_mms(self):
+        # This smil is based loosely on Mediator's specs
+        smil = """\
+<?xml version="1.0" encoding="utf-8"?>
+<mms numberto="666" numberfrom="+35850666" operator="Saunalahti" transactiond="700">
+<subject><![CDATA[Te testiä]]></subject>
+<presentation><![CDATA[
+ <smil>
+   <head>
+    <layout>
+      <root-layout width="176" height="208"/>
+      <region id="Text" width="160" height="183" top="5" left="8" fit="scroll"/>
+    </layout>
+   </head>
+   <body>
+     <par dur="5000ms">
+       <text region="Text" src="Te_testi.txt"/>
+     </par>
+   </body>
+  </smil>
+]]>
+</presentation>
+<media filename="Te_testi.txt" mimetype="text/plain">
+   <text><![CDATA[Te testiä]]></text>
+</media>
+<media filename="" mimetype="image/jpeg">
+  <data binlength="">
+  </data>
+</media>
+</mms>
+        """
+
+        data = {
+            'type': 'mms',
+            'command': 'Tänään',
+            'argument': '',
+            'numberfrom': '+35850666',
+            'numberto': '666',
+            'operator': 'Saunalahti',
+            'transactionid': '700', # The spec does not say this is present
+            'smildata': smil,
+        }
+
+        path = reverse('incoming_message')
+        res = self.client.post(path, data=data)
+        print res
+
+    def test_020_count_messages(self):
+        ret = mediator_models.Sms.objects.all().count()
+        exp_ret = 12
+        assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
+
 # EOF
 
 
