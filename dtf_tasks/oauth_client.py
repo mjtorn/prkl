@@ -5,21 +5,23 @@ import time
 
 from oauth import oauth
 
-# What twitter gives
-REQUEST_TOKEN_URL = 'https://twitter.com/oauth/request_token'
-ACCESS_TOKEN_URL = 'https://twitter.com/oauth/access_token'
-AUTHORIZATION_URL = 'http://twitter.com/oauth/authorize'
+SERVER = getattr(settings, 'OAUTH_SERVER', 'twitter.com')
+PORT = getattr(settings, 'OAUTH_PORT', 443)
+
+REQUEST_TOKEN_URL = getattr(settings, 'OAUTH_REQUEST_TOKEN_URL', 'https://%s/oauth/request_token' % SERVER)
+ACCESS_TOKEN_URL = getattr(settings, 'OAUTH_ACCESS_TOKEN_URL', 'https://%s/oauth/access_token' % SERVER)
+AUTHORIZATION_URL = getattr(settings, 'OAUTH_AUTHORIZATION_URL', 'http://%s/oauth/authorize' % SERVER)
+
+CONSUMER_KEY = getattr(settings, 'CONSUMER_KEY', 'vwtr9NbrZPs6mjIpbfrZMA')
+CONSUMER_SECRET = getattr(settings, 'CONSUMER_SECRET', 'RShpnfQeY0UpwurO7JAGvlNbWYPjflApAoUgcI5xZWc')
 
 CALLBACK_URL = 'http://printer.example.com/request_token_ready'
 RESOURCE_URL = 'http://photos.example.net/photos'
 
-CONSUMER_KEY = 'vwtr9NbrZPs6mjIpbfrZMA'
-CONSUMER_SECRET = 'RShpnfQeY0UpwurO7JAGvlNbWYPjflApAoUgcI5xZWc'
-
-SERVER = 'twitter.com'
-PORT = 443
-
 class TwitterOAuthClient(oauth.OAuthClient):
+    """Taking heavily from http://www.djangosnippets.org/snippets/1353/
+    """
+
     def __init__(self, server, port, request_token_url, access_token_url, authorization_url):
         self.server = server
         self.port = port
