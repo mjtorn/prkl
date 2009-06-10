@@ -3,6 +3,8 @@
 import httplib
 import time
 
+from django.conf import settings
+
 from oauth import oauth
 
 SERVER = getattr(settings, 'OAUTH_SERVER', 'twitter.com')
@@ -31,23 +33,43 @@ class TwitterOAuthClient(oauth.OAuthClient):
         self.authorization_url = authorization_url
         self.connection = httplib.HTTPSConnection('%s:%d' % (self.server, self.port))
 
+    def fetch_response(self, oauth_request, connection):
+        """Generic response getter
+        """
+
+        url = oauth_request.to_url()
+        connection.request(oauth_request.http_method,url)
+        response = connection.getresponse()
+        s = response.read()
+        print response.status, '->',
+        print s
+        return s
+
+    def get_unauthorised_request_token(self):
+        """Unauth req token
+        """
+
+        oauth_request = oauth.OAuthRequest.from_consumer_and_token(
+            consumer, http_url=REQUEST_TOKEN_URL
+        )
+        oauth_request.sign_request(signature_method, consumer, None)
+        resp = self.fetch_response(oauth_request, connection)
+        token = oauth.OAuthToken.from_string(resp)
+
+        return token
+
 
 if __name__ == '__main__':
+    # Only HMAC-SHA1 for twitter
+    # with namespace leak
+    signature_method = signature_method_hmac_sha1 = oauth.OAuthSignatureMethod_HMAC_SHA1()
     client = TwitterOAuthClient(SERVER, PORT, REQUEST_TOKEN_URL, ACCESS_TOKEN_URL, AUTHORIZATION_URL)
+
     consumer = oauth.OAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET)
 
-    # Only HMAC-SHA1 for twitter
-    signature_method_hmac_sha1 = oauth.OAuthSignatureMethod_HMAC_SHA1()
-
-    oauth_request = oauth.OAuthRequest.from_consumer_and_token(consumer, http_url=REQUEST_TOKEN_URL)
-    oauth_request.sign_request(signature_method_hmac_sha1, consumer, None)
-
-    # Hack shit fuck
-#    oauth_request.parameters['oauth_signature_method'] = 'hmac-sha1'
-    print 'request parameters', oauth_request.parameters
-    print 'request headers   ', oauth_request.to_header()
-
-    token = client.fetch_request_token(oauth_request)
+    # What's worse than a leaky screwdriver? A leaky namespace
+    connection = client.connection
+    token = client.get_unauthorised_request_token()
 
     print token
 
