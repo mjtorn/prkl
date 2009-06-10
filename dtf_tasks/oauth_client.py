@@ -24,8 +24,8 @@ REQUEST_TOKEN_URL = getattr(settings, 'OAUTH_REQUEST_TOKEN_URL', 'https://%s/oau
 ACCESS_TOKEN_URL = getattr(settings, 'OAUTH_ACCESS_TOKEN_URL', 'https://%s/oauth/access_token' % SERVER)
 AUTHORIZATION_URL = getattr(settings, 'OAUTH_AUTHORIZATION_URL', 'http://%s/oauth/authorize' % SERVER)
 
-CONSUMER_KEY = getattr(settings, 'CONSUMER_KEY', 'vwtr9NbrZPs6mjIpbfrZMA')
-CONSUMER_SECRET = getattr(settings, 'CONSUMER_SECRET', 'RShpnfQeY0UpwurO7JAGvlNbWYPjflApAoUgcI5xZWc')
+CONSUMER_KEY = getattr(settings, 'CONSUMER_KEY', 'n9iEqITWW8wXDzTCLWkgg')
+CONSUMER_SECRET = getattr(settings, 'CONSUMER_SECRET', 'ZjALA8Sx9MIcd2PVJwPEhXCqetQzJ5dBUgTAxZ96yM')
 
 CALLBACK_URL = 'http://printer.example.com/request_token_ready'
 RESOURCE_URL = 'http://photos.example.net/photos'
