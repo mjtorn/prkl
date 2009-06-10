@@ -30,6 +30,9 @@ CONSUMER_SECRET = getattr(settings, 'CONSUMER_SECRET', 'ZjALA8Sx9MIcd2PVJwPEhXCq
 CALLBACK_URL = 'http://printer.example.com/request_token_ready'
 RESOURCE_URL = 'http://photos.example.net/photos'
 
+class OAuthRequestFail(Exception):
+    pass
+
 class TwitterOAuthClient(oauth.OAuthClient):
     """Taking heavily from http://www.djangosnippets.org/snippets/1353/
     """
@@ -57,6 +60,8 @@ class TwitterOAuthClient(oauth.OAuthClient):
         s = response.read()
         print response.status, '->',
         print s
+        if response.status != 200:
+            raise OAuthRequestFail('An error occurred: %s' % s)
         return s
 
     def get_unauthorised_request_token(self):
