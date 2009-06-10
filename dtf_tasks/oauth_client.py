@@ -7,6 +7,16 @@ from django.conf import settings
 
 from oauth import oauth
 
+def wrap_nonce(func):
+    def wrap(*args, **kwargs):
+        nonce = func(*args, **kwargs)
+
+        return 'foo-%s-bar' % nonce
+
+    return wrap
+
+oauth.generate_nonce = wrap_nonce(oauth.generate_nonce)
+
 SERVER = getattr(settings, 'OAUTH_SERVER', 'twitter.com')
 PORT = getattr(settings, 'OAUTH_PORT', 443)
 
