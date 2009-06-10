@@ -12,7 +12,7 @@ from noserun import test
 
 from qs.queue import models as queue_models
 
-class TestSms(test.TestCase):
+class Test010Sms(test.TestCase):
     def setup(self):
         self.client = client.Client(HTTP_HOST='should.i.use.server_name.prkl.es')
         twit_queue, created = queue_models.Queue.objects.get_or_create(name= 'twitter')
@@ -155,7 +155,7 @@ class TestSms(test.TestCase):
         assert ret == exp_ret, 'Bad value %s vs %s' % (ret, exp_ret)
 
 
-class TestSmsVip(test.TestCase):
+class Test020SmsVip(test.TestCase):
     def setup(self):
         self.client = client.Client(HTTP_HOST='should.i.use.server_name.prkl.es')
 
