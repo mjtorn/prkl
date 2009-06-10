@@ -61,7 +61,7 @@ class TwitterOAuthClient(oauth.OAuthClient):
         print response.status, '->',
         print s
         if response.status != 200:
-            raise OAuthRequestFail('An error occurred: %s' % s)
+            raise OAuthRequestFail('An error occurred: "%s"' % s)
         return s
 
     def get_unauthorised_request_token(self):
