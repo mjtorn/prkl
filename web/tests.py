@@ -12,7 +12,7 @@ from noserun import test
 
 class TestSms(test.TestCase):
     def setup(self):
-        self.client = client.Client()
+        self.client = client.Client(HTTP_HOST='should.i.use.server_name.prkl.es')
 
     def test_010_broken_sms(self):
         data = {
@@ -154,7 +154,7 @@ class TestSms(test.TestCase):
 
 class TestSmsVip(test.TestCase):
     def setup(self):
-        self.client = client.Client()
+        self.client = client.Client(HTTP_HOST='should.i.use.server_name.prkl.es')
 
     def test_010_broken_command(self):
         data = {
