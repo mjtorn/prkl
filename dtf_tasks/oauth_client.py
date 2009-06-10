@@ -29,14 +29,6 @@ class TwitterOAuthClient(oauth.OAuthClient):
         self.authorization_url = authorization_url
         self.connection = httplib.HTTPSConnection('%s:%d' % (self.server, self.port))
 
-    def fetch_request_token(self, oauth_request):
-        print self.request_token_url, '<>', oauth_request.to_url()
-        print oauth_request.to_header()
-        self.connection.request(oauth_request.http_method, oauth_request.to_url()) #, headers=oauth_request.to_header())
-        response = self.connection.getresponse()
-        print response.status, '===', 
-#        print response.read()
-        return oauth.OAuthToken.from_string(response.read())
 
 if __name__ == '__main__':
     client = TwitterOAuthClient(SERVER, PORT, REQUEST_TOKEN_URL, ACCESS_TOKEN_URL, AUTHORIZATION_URL)
