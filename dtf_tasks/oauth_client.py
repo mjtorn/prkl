@@ -40,6 +40,7 @@ class TwitterOAuthClient(oauth.OAuthClient):
         """
 
         url = oauth_request.to_url()
+        print url,
         self.connection.request(oauth_request.http_method, url)
         response = self.connection.getresponse()
         s = response.read()
