@@ -24,22 +24,24 @@ class TwitterOAuthClient(oauth.OAuthClient):
     """Taking heavily from http://www.djangosnippets.org/snippets/1353/
     """
 
-    def __init__(self, server, port, request_token_url, access_token_url, authorization_url):
+    def __init__(self, server, port, request_token_url, access_token_url, authorization_url, signature_method):
         self.server = server
         self.port = port
 
         self.request_token_url = request_token_url
         self.access_token_url = access_token_url
         self.authorization_url = authorization_url
-        self.connection = httplib.HTTPSConnection('%s:%d' % (self.server, self.port))
 
-    def fetch_response(self, oauth_request, connection):
+        self.connection = httplib.HTTPSConnection('%s:%d' % (self.server, self.port))
+        self.signature_method = signature_method
+
+    def fetch_response(self, oauth_request):
         """Generic response getter
         """
 
         url = oauth_request.to_url()
-        connection.request(oauth_request.http_method,url)
-        response = connection.getresponse()
+        self.connection.request(oauth_request.http_method, url)
+        response = self.connection.getresponse()
         s = response.read()
         print response.status, '->',
         print s
@@ -52,8 +54,8 @@ class TwitterOAuthClient(oauth.OAuthClient):
         oauth_request = oauth.OAuthRequest.from_consumer_and_token(
             consumer, http_url=REQUEST_TOKEN_URL
         )
-        oauth_request.sign_request(signature_method, consumer, None)
-        resp = self.fetch_response(oauth_request, connection)
+        oauth_request.sign_request(self.signature_method, consumer, None)
+        resp = self.fetch_response(oauth_request)
         token = oauth.OAuthToken.from_string(resp)
 
         return token
@@ -61,14 +63,11 @@ class TwitterOAuthClient(oauth.OAuthClient):
 
 if __name__ == '__main__':
     # Only HMAC-SHA1 for twitter
-    # with namespace leak
-    signature_method = signature_method_hmac_sha1 = oauth.OAuthSignatureMethod_HMAC_SHA1()
-    client = TwitterOAuthClient(SERVER, PORT, REQUEST_TOKEN_URL, ACCESS_TOKEN_URL, AUTHORIZATION_URL)
+    signature_method = oauth.OAuthSignatureMethod_HMAC_SHA1()
+    client = TwitterOAuthClient(SERVER, PORT, REQUEST_TOKEN_URL, ACCESS_TOKEN_URL, AUTHORIZATION_URL, signature_method)
 
     consumer = oauth.OAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET)
 
-    # What's worse than a leaky screwdriver? A leaky namespace
-    connection = client.connection
     token = client.get_unauthorised_request_token()
 
     print token
