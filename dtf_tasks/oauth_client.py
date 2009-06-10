@@ -57,9 +57,8 @@ class TwitterOAuthClient(oauth.OAuthClient):
         )
         oauth_request.sign_request(self.signature_method, consumer, None)
         resp = self.fetch_response(oauth_request)
-        token = oauth.OAuthToken.from_string(resp)
 
-        return token
+        return oauth.OAuthToken.from_string(resp)
 
 
 if __name__ == '__main__':
