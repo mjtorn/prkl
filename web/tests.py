@@ -10,9 +10,12 @@ from mediator import models as mediator_models
 
 from noserun import test
 
+from qs.queue import models as queue_models
+
 class TestSms(test.TestCase):
     def setup(self):
         self.client = client.Client(HTTP_HOST='should.i.use.server_name.prkl.es')
+        twit_queue, created = queue_models.Queue.objects.get_or_create(name= 'twitter')
 
     def test_010_broken_sms(self):
         data = {
