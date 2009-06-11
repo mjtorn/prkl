@@ -776,6 +776,14 @@ def incoming_message(request):
     if ctx['sms'] is None:
         ret = mediator_utils.create_error(u'Tänään jokin meni pieleen viestisi kanssa prkl', None, 'system')
         sms_form = ctx['sms_form']
+    elif ctx['sms_form'].cleaned_data['type'] == 'mms':
+        mms = ctx['sms']
+        import time
+        filename = '%s.xml' % time.time()
+        f = open('/tmp/%s' % filename, 'wb')
+        f.write(mms.smildata)
+        f.close()
+        ret = mediator_utils.create_return(u'MMS-Prkl lisätty', mms, price='025')
     else:
         sms = ctx['sms']
         # If we have sms, we have clean data
