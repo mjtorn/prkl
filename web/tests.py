@@ -12,6 +12,11 @@ from noserun import test
 
 from qs.queue import models as queue_models
 
+from cStringIO import StringIO
+
+import base64
+import os
+
 class Test010Sms(test.TestCase):
     def setup(self):
         self.client = client.Client(HTTP_HOST='should.i.use.server_name.prkl.es')
@@ -289,11 +294,23 @@ class Test030Mms(test.TestCase):
 </mms>
         """
 
+        TEST_FILE = '/tmp/bath_kiss.jpg'
+        if not os.path.exists(TEST_FILE):
+            print 'FILE NOT FOUND AAAAIEEEEEE!!!'
+            return True
+
+        f = open(TEST_FILE)
+        img_data = f.read()
+        binlength = f.tell()
+        f.close()
+
+        img_data_base64 = base64.encodestring(img_data)
+
         smil_subst_dict = {
-            'filename': '',
-            'mimetype': 'image/jpeg',
-            'binlength': '',
-            'data': '',
+            'filename': f.name.rsplit('/', 1)[1],
+            'mimetype': 'image/jpeg', # Wargh hardcode
+            'binlength': binlength,
+            'data': img_data_base64,
         }
 
         smil = raw_smil % smil_subst_dict
