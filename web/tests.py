@@ -258,7 +258,7 @@ class Test030Mms(test.TestCase):
 
     def test_010_mms(self):
         # This smil is based loosely on Mediator's specs
-        smil = """\
+        raw_smil = """\
 <?xml version="1.0" encoding="utf-8"?>
 <mms numberto="666" numberfrom="+35850666" operator="Saunalahti" transactiond="700">
 <subject><![CDATA[Te testiä]]></subject>
@@ -281,12 +281,22 @@ class Test030Mms(test.TestCase):
 <media filename="Te_testi.txt" mimetype="text/plain">
    <text><![CDATA[Te testiä]]></text>
 </media>
-<media filename="" mimetype="image/jpeg">
-  <data binlength="">
+<media filename="%(filename)s" mimetype="%(mimetype)s">
+  <data binlength="%(binlength)s">
+  %(data)s
   </data>
 </media>
 </mms>
         """
+
+        smil_subst_dict = {
+            'filename': '',
+            'mimetype': 'image/jpeg',
+            'binlength': '',
+            'data': '',
+        }
+
+        smil = raw_smil % smil_subst_dict
 
         data = {
             'type': 'mms',
