@@ -79,5 +79,20 @@ class SmsHandler(object):
 
         return period, price
 
+    def tanaan(self):
+        """Parse and return content
+        Would be nice if the method could be called "tänään" :P
+        """
+
+        # Don't bounce texts because they're badly formed
+        content = self.sms.content
+        if not content.lower().endswith('prkl'):
+            if content[-1] == '.' or content[-1] == '!':
+                if not content[-5:-1].lower() == 'prkl':
+                    content = '%s prkl' % content
+            else:
+                content = '%s prkl' % content
+
+
 # EOF
 

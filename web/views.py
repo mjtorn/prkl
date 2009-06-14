@@ -806,31 +806,33 @@ def incoming_message(request):
                 ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', sms,  'user')
 
         elif sms_handler.command == u'tänään':
+            ## Prep data
             # Consider anonymous
             user = auth_models.AnonymousUser()
+
             # Mandatory tag(s)
             tag_obs = models.Tag.objects.filter(is_default=True).values('id', 'name')
             tag = tag_obs.get(name='Satunnainen')
             tags = [(t['id'], t['name']) for t in tag_obs]
 
-            # Don't bounce texts because they're badly formed
-            content = sms.content
-            if not content.lower().endswith('prkl'):
-                if content[-1] == '.' or content[-1] == '!':
-                    if not content[-5:-1].lower() == 'prkl':
-                        content = '%s prkl' % content
-                else:
-                    content = '%s prkl' % content
+            # Return a done-deal content
+            content = sms_handler.tanaan()
 
-            # Conclusion
+            ## Start concluding data
+
+            # Sort of like a fake request.POST.copy()
             data = {
                 'content': content,
                 'user': user,
                 'tags': (tag['id'],),
             }
+
+            # Apparently this does have to be this ugly
             submit_prkl_form = forms.SubmitPrklForm(data)
+
             # ..sigh
             submit_prkl_form.fields['tags'].choices = tags
+
             if submit_prkl_form.is_valid():
                 new_prkl = submit_prkl_form.save()
                 new_prkl.sms = sms
