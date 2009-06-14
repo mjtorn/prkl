@@ -795,7 +795,7 @@ def incoming_message(request):
                 try:
                     period, price = sms_handler.jrprkl(vip_word, user_id)
                     ret = mediator_utils.create_return(u'Tänään sait %s vippiä prkl' % vip_word, sms,  price=price)
-                except sms_handler.MalformedJrprkl, e:
+                except sms_handler.InvalidVipWord, e:
                     ret = mediator_utils.create_error(unicode(e), sms_handler.sms, 'user')
                 except sms_handler.InvalidUserId, e:
                     ret = mediator_utils.create_error(unicode(e), sms_handler.sms,  'user')

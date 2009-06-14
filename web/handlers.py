@@ -18,9 +18,6 @@ class SmsHandler(object):
     class SmsHandlerException(Exception):
         pass
 
-    class MalformedJrprkl(SmsHandlerException):
-        pass
-
     class InvalidVipWord(SmsHandlerException):
         pass
 
@@ -48,7 +45,7 @@ class SmsHandler(object):
 
         # Like period word
         if vip_word != '1kk':
-            raise self.MalformedJrprkl(u'Tänään ei tunnettu sanaa %s prkl' % vip_word)
+            raise self.InvalidVipWord(u'Tänään ei tunnettu sanaa %s prkl' % vip_word)
         else:
             period, price = VIP_DICT.get(vip_word, None)
 
