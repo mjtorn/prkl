@@ -24,6 +24,8 @@ from django.utils import simplejson
 
 from fad_tools.messager import models as messager_models
 
+from prkl.web import handlers
+
 from django import forms as django_forms
 
 from django import template
@@ -765,12 +767,6 @@ def incoming_message(request):
     """SMS and all
     """
 
-    vip_dict = {
-        '1kk': (datetime.timedelta(days=30), '200'),
-        '6kk': (datetime.timedelta(days=6*30), '900'),
-        '12kk': (datetime.timedelta(days=12*30), '1500'),
-    }
-
     ctx = mediator_views.incoming_message(request)
 
     if ctx['sms'] is None:
@@ -785,32 +781,25 @@ def incoming_message(request):
         f.close()
         ret = mediator_utils.create_return(u'MMS-Prkl lisätty', mms, price='025')
     else:
-        sms = ctx['sms']
-        # If we have sms, we have clean data
-        data = ctx['sms_form'].cleaned_data
-        command = data['command']
-        command = command.lower()
-        argument = data['argument']
-        argument_list = argument.split()
-        if command == 'jrprkl':
+        ## TODO FIXME XXX Clean this shit up asap
+        sms_handler = handlers.SmsHandler(ctx)
+        command = sms_handler.command
+        argument_list = sms_handler.argument_list
+        sms = sms_handler.sms
+        vip_dict = handlers.VIP_DICT
+        if sms_handler.command == 'jrprkl':
             if len(argument_list) == 2:
                 vip_word = argument_list[0]
                 user_id = argument_list[1]
-                if vip_word != '1kk':
-                    ret = mediator_utils.create_error(u'Tänään ei tunnettu sanaa %s prkl' % vip_word, sms, 'user')
-                    period = None
-                else:
-                    period, price = vip_dict.get(vip_word, None)
 
                 try:
-                    user = models.User.objects.get(id=user_id)
-                except models.User.DoesNotExist:
-                    user = None
-                    ret = mediator_utils.create_error(u'Tarkistathan viestisi viimeisen numeron, %s ei toimi' % user_id, sms,  'user')
-
-                if period is not None and user is not None:
-                    user.extend_vip(period)
+                    period, price = sms_handler.jrprkl(vip_word, user_id)
                     ret = mediator_utils.create_return(u'Tänään sait %s vippiä prkl' % vip_word, sms,  price=price)
+                except sms_handler.MalformedJrprkl, e:
+                    ret = mediator_utils.create_error(unicode(e), sms_handler.sms, 'user')
+                except sms_handler.InvalidUserId, e:
+                    ret = mediator_utils.create_error(unicode(e), sms_handler.sms,  'user')
+
             else:
                 ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', sms,  'user')
 
