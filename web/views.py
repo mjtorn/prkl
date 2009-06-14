@@ -806,44 +806,25 @@ def incoming_message(request):
                 ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', sms,  'user')
 
         elif sms_handler.command == u'tänään':
-            ## Prep data
+            ## Slight preparation
             # Consider anonymous
             user = auth_models.AnonymousUser()
 
             # Mandatory tag(s)
             tag_obs = models.Tag.objects.filter(is_default=True).values('id', 'name')
-            tag = tag_obs.get(name='Satunnainen')
             tags = [(t['id'], t['name']) for t in tag_obs]
 
-            # Return a done-deal content
-            content = sms_handler.tanaan()
+            # This is the chosen one
+            tag = tag_obs.get(name='Satunnainen')
 
             ## Start concluding data
-
-            # Sort of like a fake request.POST.copy()
-            data = {
-                'content': content,
-                'user': user,
-                'tags': (tag['id'],),
-            }
-
-            # Apparently this does have to be this ugly
-            submit_prkl_form = forms.SubmitPrklForm(data)
-
-            # ..sigh
-            submit_prkl_form.fields['tags'].choices = tags
-
-            if submit_prkl_form.is_valid():
-                new_prkl = submit_prkl_form.save()
-                new_prkl.sms = sms
-                new_prkl.save()
+            try:
+                new_prkl = sms_handler.tanaan(user, tags, tag['id'], forms.SubmitPrklForm)
                 ret = mediator_utils.create_return(u'Prkl lisätty', sms, price='025')
-            else:
-                err = submit_prkl_form.errors.get('content', None)
-                if err:
-                    ret = mediator_utils.create_error(u'%s (viestistä ei veloitettu)' % err, sms, 'system')
-                else:
-                    ret = mediator_utils.create_error(u'Prkleen lisäämisessä ongelma', sms, 'system')
+            except sms_handler.PrklError, e:
+                ret = mediator_utils.create_error(unicode(e), sms, 'system')
+            except sms_handler.PrklSevereError, e:
+                ret = mediator_utils.create_error(unicode(e), sms, 'system')
 
         else:
             ret = mediator_utils.create_return('Placeholder return', sms)
