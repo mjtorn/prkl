@@ -149,5 +149,29 @@ class SmsHandler(GsmMessageHandler):
             else:
                 raise self.PrklSevereError(u'Prkleen lisäämisessä ongelma')
 
+
+class MmsHandler(GsmMessageHandler):
+    """Deal with mms
+    """
+
+    class MmsHandlerException(Exception):
+        """Basemost class
+        """
+
+        pass
+
+
+    def tanaan(self):
+        """Deal with command tänään
+        """
+
+        mms = self.ctx['sms']
+        import time
+        filename = '%s.xml' % time.time()
+        f = open('/tmp/%s' % filename, 'wb')
+        f.write(mms.smildata)
+        f.close()
+
+
 # EOF
 
