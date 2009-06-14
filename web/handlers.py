@@ -21,6 +21,9 @@ class SmsHandler(object):
     class MalformedJrprkl(SmsHandlerException):
         pass
 
+    class InvalidVipWord(SmsHandlerException):
+        pass
+
     class InvalidUserId(SmsHandlerException):
         pass
 
@@ -55,6 +58,26 @@ class SmsHandler(object):
         except models.User.DoesNotExist:
             raise self.InvalidUserId(u'Tarkistathan viestisi viimeisen numeron, %s ei toimi' % user_id)
         # Then actually do it
+        user.extend_vip(period)
+
+        return period, price
+
+    def prkl(self, vip_word, user_id):
+        """Deal with the command prkl
+        """
+
+        ## Input validation
+        period, price = VIP_DICT.get(vip_word, None)
+
+        if period is None:
+            raise self.InvalidVipWord(u'Tänään ei tunnettu sanaa %s prkl' % vip_word)
+
+        try:
+            user = models.User.objects.get(id=user_id)
+        except models.User.DoesNotExist:
+            raise self.InvalidUserId(u'Tarkistathan viestisi viimeisen numeron, %s ei toimi' % user_id)
+
+        ## Doing it
         user.extend_vip(period)
 
         return period, price

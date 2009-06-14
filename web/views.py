@@ -808,18 +808,14 @@ def incoming_message(request):
                 vip_word = argument_list[0]
                 user_id = argument_list[1]
 
-                period, price = vip_dict.get(vip_word, None)
-                if period is None:
-                    ret = mediator_utils.create_error(u'Tänään ei tunnettu sanaa %s prkl' % vip_word, sms,  'user')
                 try:
-                    user = models.User.objects.get(id=user_id)
-                except models.User.DoesNotExist:
-                    user = None
-                    ret = mediator_utils.create_error(u'Tarkistathan viestisi viimeisen numeron, %s ei toimi' % user_id, sms,  'user')
-
-                if period is not None and user is not None:
-                    user.extend_vip(period)
+                    period, price = sms_handler.prkl(vip_word, user_id)
                     ret = mediator_utils.create_return(u'Tänään sait %s vippiä prkl' % vip_word, sms,  price=price)
+                except sms_handler.InvalidVipWord, e:
+                    ret = mediator_utils.create_error(unicode(e), sms_handler.sms,  'user')
+                except sms_handler.InvalidUserId, e:
+                    ret = mediator_utils.create_error(unicode(e), sms_handler.sms,  'user')
+
             else:
                 ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', sms,  'user')
 
