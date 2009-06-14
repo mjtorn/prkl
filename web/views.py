@@ -771,7 +771,6 @@ def incoming_message(request):
 
     if ctx['sms'] is None:
         ret = mediator_utils.create_error(u'Tänään jokin meni pieleen viestisi kanssa prkl', None, 'system')
-        sms_form = ctx['sms_form']
     elif ctx['sms_form'].cleaned_data['type'] == 'mms':
         mms = ctx['sms']
         import time
@@ -781,7 +780,6 @@ def incoming_message(request):
         f.close()
         ret = mediator_utils.create_return(u'MMS-Prkl lisätty', mms, price='025')
     else:
-        ## TODO FIXME XXX Clean this shit up asap
         sms_handler = handlers.SmsHandler(ctx)
         sms = sms_handler.sms
         # These two are close enough to each other that we can do this...
