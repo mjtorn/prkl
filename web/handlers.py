@@ -10,8 +10,25 @@ VIP_DICT = {
     '12kk': (datetime.timedelta(days=12*30), '1500'),
 }
 
+class GsmMessageHandler(object):
+    """Common superclass for SMS and MMS handler, lord of all fevers & plague
+    """
 
-class SmsHandler(object):
+    def __init__(self, ctx):
+        """Deal with sms context
+        """
+
+        self.ctx = ctx
+
+        self.sms = self.ctx['sms']
+
+        self.data = ctx['sms_form'].cleaned_data
+
+        self.command = self.data['command'].lower()
+        self.argument_list = self.data['argument'].split()
+
+
+class SmsHandler(GsmMessageHandler):
     """Handle incoming sms with some resemblance of grace
     """
 
@@ -29,19 +46,6 @@ class SmsHandler(object):
 
     class PrklSevereError(SmsHandlerException):
         pass
-
-    def __init__(self, ctx):
-        """Deal with sms context
-        """
-
-        self.ctx = ctx
-
-        self.sms = self.ctx['sms']
-
-        self.data = ctx['sms_form'].cleaned_data
-
-        self.command = self.data['command'].lower()
-        self.argument_list = self.data['argument'].split()
 
     def jrprkl(self, vip_word, user_id):
         """Deal with the command jrprkl
