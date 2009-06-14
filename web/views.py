@@ -783,17 +783,19 @@ def incoming_message(request):
     else:
         ## TODO FIXME XXX Clean this shit up asap
         sms_handler = handlers.SmsHandler(ctx)
-        command = sms_handler.command
-        argument_list = sms_handler.argument_list
         sms = sms_handler.sms
-        vip_dict = handlers.VIP_DICT
-        if sms_handler.command == 'jrprkl':
-            if len(argument_list) == 2:
-                vip_word = argument_list[0]
-                user_id = argument_list[1]
+        # These two are close enough to each other that we can do this...
+        if sms_handler.command == 'jrprkl' or sms_handler.command == 'prkl':
+            if len(sms_handler.argument_list) == 2:
+                vip_word = sms_handler.argument_list[0]
+                user_id = sms_handler.argument_list[1]
 
                 try:
-                    period, price = sms_handler.jrprkl(vip_word, user_id)
+                    # ... and this to succeed
+                    if sms_handler.command == 'jrprkl':
+                        period, price = sms_handler.jrprkl(vip_word, user_id)
+                    else:
+                        period, price = sms_handler.prkl(vip_word, user_id)
                     ret = mediator_utils.create_return(u'Tänään sait %s vippiä prkl' % vip_word, sms,  price=price)
                 except sms_handler.InvalidVipWord, e:
                     ret = mediator_utils.create_error(unicode(e), sms_handler.sms, 'user')
@@ -803,23 +805,7 @@ def incoming_message(request):
             else:
                 ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', sms,  'user')
 
-        elif command == 'prkl':
-            if len(argument_list) == 2:
-                vip_word = argument_list[0]
-                user_id = argument_list[1]
-
-                try:
-                    period, price = sms_handler.prkl(vip_word, user_id)
-                    ret = mediator_utils.create_return(u'Tänään sait %s vippiä prkl' % vip_word, sms,  price=price)
-                except sms_handler.InvalidVipWord, e:
-                    ret = mediator_utils.create_error(unicode(e), sms_handler.sms,  'user')
-                except sms_handler.InvalidUserId, e:
-                    ret = mediator_utils.create_error(unicode(e), sms_handler.sms,  'user')
-
-            else:
-                ret = mediator_utils.create_error(u'Viestin muotoa ei tunnistettu', sms,  'user')
-
-        elif command == u'tänään':
+        elif sms_handler.command == u'tänään':
             # Consider anonymous
             user = auth_models.AnonymousUser()
             # Mandatory tag(s)
