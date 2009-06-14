@@ -33,19 +33,39 @@ class SmsHandler(GsmMessageHandler):
     """
 
     class SmsHandlerException(Exception):
+        """Basemost class
+        """
+
         pass
+
 
     class InvalidVipWord(SmsHandlerException):
+        """When the second word a vip purchase is unrecognized
+        """
+
         pass
+
 
     class InvalidUserId(SmsHandlerException):
+        """Almost like an alias for User.DoesNotExist
+        """
+
         pass
+
 
     class PrklError(SmsHandlerException):
+        """An error in the form, string MUST contain error
+        """
+
         pass
 
+
     class PrklSevereError(SmsHandlerException):
+        """An error so severe we don't know what it is
+        """
+
         pass
+
 
     def jrprkl(self, vip_word, user_id):
         """Deal with the command jrprkl
