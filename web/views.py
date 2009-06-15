@@ -776,8 +776,19 @@ def incoming_message(request):
         mms = mms_handler.sms
         # Do it right, do it right
         if mms_handler.command == 'tänään':
+            ## Slight preparation
+            # Consider anonymous
+            user = auth_models.AnonymousUser()
+
+            # Mandatory tag(s)
+            tag_obs = models.Tag.objects.filter(is_default=True).values('id', 'name')
+            tags = [(t['id'], t['name']) for t in tag_obs]
+
+            # This is the chosen one
+            tag = tag_obs.get(name='Satunnainen')
+
             try:
-                mms_handler.dump_xml()
+                new_prkl = mms_handler.tanaan(user, tags, tag['id'], forms.SubmitPrklForm)
                 ret = mediator_utils.create_return(u'MMS-Prkl lisätty', mms, price='025')
             except mms_handler.MmsHandlerException, e:
                 ret = mediator_utils.create_error(unicode(e), sms, 'system')
