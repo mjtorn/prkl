@@ -415,6 +415,9 @@ class PrklMms(models.Model):
     prkl = models.ForeignKey(Prkl)
     image = thumbs.ImageWithThumbsField(upload_to='mms', sizes=((250,250), (100, 100), (50, 50)), null=True, blank=True)
 
+    def __unicode__(self):
+        return unicode(self.image)
+
 
 class VipExpiry(models.Model):
     user = models.ForeignKey(User)
