@@ -777,7 +777,7 @@ def incoming_message(request):
         # Do it right, do it right
         if mms_handler.command == 'tänään':
             try:
-                mms_handler.tanaan()
+                mms_handler.dump_xml()
                 ret = mediator_utils.create_return(u'MMS-Prkl lisätty', mms, price='025')
             except mms_handler.MmsHandlerException, e:
                 ret = mediator_utils.create_error(unicode(e), sms, 'system')

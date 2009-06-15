@@ -161,11 +161,9 @@ class MmsHandler(GsmMessageHandler):
         pass
 
 
-    def tanaan(self):
-        """Deal with command tänään
-        """
-
+    def dump_xml(self):
         mms = self.ctx['sms']
+
         import time
         filename = '%s.xml' % time.time()
         f = open('/tmp/%s' % filename, 'wb')
