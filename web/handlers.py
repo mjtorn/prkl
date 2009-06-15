@@ -195,6 +195,13 @@ class MmsHandler(GsmMessageHandler):
             db_image.image.save(pic.name, pic)
             db_image.save()
 
+        # Also, need to regenerate html based on this
+        # This is done in its save() method
+        new_prkl.save()
+
+        # Optionally xml can be dumped
+        #self.dump_xml()
+
     def dump_xml(self):
         mms = self.ctx['sms']
 
