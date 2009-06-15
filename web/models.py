@@ -408,6 +408,14 @@ class Prkl(models.Model):
         super(Prkl, self).save(*args, **kwargs) 
 
 
+class PrklMms(models.Model):
+    """One prkl can technically have many mms stuffs related, take care here
+    """
+
+    prkl = models.ForeignKey(Prkl)
+    image = thumbs.ImageWithThumbsField(upload_to='mms', sizes=((250,250), (100, 100), (50, 50)), null=True, blank=True)
+
+
 class VipExpiry(models.Model):
     user = models.ForeignKey(User)
     expire_at = models.DateTimeField()
