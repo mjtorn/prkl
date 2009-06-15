@@ -403,6 +403,18 @@ class Prkl(models.Model):
 
         self.content_html = '<p>' + '<br />'.join(out_lines) + '</p>'
 
+        # Can't look at mms stuff if we aren't saved
+        if self.id:
+            mms_obs = self.prklmms_set.all().order_by('id')
+
+            mms_list = []
+            mms_img = '<img src="/media/%s" alt="%s" />'
+            mms_p = '<p>%s</p>'
+            for mms_ob in mms_obs:
+                mms_list.append(mms_img % (mms_ob.image.url_100x100, mms_ob.image.url_100x100))
+
+            self.content_html = '%s%s' % (mms_p % '\n'.join(mms_list), self.content_html)
+
     def save(self, *args, **kwargs):
         self.to_html()
         super(Prkl, self).save(*args, **kwargs) 
