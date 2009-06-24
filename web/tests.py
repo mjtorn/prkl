@@ -304,7 +304,7 @@ class Test030Mms(test.TestCase):
         binlength = f.tell()
         f.close()
 
-        img_data_base64 = base64.encodestring(img_data)
+        img_data_base64 = base64.urlsafe_b64encode(img_data)
 
         smil_subst_dict = {
             'filename': f.name.rsplit('/', 1)[1],

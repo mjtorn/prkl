@@ -2,6 +2,8 @@
 
 from prkl.web import models
 
+from mediator import utils as mediator_utils
+
 import datetime
 
 VIP_DICT = {
@@ -26,6 +28,50 @@ class GsmMessageHandler(object):
 
         self.command = self.data['command'].lower()
         self.argument_list = self.data['argument'].split()
+
+    def tanaan(self, user, tags, tag_id, FormClass):
+        """Parse and return content
+        Would be nice if the method could be called "tänään" :P
+        """
+
+        ## Prep data
+        # Don't bounce texts because they're badly formed
+        content = self.sms.content
+        if not content.lower().endswith('prkl'):
+            if content[-1] == '.' or content[-1] == '!':
+                if not content[-5:-1].lower() == 'prkl':
+                    content = '%s prkl' % content
+            else:
+                content = '%s prkl' % content
+
+        # Sort of like a fake request.POST.copy()
+        data = {
+            'content': content,
+            'user': user,
+            'tags': (tag_id,),
+        }
+
+        # Apparently this does have to be this ugly
+        submit_prkl_form = FormClass(data)
+
+        # ..sigh
+        submit_prkl_form.fields['tags'].choices = tags
+
+        new_prkl = None
+        if submit_prkl_form.is_valid():
+            new_prkl = submit_prkl_form.save()
+            new_prkl.sms = self.sms
+
+            new_prkl.save()
+
+        else:
+            err = submit_prkl_form.errors.get('content', None)
+            if err is not None:
+                raise self.PrklError(u'%s (viestistä ei veloitettu)' % err)
+            else:
+                raise self.PrklSevereError(u'Prkleen lisäämisessä ongelma')
+
+        return new_prkl
 
 
 class SmsHandler(GsmMessageHandler):
@@ -109,46 +155,6 @@ class SmsHandler(GsmMessageHandler):
 
         return period, price
 
-    def tanaan(self, user, tags, tag_id, FormClass):
-        """Parse and return content
-        Would be nice if the method could be called "tänään" :P
-        """
-
-        ## Prep data
-        # Don't bounce texts because they're badly formed
-        content = self.sms.content
-        if not content.lower().endswith('prkl'):
-            if content[-1] == '.' or content[-1] == '!':
-                if not content[-5:-1].lower() == 'prkl':
-                    content = '%s prkl' % content
-            else:
-                content = '%s prkl' % content
-
-        # Sort of like a fake request.POST.copy()
-        data = {
-            'content': content,
-            'user': user,
-            'tags': (tag_id,),
-        }
-
-        # Apparently this does have to be this ugly
-        submit_prkl_form = FormClass(data)
-
-        # ..sigh
-        submit_prkl_form.fields['tags'].choices = tags
-
-        if submit_prkl_form.is_valid():
-            new_prkl = submit_prkl_form.save()
-            new_prkl.sms = self.sms
-
-            return new_prkl.save()
-        else:
-            err = submit_prkl_form.errors.get('content', None)
-            if err is not None:
-                raise self.PrklError(u'%s (viestistä ei veloitettu)' % err)
-            else:
-                raise self.PrklSevereError(u'Prkleen lisäämisessä ongelma')
-
 
 class MmsHandler(GsmMessageHandler):
     """Deal with mms
@@ -161,11 +167,44 @@ class MmsHandler(GsmMessageHandler):
         pass
 
 
-    def tanaan(self):
+    def tanaan(self, *args, **kwargs):
         """Deal with command tänään
         """
 
+        new_prkl = GsmMessageHandler.tanaan(self, *args, **kwargs)
+
         mms = self.ctx['sms']
+
+        # I am ashamed of myself
+        smildata_lines = mms.smildata.splitlines()
+        if smildata_lines[0].startswith('<?xml') and 'encoding' in smildata_lines[0]:
+            smildata_lines = smildata_lines[1:]
+
+        smildata = '\n'.join(smildata_lines)
+
+        images_xml = mediator_utils.extract_images(smildata)
+        images = mediator_utils.parse_images(images_xml)
+
+        # Argh
+        for image in images:
+            db_image = models.PrklMms()
+            db_image.prkl = new_prkl
+            from django.core.files import uploadedfile
+            pic = uploadedfile.SimpleUploadedFile(image.filename, image.read(), content_type=image.mimetype)
+
+            db_image.image.save(pic.name, pic)
+            db_image.save()
+
+        # Also, need to regenerate html based on this
+        # This is done in its save() method
+        new_prkl.save()
+
+        # Optionally xml can be dumped
+        #self.dump_xml()
+
+    def dump_xml(self):
+        mms = self.ctx['sms']
+
         import time
         filename = '%s.xml' % time.time()
         f = open('/tmp/%s' % filename, 'wb')
