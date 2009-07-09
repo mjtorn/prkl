@@ -521,7 +521,7 @@ class PrklComment(models.Model):
     tstamp = models.DateTimeField(auto_now_add=True)
     prkl = models.ForeignKey(Prkl)
     commenting_user = models.ForeignKey(User, null=True)
-    content = models.CharField(max_length=512)
+    content = models.TextField()
 
     def __unicode__(self):
         return '@%d: %s' % (self.prkl_id, self.content)
