@@ -80,7 +80,23 @@
         }
     }, 
     {
+        "pk": 7, 
+        "model": "web.tag", 
+        "fields": {
+            "is_default": true, 
+            "name": "Tietokoneet"
+        }
+    },
+    {
         "pk": 8, 
+        "model": "web.tag", 
+        "fields": {
+            "is_default": true, 
+            "name": "Opiskelu"
+        }
+    },
+    {
+        "pk": 9, 
         "model": "web.tag", 
         "fields": {
             "is_default": true, 
@@ -88,13 +104,13 @@
         }
     }, 
     {
-        "pk": 7, 
+        "pk": 12, 
         "model": "web.tag", 
         "fields": {
             "is_default": true, 
             "name": "Satunnainen"
         }
-    }
+    } 
 ]
 
 
