@@ -1,5 +1,6 @@
 {% if request.user.id %}
 <div class="invite">
+	<form action="{% url index %}" method="post">
 	<span class="invite_heading">KUTSU KAVERI!</a>
 	{{ invite_friend_form.as_prkl }}
 	<br />
@@ -10,6 +11,7 @@
 	{{ invite_result }}
 	</span>
 	{% endif %}
+	</form>
 </div>
 {% endif %}
 
